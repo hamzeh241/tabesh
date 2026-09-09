@@ -18,6 +18,7 @@ TABESH.LANGS = {
 TABESH.TRANSLATIONS = {
   fa: {
     'meta.title': 'تابش انرژی بام شهر | مهندسی و ساخت — انرژی خورشیدی، CNC، تراش چوب',
+    'meta.description': 'تابش انرژی بام شهر — طراحی و ساخت تجهیزات انرژی خورشیدی، ترکر دو محوره، ماشین‌های CNC و تراش چوب، و ساخت سفارشی',
     'brand.name': 'تابش انرژی بام شهر',
 
     'nav.home': 'خانه',
@@ -106,7 +107,7 @@ TABESH.TRANSLATIONS = {
     'why.2.desc': 'از طراحی تا ساخت و تحویل، همه مراحل در یک مجموعه انجام می‌شود.',
     'why.3.title': 'تنوع حوزه فعالیت',
     'why.3.desc': 'از انرژی خورشیدی تا ماشین‌آلات CNC و تراش چوب.',
-    'why.4.title': 'پاسخ به نیازهای سفارشی',
+    'why.4.title': 'راه‌حل‌های سفارشی',
     'why.4.desc': 'ساخت سفارشی مطابق نیاز، از نیازسنجی تا تحویل.',
 
     'gallery.eyebrow': 'گالری',
@@ -160,6 +161,7 @@ TABESH.TRANSLATIONS = {
   },
   en: {
     'meta.title': 'TABESH | Engineering & Manufacturing — Solar Energy, CNC, Wood Turning',
+    'meta.description': 'TABESH — engineering and manufacturing of solar energy equipment, dual-axis solar trackers, CNC machines, wood turning machines, and custom manufacturing.',
     'brand.name': 'TABESH',
 
     'nav.home': 'Home',
@@ -195,7 +197,7 @@ TABESH.TRANSLATIONS = {
     'act.cnc.title': 'CNC Machines',
     'act.cnc.desc': 'Machining and manufacturing of parts using CNC machines.',
     'act.wood.title': 'Wood Turning Machines',
-    'act.wood.desc': 'Manufacturing of wood turning machines for wood turning and wooden part production.',
+    'act.wood.desc': 'Manufacturing of wood turning machines for turning and producing wooden parts.',
     'act.custom.title': 'Custom Engineering & Manufacturing',
     'act.custom.desc': 'Execution of engineering and manufacturing orders tailored to your needs, from idea to product.',
     'products.eyebrow': 'Products',
@@ -248,7 +250,7 @@ TABESH.TRANSLATIONS = {
     'why.2.desc': 'From design to manufacturing and delivery, all stages are handled in one place.',
     'why.3.title': 'Diverse Fields of Activity',
     'why.3.desc': 'From solar energy to CNC and wood turning machines.',
-    'why.4.title': 'Response to Custom Needs',
+    'why.4.title': 'Custom Solutions',
     'why.4.desc': 'Custom manufacturing tailored to your needs, from requirement analysis to delivery.',
 
     'gallery.eyebrow': 'Gallery',
@@ -302,6 +304,7 @@ TABESH.TRANSLATIONS = {
   },
   ar: {
     'meta.title': 'تابش انرژی بام شهر | هندسة وتصنيع — طاقة شمسية، CNC، خراطة الخشب',
+    'meta.description': 'تابش انرژی بام شهر — هندسة وتصنيع معدات الطاقة الشمسية، والمتعقبات الشمسية ثنائية المحاور، وماكينات CNC، وماكينات خراطة الخشب، والتصنيع حسب الطلب.',
     'brand.name': 'تابش انرژی بام شهر',
 
     'nav.home': 'الرئيسية',
@@ -390,7 +393,7 @@ TABESH.TRANSLATIONS = {
     'why.2.desc': 'من التصميم إلى التصنيع والتسليم، تُنفذ جميع المراحل في مكان واحد.',
     'why.3.title': 'تنوع مجالات النشاط',
     'why.3.desc': 'من الطاقة الشمسية إلى ماكينات CNC وخراطة الخشب.',
-    'why.4.title': 'الاستجابة للاحتياجات الخاصة',
+    'why.4.title': 'الحلول المخصصة',
     'why.4.desc': 'تصنيع مخصص حسب احتياجاتك، من دراسة الاحتياج إلى التسليم.',
 
     'gallery.eyebrow': 'معرض الصور',
@@ -444,6 +447,7 @@ TABESH.TRANSLATIONS = {
   },
   tr: {
     'meta.title': 'TABESH | Mühendislik ve İmalat — Güneş Enerjisi, CNC, Ahşap Torna',
+    'meta.description': 'TABESH — güneş enerjisi ekipmanları, çift eksenli güneş takipçileri, CNC tezgahları, ahşap torna tezgahları ve özel imalat alanında mühendislik ve imalat.',
     'brand.name': 'TABESH',
 
     'nav.home': 'Ana Sayfa',
@@ -464,7 +468,7 @@ TABESH.TRANSLATIONS = {
 
     'about.eyebrow': 'Hakkımızda',
     'about.title': 'TABESH: Mühendislik ve İmalat',
-    'about.p1': 'TABESH, güneş enerjisi, endüstriyel makine ve özel imalat alanlarında faaliyet göstermektedir. Odağımız; çift eksenli güneş takipçileri, CNC tezgahları ve ahşap torna tezgahları ekipmanlarını tasarlamak ve üretmek ve özel mühendislik ile imalat siparişlerini ihtiyaç analizinden teslimata kadar yürütmektir.',
+    'about.p1': 'TABESH, güneş enerjisi, endüstriyel makine ve özel imalat alanlarında faaliyet göstermektedir. Odağımız, çift eksenli güneş takipçileri, CNC tezgahları ve ahşap torna tezgahları gibi ekipmanları tasarlayıp üretmek ve ayrıca özel mühendislik ve imalat siparişlerini ihtiyaç analizinden teslimata kadar yürütmektir.',
     'about.p2': 'Şirkete ait ek bilgiler — geçmiş ve belgeler gibi — şirket tarafından onaylanıp tamamlandığında bu bölüme eklenecektir. (Yer tutucu)',
     'about.chip.quality': 'Kaliteye bağlı',
     'about.chip.engineering': 'Mühendislik ve İmalat',
@@ -479,7 +483,7 @@ TABESH.TRANSLATIONS = {
     'act.cnc.title': 'CNC Tezgahları',
     'act.cnc.desc': 'CNC tezgahlarıyla parça işleme ve imalatı.',
     'act.wood.title': 'Ahşap Torna Tezgahları',
-    'act.wood.desc': 'Ahşap torna ve ahşap parça üretimi için torna tezgahlarının imalatı.',
+    'act.wood.desc': 'Ahşap parçaların tornalanması ve üretimi için ahşap torna tezgahlarının imalatı.',
     'act.custom.title': 'Özel Mühendislik ve İmalat',
     'act.custom.desc': 'Fikirden ürüne, ihtiyaçlarınıza uygun mühendislik ve imalat siparişlerinin yürütülmesi.',
     'products.eyebrow': 'Ürünler',
@@ -494,7 +498,7 @@ TABESH.TRANSLATIONS = {
     'mfg.title': 'İhtiyaçtan Teslimata Tek Yolda',
     'mfg.subtitle': 'Özel imalat sürecimiz altı adımda ilerler:',
     'mfg.step1.title': 'İhtiyaç Analizi',
-    'mfg.step1.desc': 'İhtiyaçlarınızın ve proje koşullarının dikkatle analizi.',
+    'mfg.step1.desc': 'İhtiyaçlarınızın ve proje koşullarınızın dikkatli analizi.',
     'mfg.step2.title': 'Mühendislik Tasarımı',
     'mfg.step2.desc': 'İhtiyaçların teknik tasarıma ve çizime dönüştürülmesi.',
     'mfg.step3.title': 'Prototip Üretimi',
@@ -532,7 +536,7 @@ TABESH.TRANSLATIONS = {
     'why.2.desc': 'Tasarımdan imalata ve teslimata kadar tüm aşamalar tek bir yerde yürütülür.',
     'why.3.title': 'Çeşitli Faaliyet Alanları',
     'why.3.desc': 'Güneş enerjisinden CNC ve ahşap torna tezgahlarına.',
-    'why.4.title': 'Özel İhtiyaçlara Yanıt',
+    'why.4.title': 'Özel Çözümler',
     'why.4.desc': 'İhtiyaç analizinden teslimata kadar, ihtiyaçlarınıza uygun özel imalat.',
 
     'gallery.eyebrow': 'Galeri',

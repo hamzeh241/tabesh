@@ -61,6 +61,8 @@
       ar[m].setAttribute('aria-label', t(ar[m].getAttribute('data-i18n-aria')));
     }
     document.title = t('meta.title');
+    var md = document.querySelector('meta[name="description"]');
+    if (md) md.setAttribute('content', t('meta.description'));
     var yr = document.getElementById('footerYear');
     if (yr) yr.textContent = String(new Date().getFullYear());
   }
