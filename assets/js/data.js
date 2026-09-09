@@ -154,7 +154,9 @@ TABESH.TRANSLATIONS = {
     'workshop.lead': 'کارگاه، جایی است که طراحی به محصول تبدیل می‌شود.',
     'contact.form.title': 'فرم درخواست',
     'contact.form.required': 'تکمیل این فیلد الزامی است.',
-    'footer.tagline': 'انرژی خورشیدی • ترکر دو محوره • ماشین‌های CNC • تراش چوب • ساخت سفارشی'
+    'footer.tagline': 'انرژی خورشیدی • ترکر دو محوره • ماشین‌های CNC • تراش چوب • ساخت سفارشی',
+    'mfg.motto': 'ایده شما، طراحی و ساخت ما',
+    'contact.motto': 'پروژه خود را با ما مطرح کنید',
   },
   en: {
     'meta.title': 'TABESH | Engineering & Manufacturing — Solar Energy, CNC, Wood Turning',
@@ -294,7 +296,9 @@ TABESH.TRANSLATIONS = {
     'workshop.lead': 'The workshop is where design becomes a product.',
     'contact.form.title': 'Request Form',
     'contact.form.required': 'This field is required.',
-    'footer.tagline': 'Solar energy • Dual-axis trackers • CNC machines • Wood turning • Custom manufacturing'
+    'footer.tagline': 'Solar energy • Dual-axis trackers • CNC machines • Wood turning • Custom manufacturing',
+    'mfg.motto': 'Your Idea, Our Design & Manufacturing',
+    'contact.motto': 'Discuss Your Project with Us',
   },
   ar: {
     'meta.title': 'تابش انرژی بام شهر | هندسة وتصنيع — طاقة شمسية، CNC، خراطة الخشب',
@@ -434,7 +438,9 @@ TABESH.TRANSLATIONS = {
     'workshop.lead': 'الورشة هي المكان الذي يتحول فيه التصميم إلى منتج.',
     'contact.form.title': 'نموذج الطلب',
     'contact.form.required': 'هذا الحقل مطلوب.',
-    'footer.tagline': 'طاقة شمسية • متعقبات ثنائية المحاور • ماكينات CNC • خراطة الخشب • تصنيع حسب الطلب'
+    'footer.tagline': 'طاقة شمسية • متعقبات ثنائية المحاور • ماكينات CNC • خراطة الخشب • تصنيع حسب الطلب',
+    'mfg.motto': 'فكرتك، تصميمنا وتصنيعنا',
+    'contact.motto': 'اطرح مشروعك معنا',
   },
   tr: {
     'meta.title': 'TABESH | Mühendislik ve İmalat — Güneş Enerjisi, CNC, Ahşap Torna',
@@ -574,7 +580,9 @@ TABESH.TRANSLATIONS = {
     'workshop.lead': 'Atölye, tasarımın ürüne dönüştüğü yerdir.',
     'contact.form.title': 'Talep Formu',
     'contact.form.required': 'Bu alan gereklidir.',
-    'footer.tagline': 'Güneş enerjisi • Çift eksenli takipçiler • CNC tezgahları • Ahşap torna • Özel imalat'
+    'footer.tagline': 'Güneş enerjisi • Çift eksenli takipçiler • CNC tezgahları • Ahşap torna • Özel imalat',
+    'mfg.motto': 'Fikriniz, tasarımımız ve imalatımız',
+    'contact.motto': 'Projenizi bizimle görüşün',
   },
 };
 
