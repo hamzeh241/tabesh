@@ -1,0 +1,1 @@
+Team member photos go here (replaces the placeholder avatars in the Team section).

@@ -1,0 +1,303 @@
+/* ==========================================================================
+ * TABESH — main.js
+ * i18n engine, language switching (RTL/LTR), dynamic product rendering,
+ * optional video handling, navigation and UI behavior.
+ * Plain vanilla JS — no frameworks, no backend.
+ * ========================================================================== */
+(function () {
+  'use strict';
+
+  var DATA = window.TABESH || {};
+  var LANGS = DATA.LANGS || {};
+  var TRANSLATIONS = DATA.TRANSLATIONS || {};
+  var PRODUCTS = DATA.PRODUCTS || [];
+
+  var STORAGE_KEY = 'tabesh.lang';
+  var PLACEHOLDER_IMG = 'assets/images/placeholder.svg';
+  var BOOTSTRAP_CSS = {
+    ltr: 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css',
+    rtl: 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css'
+  };
+
+  var state = { lang: 'fa' };
+
+  /* ---------------------------- helpers ---------------------------- */
+  function isLang(l) { return Object.prototype.hasOwnProperty.call(LANGS, l); }
+
+  /** Translate a key for the current language, falling back to fa. */
+  function t(key) {
+    var cur = TRANSLATIONS[state.lang] || {};
+    var def = TRANSLATIONS.fa || {};
+    if (cur[key] !== undefined) return cur[key];
+    if (def[key] !== undefined) return def[key];
+    return key;
+  }
+
+  /** Pick the current-language string from a localized object {fa,en,ar,tr}. */
+  function loc(obj) {
+    if (obj == null) return '';
+    if (typeof obj === 'string') return obj;
+    return obj[state.lang] || obj.fa || '';
+  }
+
+  function esc(s) {
+    return String(s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+
+  /* ------------------------------ i18n ------------------------------ */
+  function applyStaticTranslations() {
+    var nodes = document.querySelectorAll('[data-i18n]');
+    for (var i = 0; i < nodes.length; i++) {
+      nodes[i].textContent = t(nodes[i].getAttribute('data-i18n'));
+    }
+    var ph = document.querySelectorAll('[data-i18n-placeholder]');
+    for (var j = 0; j < ph.length; j++) {
+      ph[j].setAttribute('placeholder', t(ph[j].getAttribute('data-i18n-placeholder')));
+    }
+    var ar = document.querySelectorAll('[data-i18n-aria]');
+    for (var m = 0; m < ar.length; m++) {
+      ar[m].setAttribute('aria-label', t(ar[m].getAttribute('data-i18n-aria')));
+    }
+    document.title = t('meta.title');
+    var yr = document.getElementById('footerYear');
+    if (yr) yr.textContent = String(new Date().getFullYear());
+  }
+
+  /** Direction-dependent bits: process arrows + RTL/LTR Bootstrap stylesheet. */
+  function updateDirDependent() {
+    var isRTL = LANGS[state.lang].dir === 'rtl';
+    var seps = document.querySelectorAll('.step-sep i');
+    for (var i = 0; i < seps.length; i++) {
+      seps[i].className = 'bi ' + (isRTL ? 'bi-arrow-left' : 'bi-arrow-right');
+    }
+    var bcss = document.querySelector('link[data-bs-css]');
+    if (bcss) bcss.setAttribute('href', isRTL ? BOOTSTRAP_CSS.rtl : BOOTSTRAP_CSS.ltr);
+  }
+
+  function setLangButton() {
+    var lbl = document.getElementById('langLabel');
+    if (lbl) lbl.textContent = LANGS[state.lang].name;
+    var items = document.querySelectorAll('#langMenu .dropdown-item');
+    for (var i = 0; i < items.length; i++) {
+      items[i].classList.toggle('active', items[i].getAttribute('data-lang') === state.lang);
+    }
+  }
+
+  function setLanguage(lang) {
+    if (!isLang(lang)) lang = 'fa';
+    state.lang = lang;
+    try { localStorage.setItem(STORAGE_KEY, lang); } catch (e) { /* private mode */ }
+    var html = document.documentElement;
+    html.setAttribute('lang', lang);
+    html.setAttribute('dir', LANGS[lang].dir);
+    applyStaticTranslations();
+    updateDirDependent();
+    setLangButton();
+    renderProducts();
+  }
+
+  /* ---------------------------- products ---------------------------- */
+  function productCard(p) {
+    var img = p.image || PLACEHOLDER_IMG;
+    var h = '';
+    h += '<div class="col-12 col-lg-4" data-reveal>';
+    h += '<article class="product-card">';
+    h += '<div class="product-media"><img src="' + esc(img) + '" alt="' + esc(loc(p.name)) +
+         '" loading="lazy" onerror="this.onerror=null;this.src=\'' + PLACEHOLDER_IMG + '\';"></div>';
+    h += '<div class="product-body">';
+    if (p.category) {
+      h += '<span class="product-cat">' + esc(loc(p.category)) + '</span>';
+    }
+    h += '<h3 class="product-title">' + esc(loc(p.name)) + '</h3>';
+    h += '<p class="product-short">' + esc(loc(p.short)) + '</p>';
+
+    if (p.specs && p.specs.length) {
+      h += '<h4 class="product-subhead">' + esc(t('products.specs.title')) + '</h4>';
+      h += '<table class="spec-table"><tbody>';
+      for (var i = 0; i < p.specs.length; i++) {
+        var s = p.specs[i];
+        h += '<tr><th scope="row">' + esc(loc(s.label)) + '</th>';
+        h += s.value
+          ? '<td><span class="spec-value">' + esc(loc(s.value)) + '</span></td>'
+          : '<td><span class="spec-value spec-placeholder">' + esc(t('products.placeholder.spec')) + '</span></td>';
+        h += '</tr>';
+      }
+      h += '</tbody></table>';
+    }
+
+    if (p.applications && p.applications.length) {
+      h += '<h4 class="product-subhead">' + esc(t('products.apps.title')) + '</h4><div class="app-chips">';
+      for (var j = 0; j < p.applications.length; j++) {
+        h += '<span class="app-chip"><i class="bi bi-check2" aria-hidden="true"></i>' + esc(loc(p.applications[j])) + '</span>';
+      }
+      h += '</div>';
+    }
+
+    /* Action row: the "Watch Video" button exists ONLY when a video is set;
+       the inquiry link always points to the contact form. */
+    h += '<div class="product-actions">';
+    if (p.video) {
+      h += '<button type="button" class="btn btn-gold watch-video" data-product-id="' + esc(p.id) + '">' +
+           '<i class="bi bi-play-circle" aria-hidden="true"></i><span>' + esc(t('products.video.btn')) + '</span></button>';
+    }
+    h += '<a class="product-inquiry" href="#contact">' +
+         '<i class="bi bi-chat-square-text" aria-hidden="true"></i><span>' + esc(t('products.inquiry')) + '</span></a>';
+    h += '</div>';
+
+    h += '</div></article></div>';
+    return h;
+  }
+
+  function renderProducts() {
+    var grid = document.getElementById('productsGrid');
+    if (!grid) return;
+    var h = '';
+    for (var i = 0; i < PRODUCTS.length; i++) h += productCard(PRODUCTS[i]);
+    grid.innerHTML = h;
+    revealInit();
+  }
+  /* -------------------------- video modal -------------------------- */
+  function openVideoFor(productId) {
+    var p = null;
+    for (var i = 0; i < PRODUCTS.length; i++) {
+      if (PRODUCTS[i].id === productId) { p = PRODUCTS[i]; break; }
+    }
+    if (!p || !p.video) return;
+
+    var player  = document.getElementById('videoPlayer');
+    var missing = document.getElementById('videoMissing');
+    var titleEl = document.getElementById('videoModalTitle');
+    var modalEl = document.getElementById('videoModal');
+    if (!player || !modalEl || !window.bootstrap) return;
+
+    if (titleEl) titleEl.textContent = loc(p.name);
+    if (missing) missing.classList.add('d-none');
+
+    player.onerror = function () {
+      player.classList.add('d-none');
+      if (missing) missing.classList.remove('d-none');
+    };
+    player.classList.remove('d-none');
+    if (p.poster) { player.setAttribute('poster', p.poster); } else { player.removeAttribute('poster'); }
+    player.setAttribute('src', p.video);
+    player.load();
+
+    bootstrap.Modal.getOrCreateInstance(modalEl).show();
+    modalEl.addEventListener('hidden.bs.modal', function () {
+      player.onerror = null;
+      player.pause();
+      player.removeAttribute('src');
+      player.load();
+      player.classList.remove('d-none');
+      if (missing) missing.classList.add('d-none');
+    }, { once: true });
+  }
+
+  /* ----------------------- reveal on scroll ----------------------- */
+  var revealObserver = null;
+  function revealInit() {
+    if (!('IntersectionObserver' in window)) {
+      var all = document.querySelectorAll('[data-reveal]');
+      for (var k = 0; k < all.length; k++) all[k].classList.add('revealed');
+      return;
+    }
+    if (!revealObserver) {
+      revealObserver = new IntersectionObserver(function (entries) {
+        for (var i = 0; i < entries.length; i++) {
+          if (entries[i].isIntersecting) {
+            entries[i].target.classList.add('revealed');
+            revealObserver.unobserve(entries[i].target);
+          }
+        }
+      }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+    }
+    var nodes = document.querySelectorAll('[data-reveal]:not(.revealed)');
+    for (var j = 0; j < nodes.length; j++) revealObserver.observe(nodes[j]);
+  }
+
+  /* --------------------------- UI events --------------------------- */
+  function bindEvents() {
+    /* language menu */
+    var menu = document.getElementById('langMenu');
+    if (menu) {
+      menu.addEventListener('click', function (e) {
+        var btn = e.target.closest('[data-lang]');
+        if (btn) setLanguage(btn.getAttribute('data-lang'));
+      });
+    }
+
+    /* close the mobile menu after choosing a section */
+    var nav = document.getElementById('mainNav');
+    if (nav) {
+      nav.addEventListener('click', function (e) {
+        if (!e.target.closest('a.nav-link')) return;
+        var collapse = nav.querySelector('.navbar-collapse');
+        if (collapse && collapse.classList.contains('show') && window.bootstrap) {
+          bootstrap.Collapse.getOrCreateInstance(collapse).hide();
+        }
+      });
+    }
+
+    /* product "Watch Video" buttons (delegated) */
+    var grid = document.getElementById('productsGrid');
+    if (grid) {
+      grid.addEventListener('click', function (e) {
+        var btn = e.target.closest('.watch-video');
+        if (btn) openVideoFor(btn.getAttribute('data-product-id'));
+      });
+    }
+
+    /* contact form — demo only; a delivery service is connected in a later phase */
+    var form = document.getElementById('contactForm');
+    if (form) {
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        if (!form.checkValidity()) { form.classList.add('was-validated'); return; }
+        form.classList.remove('was-validated');
+        var alertEl = document.getElementById('formAlert');
+        if (alertEl) alertEl.classList.remove('d-none');
+        form.reset();
+      });
+    }
+
+    /* back to top + navbar shadow */
+    var back = document.getElementById('backToTop');
+    var onScroll = function () {
+      if (back) back.classList.toggle('show', window.scrollY > 420);
+      if (nav) nav.classList.toggle('navbar-scrolled', window.scrollY > 10);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    if (back) {
+      back.addEventListener('click', function (e) {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    }
+    onScroll();
+  }
+
+  /* ------------------------------ init ------------------------------ */
+  function init() {
+    document.documentElement.classList.add('js'); /* enables reveal CSS safely */
+    var saved = null;
+    try { saved = localStorage.getItem(STORAGE_KEY); } catch (e) { /* ignore */ }
+    setLanguage(isLang(saved) ? saved : 'fa');
+    bindEvents();
+    revealInit();
+    if (window.bootstrap && bootstrap.ScrollSpy) {
+      bootstrap.ScrollSpy.getOrCreateInstance(document.body, {
+        target: '#navMenu',
+        rootMargin: '-90px 0px -65%',
+        smoothScroll: false
+      });
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();

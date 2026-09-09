@@ -1,0 +1,1 @@
+Project images go here (replaces the placeholder tiles in the Projects section).

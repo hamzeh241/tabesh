@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="تابش انرژی بام شهر — طراحی و ساخت تجهیزات انرژی خورشیدی، ترکر دو محوره، ماشین‌های CNC و تراش چوب، و ساخت سفارشی">
+  <meta name="theme-color" content="#0b1f3a">
+  <title>تابش انرژی بام شهر | مهندسی و ساخت</title>
+
+  <!-- Bootstrap 5 (RTL by default; swapped for LTR stylesheet by main.js) -->
+  <link rel="stylesheet" data-bs-css href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <!-- Vazirmatn font (Persian, Arabic and Latin) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;800;900&display=swap">
+  <!--
+    TODO (Phase 2): uncomment once the company favicon is provided
+    <link rel="icon" type="image/png" href="assets/images/logo/favicon.png">
+  -->
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-bs-spy="scroll" data-bs-target="#navMenu" data-bs-root-margin="-90px 0px -65%" data-bs-smooth-scroll="true" tabindex="0">
+
+<a class="skip-link" href="#home" data-i18n="nav.home">خانه</a>
+
+<nav id="mainNav" class="navbar navbar-expand-lg sticky-top navbar-dark">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="#home">
+      <img id="brandLogo" src="assets/images/logo/logo.png" alt="TABESH" class="brand-logo" onerror="this.classList.add('d-none');">
+      <span class="brand-text" data-i18n="brand.name">تابش انرژی بام شهر</span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navContent"
+            aria-controls="navContent" aria-expanded="false" data-i18n-aria="misc.nav.toggle" aria-label="باز و بسته کردن منو">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navContent">
+      <ul id="navMenu" class="navbar-nav mx-auto mb-2 mb-lg-0">
+        <li class="nav-item"><a class="nav-link" href="#home"          data-i18n="nav.home">خانه</a></li>
+        <li class="nav-item"><a class="nav-link" href="#about"         data-i18n="nav.about">درباره ما</a></li>
+        <li class="nav-item"><a class="nav-link" href="#activities"    data-i18n="nav.activities">حوزه‌های فعالیت</a></li>
+        <li class="nav-item"><a class="nav-link" href="#products"      data-i18n="nav.products">محصولات</a></li>
+        <li class="nav-item"><a class="nav-link" href="#projects"      data-i18n="nav.projects">پروژه‌ها</a></li>
+        <li class="nav-item"><a class="nav-link" href="#manufacturing" data-i18n="nav.manufacturing">توانمندی ساخت</a></li>
+        <li class="nav-item"><a class="nav-link" href="#gallery"       data-i18n="nav.gallery">گالری</a></li>
+        <li class="nav-item"><a class="nav-link" href="#contact"       data-i18n="nav.contact">تماس</a></li>
+      </ul>
+      <div class="dropdown lang-dropdown">
+        <button class="btn btn-lang dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                aria-expanded="false" data-i18n-aria="misc.lang.label" aria-label="انتخاب زبان">
+          <i class="bi bi-globe2" aria-hidden="true"></i>
+          <span id="langLabel">فارسی</span>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end" id="langMenu">
+          <li><button class="dropdown-item" type="button" data-lang="fa">فارسی</button></li>
+          <li><button class="dropdown-item" type="button" data-lang="en">English</button></li>
+          <li><button class="dropdown-item" type="button" data-lang="ar">العربية</button></li>
+          <li><button class="dropdown-item" type="button" data-lang="tr">Türkçe</button></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- ================================ HERO ================================ -->
+<header id="home" class="hero">
+  <div class="container">
+    <div class="row align-items-center g-4 g-lg-5">
+      <div class="col-lg-7 hero-copy" data-reveal>
+        <span class="hero-badge">
+          <i class="bi bi-lightning-charge-fill" aria-hidden="true"></i>
+          <span data-i18n="hero.badge">مهندسی • ساخت • انرژی خورشیدی</span>
+        </span>
+        <h1 class="hero-title" data-i18n="hero.title">تابش انرژی بام شهر</h1>
+        <p class="hero-slogan" data-i18n="hero.subtitle">ما به کیفیت متعهدیم</p>
+        <p class="hero-lead" data-i18n="hero.lead">طراحی و ساخت تجهیزات انرژی خورشیدی، ترکر خورشیدی دو محوره، ماشین‌های CNC و ماشین‌های تراش چوب — به همراه اجرای سفارش‌های مهندسی و ساخت.</p>
+        <div class="d-flex flex-wrap gap-3 mt-4">
+          <a href="#contact" class="btn btn-gold btn-lg">
+            <i class="bi bi-pencil-square" aria-hidden="true"></i>
+            <span data-i18n="hero.cta.primary">درخواست طراحی و ساخت</span>
+          </a>
+          <a href="#products" class="btn btn-ghost btn-lg">
+            <i class="bi bi-box-seam" aria-hidden="true"></i>
+            <span data-i18n="hero.cta.secondary">مشاهده محصولات</span>
+          </a>
+        </div>
+        <p class="hero-keywords" data-i18n="hero.keywords">طراحی مهندسی • ساخت صنعتی • انرژی خورشیدی • ماشین‌کاری CNC • ساخت سفارشی</p>
+      </div>
+      <div class="col-lg-5" data-reveal>
+        <div class="hero-panel" aria-hidden="true">
+          <div class="hero-sun"><i class="bi bi-sun-fill"></i></div>
+          <div class="hero-chip hero-chip-1"><i class="bi bi-arrow-repeat"></i></div>
+          <div class="hero-chip hero-chip-2"><i class="bi bi-gear-wide-connected"></i></div>
+          <div class="hero-chip hero-chip-3"><i class="bi bi-tree"></i></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+<!-- ============================ ABOUT ============================ -->
+<section id="about" class="section">
+  <div class="container">
+    <div class="section-head" data-reveal>
+      <span class="eyebrow" data-i18n="about.eyebrow">درباره ما</span>
+      <h2 class="section-title" data-i18n="about.title">تابش انرژی بام شهر؛ مهندسی و ساخت</h2>
+      <span class="head-bar" aria-hidden="true"></span>
+    </div>
+    <div class="row align-items-center g-4 g-lg-5">
+      <div class="col-lg-7" data-reveal>
+        <p class="lead-text" data-i18n="about.p1">تابش انرژی بام شهر در حوزه‌های انرژی خورشیدی، ماشین‌آلات صنعتی و ساخت سفارشی فعال است.</p>
+        <h3 class="about-points-title" data-i18n="about.points.title">حوزه‌های تخصصی ما</h3>
+        <ul class="about-points">
+          <li><i class="bi bi-check2-circle" aria-hidden="true"></i><span data-i18n="about.point1">طراحی و ساخت ترکر خورشیدی دو محوره</span></li>
+          <li><i class="bi bi-check2-circle" aria-hidden="true"></i><span data-i18n="about.point2">ماشین‌کاری قطعات با ماشین‌های CNC</span></li>
+          <li><i class="bi bi-check2-circle" aria-hidden="true"></i><span data-i18n="about.point3">ساخت ماشین‌های تراش چوب</span></li>
+          <li><i class="bi bi-check2-circle" aria-hidden="true"></i><span data-i18n="about.point4">اجرای سفارش‌های مهندسی و ساخت، از ایده تا محصول</span></li>
+        </ul>
+        <p class="muted-text note-box" data-i18n="about.p2">اطلاعات تکمیلی شرکت پس از تأیید و تکمیل توسط شرکت در این بخش قرار می‌گیرد. (جایگاه‌دار)</p>
+        <div class="d-flex flex-wrap gap-2 mt-3">
+          <span class="chip chip-gold"><i class="bi bi-patch-check" aria-hidden="true"></i><span data-i18n="about.chip.quality">متعهد به کیفیت</span></span>
+          <span class="chip"><i class="bi bi-diagram-3" aria-hidden="true"></i><span data-i18n="about.chip.engineering">مهندسی و ساخت</span></span>
+          <span class="chip"><i class="bi bi-tools" aria-hidden="true"></i><span data-i18n="about.chip.custom">ساخت سفارشی</span></span>
+        </div>
+      </div>
+      <div class="col-lg-5" data-reveal>
+        <div class="about-visual" aria-hidden="true">
+          <i class="bi bi-buildings"></i>
+          <i class="bi bi-gear-fill about-gear"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================== ACTIVITIES ========================== -->
+<section id="activities" class="section section-gray">
+  <div class="container">
+    <div class="section-head" data-reveal>
+      <span class="eyebrow" data-i18n="activities.eyebrow">حوزه‌های فعالیت</span>
+      <h2 class="section-title" data-i18n="activities.title">در چه حوزه‌هایی فعال هستیم؟</h2>
+      <span class="head-bar" aria-hidden="true"></span>
+    </div>
+    <div class="activities-grid">
+      <article class="act-card" data-reveal>
+        <span class="act-icon"><i class="bi bi-sun" aria-hidden="true"></i></span>
+        <h3 class="act-title" data-i18n="act.solar.title">تجهیزات انرژی خورشیدی</h3>
+        <p class="act-desc" data-i18n="act.solar.desc">تأمین و ساخت تجهیزات مورد نیاز سامانه‌های انرژی خورشیدی.</p>
+      </article>
+      <article class="act-card" data-reveal>
+        <span class="act-icon"><i class="bi bi-arrow-repeat" aria-hidden="true"></i></span>
+        <h3 class="act-title" data-i18n="act.tracker.title">ترکر خورشیدی دو محوره</h3>
+        <p class="act-desc" data-i18n="act.tracker.desc">طراحی و ساخت ردیاب خورشیدی دو محوره برای پیگیری حرکت خورشید.</p>
+      </article>
+      <article class="act-card" data-reveal>
+        <span class="act-icon"><i class="bi bi-gear-wide-connected" aria-hidden="true"></i></span>
+        <h3 class="act-title" data-i18n="act.cnc.title">ماشین‌های CNC</h3>
+        <p class="act-desc" data-i18n="act.cnc.desc">ماشین‌کاری و ساخت قطعات با ماشین‌های CNC.</p>
+      </article>
+      <article class="act-card" data-reveal>
+        <span class="act-icon"><i class="bi bi-tree" aria-hidden="true"></i></span>
+        <h3 class="act-title" data-i18n="act.wood.title">ماشین‌های تراش چوب</h3>
+        <p class="act-desc" data-i18n="act.wood.desc">ساخت ماشین‌آلات تراش چوب برای خراطی و تولید قطعات چوبی.</p>
+      </article>
+      <article class="act-card" data-reveal>
+        <span class="act-icon"><i class="bi bi-tools" aria-hidden="true"></i></span>
+        <h3 class="act-title" data-i18n="act.custom.title">طراحی و ساخت سفارشی</h3>
+        <p class="act-desc" data-i18n="act.custom.desc">اجرای سفارش‌های مهندسی و ساخت مطابق نیاز شما، از ایده تا محصول.</p>
+      </article>
+    </div>
+  </div>
+</section>
+<!-- ============================ PRODUCTS ============================ -->
+<section id="products" class="section">
+  <div class="container">
+    <div class="section-head" data-reveal>
+      <span class="eyebrow" data-i18n="products.eyebrow">محصولات</span>
+      <h2 class="section-title" data-i18n="products.title">محصولات ما</h2>
+      <span class="head-bar" aria-hidden="true"></span>
+      <p class="section-note" data-i18n="products.subtitle">در ادامه، محصولات اصلی مجموعه معرفی شده‌اند.</p>
+    </div>
+    <!-- Product cards are rendered by main.js from TABESH.PRODUCTS (assets/js/data.js).
+         A "Watch Video" button appears only for products that have a video. -->
+    <div class="row g-4" id="productsGrid"></div>
+  </div>
+</section>
+
+<!-- ========================= MANUFACTURING ========================= -->
+<section id="manufacturing" class="section section-navy">
+  <div class="container">
+    <div class="section-head" data-reveal>
+      <span class="eyebrow" data-i18n="mfg.eyebrow">توانمندی ساخت</span>
+      <h2 class="section-title" data-i18n="mfg.title">از نیاز تا تحویل، در یک مسیر</h2>
+      <span class="head-bar" aria-hidden="true"></span>
+      <p class="section-note" data-i18n="mfg.subtitle">فرآیند ساخت سفارشی ما در شش گام پیش می‌رود:</p>
+    </div>
+    <ol class="process-flow" data-reveal>
+      <li class="process-step">
+        <span class="step-num" aria-hidden="true">1</span>
+        <span class="step-title" data-i18n="mfg.step1.title">نیازسنجی</span>
+        <span class="step-desc" data-i18n="mfg.step1.desc">بررسی دقیق نیاز و شرایط پروژه شما.</span>
+      </li>
+      <li class="step-sep" aria-hidden="true"><i class="bi bi-arrow-left"></i></li>
+      <li class="process-step">
+        <span class="step-num" aria-hidden="true">2</span>
+        <span class="step-title" data-i18n="mfg.step2.title">طراحی مهندسی</span>
+        <span class="step-desc" data-i18n="mfg.step2.desc">تبدیل نیازها به طرح فنی و نقشه.</span>
+      </li>
+      <li class="step-sep" aria-hidden="true"><i class="bi bi-arrow-left"></i></li>
+      <li class="process-step">
+        <span class="step-num" aria-hidden="true">3</span>
+        <span class="step-title" data-i18n="mfg.step3.title">نمونه‌سازی</span>
+        <span class="step-desc" data-i18n="mfg.step3.desc">ساخت نمونه برای بررسی و تأیید.</span>
+      </li>
+      <li class="step-sep" aria-hidden="true"><i class="bi bi-arrow-left"></i></li>
+      <li class="process-step">
+        <span class="step-num" aria-hidden="true">4</span>
+        <span class="step-title" data-i18n="mfg.step4.title">ساخت</span>
+        <span class="step-desc" data-i18n="mfg.step4.desc">تولید قطعه یا دستگاه در کارگاه.</span>
+      </li>
+      <li class="step-sep" aria-hidden="true"><i class="bi bi-arrow-left"></i></li>
+      <li class="process-step">
+        <span class="step-num" aria-hidden="true">5</span>
+        <span class="step-title" data-i18n="mfg.step5.title">تست</span>
+        <span class="step-desc" data-i18n="mfg.step5.desc">آزمون عملکرد پیش از تحویل.</span>
+      </li>
+      <li class="step-sep" aria-hidden="true"><i class="bi bi-arrow-left"></i></li>
+      <li class="process-step">
+        <span class="step-num" aria-hidden="true">6</span>
+        <span class="step-title" data-i18n="mfg.step6.title">تحویل</span>
+        <span class="step-desc" data-i18n="mfg.step6.desc">تحویل محصول به کارفرما.</span>
+      </li>
+    </ol>
+    <div class="mfg-cta text-center" data-reveal>
+      <p class="mfg-invite" data-i18n="mfg.invite">نقشه، نمونه یا ایده خود را برای طراحی و ساخت با ما در میان بگذارید.</p>
+      <div class="d-flex flex-wrap justify-content-center gap-3">
+        <a href="#contact" class="btn btn-gold btn-lg">
+          <i class="bi bi-pencil-square" aria-hidden="true"></i>
+          <span data-i18n="hero.cta.primary">درخواست طراحی و ساخت</span>
+        </a>
+        <a href="#products" class="btn btn-ghost btn-lg">
+          <i class="bi bi-box-seam" aria-hidden="true"></i>
+          <span data-i18n="hero.cta.secondary">مشاهده محصولات</span>
+        </a>
+      </div>
+      <p class="mfg-note" data-i18n="mfg.note">برای شروع همکاری، از طریق بخش تماس با ما در ارتباط باشید.</p>
+    </div>
+  </div>
+</section>
+<!-- ============================ PROJECTS ============================ -->
+<section id="projects" class="section section-gray">
+  <div class="container">
+    <div class="section-head" data-reveal>
+      <span class="eyebrow" data-i18n="projects.eyebrow">پروژه‌ها</span>
+      <h2 class="section-title" data-i18n="projects.title">پروژه‌های ما</h2>
+      <span class="head-bar" aria-hidden="true"></span>
+      <p class="section-note" data-i18n="projects.subtitle">نمونه‌ای از پروژه‌های اجراشده. (جایگاه‌دار)</p>
+    </div>
+    <div class="tile-grid" data-reveal>
+      <div class="place-tile">
+        <i class="bi bi-collection" aria-hidden="true"></i>
+        <span class="tile-label" data-i18n="projects.tile.label">پروژه — در انتظار تکمیل</span>
+        <span class="tile-caption" data-i18n="projects.tile.caption">تصویر و توضیحات پروژه</span>
+      </div>
+      <div class="place-tile">
+        <i class="bi bi-collection" aria-hidden="true"></i>
+        <span class="tile-label" data-i18n="projects.tile.label">پروژه — در انتظار تکمیل</span>
+        <span class="tile-caption" data-i18n="projects.tile.caption">تصویر و توضیحات پروژه</span>
+      </div>
+      <div class="place-tile">
+        <i class="bi bi-collection" aria-hidden="true"></i>
+        <span class="tile-label" data-i18n="projects.tile.label">پروژه — در انتظار تکمیل</span>
+        <span class="tile-caption" data-i18n="projects.tile.caption">تصویر و توضیحات پروژه</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ WORKSHOP ============================ -->
+<section id="workshop" class="section">
+  <div class="container">
+    <div class="section-head" data-reveal>
+      <span class="eyebrow" data-i18n="workshop.eyebrow">کارگاه</span>
+      <h2 class="section-title" data-i18n="workshop.title">کارگاه ما</h2>
+      <span class="head-bar" aria-hidden="true"></span>
+      <p class="section-note" data-i18n="workshop.subtitle">نگاهی به فضای کاری و تجهیزات کارگاه. (جایگاه‌دار)</p>
+      <p class="workshop-lead" data-i18n="workshop.lead">کارگاه، جایی است که طراحی به محصول تبدیل می‌شود.</p>
+    </div>
+    <div class="tile-grid" data-reveal>
+      <div class="place-tile"><i class="bi bi-hammer" aria-hidden="true"></i><span class="tile-label" data-i18n="workshop.tile.label">تصویر کارگاه</span></div>
+      <div class="place-tile"><i class="bi bi-gear" aria-hidden="true"></i><span class="tile-label" data-i18n="workshop.tile.label">تصویر کارگاه</span></div>
+      <div class="place-tile"><i class="bi bi-wrench-adjustable" aria-hidden="true"></i><span class="tile-label" data-i18n="workshop.tile.label">تصویر کارگاه</span></div>
+      <div class="place-tile"><i class="bi bi-nut-fill" aria-hidden="true"></i><span class="tile-label" data-i18n="workshop.tile.label">تصویر کارگاه</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== TEAM ============================== -->
+<section id="team" class="section section-gray">
+  <div class="container">
+    <div class="section-head" data-reveal>
+      <span class="eyebrow" data-i18n="team.eyebrow">تیم</span>
+      <h2 class="section-title" data-i18n="team.title">تیم ما</h2>
+      <span class="head-bar" aria-hidden="true"></span>
+      <p class="section-note" data-i18n="team.subtitle">متخصصان مجموعه. (جایگاه‌دار)</p>
+    </div>
+    <div class="row g-4 justify-content-center">
+      <div class="col-6 col-lg-3" data-reveal>
+        <article class="team-card">
+          <span class="avatar-circle"><i class="bi bi-person-fill" aria-hidden="true"></i></span>
+          <h3 class="member-name" data-i18n="team.member.name">[نام — در انتظار تکمیل]</h3>
+          <p class="member-role" data-i18n="team.member.role">[سمت — در انتظار تکمیل]</p>
+        </article>
+      </div>
+      <div class="col-6 col-lg-3" data-reveal>
+        <article class="team-card">
+          <span class="avatar-circle"><i class="bi bi-person-fill" aria-hidden="true"></i></span>
+          <h3 class="member-name" data-i18n="team.member.name">[نام — در انتظار تکمیل]</h3>
+          <p class="member-role" data-i18n="team.member.role">[سمت — در انتظار تکمیل]</p>
+        </article>
+      </div>
+      <div class="col-6 col-lg-3" data-reveal>
+        <article class="team-card">
+          <span class="avatar-circle"><i class="bi bi-person-fill" aria-hidden="true"></i></span>
+          <h3 class="member-name" data-i18n="team.member.name">[نام — در انتظار تکمیل]</h3>
+          <p class="member-role" data-i18n="team.member.role">[سمت — در انتظار تکمیل]</p>
+        </article>
+      </div>
+      <div class="col-6 col-lg-3" data-reveal>
+        <article class="team-card">
+          <span class="avatar-circle"><i class="bi bi-person-fill" aria-hidden="true"></i></span>
+          <h3 class="member-name" data-i18n="team.member.name">[نام — در انتظار تکمیل]</h3>
+          <p class="member-role" data-i18n="team.member.role">[سمت — در انتظار تکمیل]</p>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- =========================== WHY TABESH =========================== -->
+<section id="why" class="section section-navy">
+  <div class="container">
+    <div class="section-head" data-reveal>
+      <span class="eyebrow" data-i18n="why.eyebrow">چرا تابش؟</span>
+      <h2 class="section-title" data-i18n="why.title">چرا تابش انرژی بام شهر؟</h2>
+      <span class="head-bar" aria-hidden="true"></span>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-6 col-lg-3" data-reveal>
+        <article class="why-card">
+          <span class="why-icon"><i class="bi bi-patch-check" aria-hidden="true"></i></span>
+          <h3 class="why-title" data-i18n="why.1.title">تعهد به کیفیت</h3>
+          <p class="why-desc" data-i18n="why.1.desc">مطابق شعار ما، کیفیت در مرکز کار ما قرار دارد.</p>
+        </article>
+      </div>
+      <div class="col-md-6 col-lg-3" data-reveal>
+        <article class="why-card">
+          <span class="why-icon"><i class="bi bi-diagram-3" aria-hidden="true"></i></span>
+          <h3 class="why-title" data-i18n="why.2.title">مهندسی و ساخت یکپارچه</h3>
+          <p class="why-desc" data-i18n="why.2.desc">از طراحی تا ساخت و تحویل، همه مراحل در یک مجموعه انجام می‌شود.</p>
+        </article>
+      </div>
+      <div class="col-md-6 col-lg-3" data-reveal>
+        <article class="why-card">
+          <span class="why-icon"><i class="bi bi-grid-3x3-gap" aria-hidden="true"></i></span>
+          <h3 class="why-title" data-i18n="why.3.title">تنوع حوزه فعالیت</h3>
+          <p class="why-desc" data-i18n="why.3.desc">از انرژی خورشیدی تا ماشین‌آلات CNC و تراش چوب.</p>
+        </article>
+      </div>
+      <div class="col-md-6 col-lg-3" data-reveal>
+        <article class="why-card">
+          <span class="why-icon"><i class="bi bi-tools" aria-hidden="true"></i></span>
+          <h3 class="why-title" data-i18n="why.4.title">پاسخ به نیازهای سفارشی</h3>
+          <p class="why-desc" data-i18n="why.4.desc">ساخت سفارشی مطابق نیاز، از نیازسنجی تا تحویل.</p>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ GALLERY ============================ -->
+<section id="gallery" class="section">
+  <div class="container">
+    <div class="section-head" data-reveal>
+      <span class="eyebrow" data-i18n="gallery.eyebrow">گالری</span>
+      <h2 class="section-title" data-i18n="gallery.title">گالری تصاویر</h2>
+      <span class="head-bar" aria-hidden="true"></span>
+      <p class="section-note" data-i18n="gallery.subtitle">تصاویری از فعالیت‌ها و محصولات ما. (جایگاه‌دار)</p>
+    </div>
+    <div class="tile-grid" data-reveal>
+      <div class="place-tile"><i class="bi bi-image" aria-hidden="true"></i><span class="tile-label" data-i18n="gallery.tile.label">جایگاه تصویر</span></div>
+      <div class="place-tile"><i class="bi bi-image" aria-hidden="true"></i><span class="tile-label" data-i18n="gallery.tile.label">جایگاه تصویر</span></div>
+      <div class="place-tile"><i class="bi bi-image" aria-hidden="true"></i><span class="tile-label" data-i18n="gallery.tile.label">جایگاه تصویر</span></div>
+      <div class="place-tile"><i class="bi bi-image" aria-hidden="true"></i><span class="tile-label" data-i18n="gallery.tile.label">جایگاه تصویر</span></div>
+      <div class="place-tile"><i class="bi bi-image" aria-hidden="true"></i><span class="tile-label" data-i18n="gallery.tile.label">جایگاه تصویر</span></div>
+      <div class="place-tile"><i class="bi bi-image" aria-hidden="true"></i><span class="tile-label" data-i18n="gallery.tile.label">جایگاه تصویر</span></div>
+    </div>
+  </div>
+</section>
+<!-- ============================ CONTACT ============================ -->
+<section id="contact" class="section section-gray">
+  <div class="container">
+    <div class="section-head" data-reveal>
+      <span class="eyebrow" data-i18n="contact.eyebrow">تماس</span>
+      <h2 class="section-title" data-i18n="contact.title">تماس با ما</h2>
+      <span class="head-bar" aria-hidden="true"></span>
+      <p class="section-note" data-i18n="contact.subtitle">برای درخواست طراحی و ساخت یا هر سؤال دیگر، با ما در ارتباط باشید.</p>
+    </div>
+    <div class="row g-4">
+      <div class="col-lg-5" data-reveal>
+        <address class="contact-info-card">
+          <div class="info-row">
+            <span class="info-icon"><i class="bi bi-geo-alt" aria-hidden="true"></i></span>
+            <div class="info-body">
+              <span class="info-label" data-i18n="contact.info.address">نشانی</span>
+              <span class="info-value is-pending" data-i18n="contact.pending">[در انتظار تکمیل]</span>
+            </div>
+          </div>
+          <div class="info-row">
+            <span class="info-icon"><i class="bi bi-telephone" aria-hidden="true"></i></span>
+            <div class="info-body">
+              <span class="info-label" data-i18n="contact.info.phone">تلفن</span>
+              <span class="info-value is-pending" data-i18n="contact.pending">[در انتظار تکمیل]</span>
+            </div>
+          </div>
+          <div class="info-row">
+            <span class="info-icon"><i class="bi bi-envelope" aria-hidden="true"></i></span>
+            <div class="info-body">
+              <span class="info-label" data-i18n="contact.info.email">ایمیل</span>
+              <span class="info-value is-pending" data-i18n="contact.pending">[در انتظار تکمیل]</span>
+            </div>
+          </div>
+          <div class="info-row">
+            <span class="info-icon"><i class="bi bi-clock" aria-hidden="true"></i></span>
+            <div class="info-body">
+              <span class="info-label" data-i18n="contact.info.hours">ساعات کاری</span>
+              <span class="info-value is-pending" data-i18n="contact.pending">[در انتظار تکمیل]</span>
+            </div>
+          </div>
+        </address>
+      </div>
+      <div class="col-lg-7" data-reveal>
+        <form id="contactForm" class="contact-form" novalidate>
+          <h3 class="contact-form-title" data-i18n="contact.form.title">فرم درخواست</h3>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label" for="cfName" data-i18n="contact.form.name">نام و نام خانوادگی</label>
+              <input type="text" class="form-control" id="cfName" name="name" autocomplete="name" required>
+              <div class="invalid-feedback" data-i18n="contact.form.required">تکمیل این فیلد الزامی است.</div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label" for="cfContact" data-i18n="contact.form.contact">ایمیل یا شماره تماس</label>
+              <input type="text" class="form-control" id="cfContact" name="contact" autocomplete="email" required>
+              <div class="invalid-feedback" data-i18n="contact.form.required">تکمیل این فیلد الزامی است.</div>
+            </div>
+            <div class="col-12">
+              <label class="form-label" for="cfSubject" data-i18n="contact.form.subject">موضوع درخواست</label>
+              <select class="form-select" id="cfSubject" name="subject">
+                <option value="design-manufacturing" data-i18n="hero.cta.primary">درخواست طراحی و ساخت</option>
+                <option value="product-inquiry" data-i18n="contact.form.subject.product">استعلام محصول</option>
+                <option value="other" data-i18n="contact.form.subject.other">سایر</option>
+              </select>
+            </div>
+            <div class="col-12">
+              <label class="form-label" for="cfMessage" data-i18n="contact.form.message">متن پیام</label>
+              <textarea class="form-control" id="cfMessage" name="message" rows="5" required></textarea>
+              <div class="invalid-feedback" data-i18n="contact.form.required">تکمیل این فیلد الزامی است.</div>
+            </div>
+          </div>
+          <div class="alert form-alert d-none mt-3" id="formAlert" role="status" data-i18n="contact.form.success">پیام شما ثبت شد.</div>
+          <p class="form-note" data-i18n="contact.form.notice">این فرم در فاز بعدی به سرویس ارسال پیام متصل می‌شود.</p>
+          <button type="submit" class="btn btn-gold">
+            <i class="bi bi-send" aria-hidden="true"></i>
+            <span data-i18n="contact.form.send">ارسال پیام</span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- ============================= FOOTER ============================= -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-lg-4">
+        <div class="d-flex align-items-center gap-2 mb-3">
+          <img src="assets/images/logo/logo.png" alt="TABESH" class="brand-logo" onerror="this.classList.add('d-none');">
+          <span class="footer-brand" data-i18n="brand.name">تابش انرژی بام شهر</span>
+        </div>
+        <p class="footer-about" data-i18n="footer.about">تابش انرژی بام شهر — مهندسی و ساخت در حوزه انرژی خورشیدی و ماشین‌آلات صنعتی.</p>
+        <p class="footer-tagline" data-i18n="footer.tagline">انرژی خورشیدی • ترکر دو محوره • ماشین‌های CNC • تراش چوب • ساخت سفارشی</p>
+        <p class="footer-slogan" data-i18n="hero.subtitle">ما به کیفیت متعهدیم</p>
+      </div>
+      <div class="col-6 col-lg-2">
+        <h3 class="footer-title" data-i18n="footer.links.title">دسترسی سریع</h3>
+        <ul class="footer-links">
+          <li><a href="#home"          data-i18n="nav.home">خانه</a></li>
+          <li><a href="#about"         data-i18n="nav.about">درباره ما</a></li>
+          <li><a href="#activities"    data-i18n="nav.activities">حوزه‌های فعالیت</a></li>
+          <li><a href="#products"      data-i18n="nav.products">محصولات</a></li>
+          <li><a href="#projects"      data-i18n="nav.projects">پروژه‌ها</a></li>
+          <li><a href="#manufacturing" data-i18n="nav.manufacturing">توانمندی ساخت</a></li>
+          <li><a href="#gallery"       data-i18n="nav.gallery">گالری</a></li>
+          <li><a href="#contact"       data-i18n="nav.contact">تماس</a></li>
+        </ul>
+      </div>
+      <div class="col-6 col-lg-3">
+        <h3 class="footer-title" data-i18n="footer.activities.title">حوزه‌های فعالیت</h3>
+        <ul class="footer-links">
+          <li><span data-i18n="act.solar.title">تجهیزات انرژی خورشیدی</span></li>
+          <li><span data-i18n="act.tracker.title">ترکر خورشیدی دو محوره</span></li>
+          <li><span data-i18n="act.cnc.title">ماشین‌های CNC</span></li>
+          <li><span data-i18n="act.wood.title">ماشین‌های تراش چوب</span></li>
+          <li><span data-i18n="act.custom.title">طراحی و ساخت سفارشی</span></li>
+        </ul>
+      </div>
+      <div class="col-lg-3">
+        <h3 class="footer-title" data-i18n="footer.contact.title">تماس با ما</h3>
+        <ul class="footer-contact">
+          <li><i class="bi bi-geo-alt" aria-hidden="true"></i><span data-i18n="contact.pending">[در انتظار تکمیل]</span></li>
+          <li><i class="bi bi-telephone" aria-hidden="true"></i><span data-i18n="contact.pending">[در انتظار تکمیل]</span></li>
+          <li><i class="bi bi-envelope" aria-hidden="true"></i><span data-i18n="contact.pending">[در انتظار تکمیل]</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="mb-0">
+        <span dir="ltr" class="footer-year">© <span id="footerYear"></span></span>
+        <span data-i18n="footer.rights">تابش انرژی بام شهر — کلیه حقوق محفوظ است.</span>
+      </p>
+    </div>
+  </div>
+</footer>
+
+<!-- ========================== VIDEO MODAL ========================== -->
+<div class="modal fade" id="videoModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content video-modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="videoModalTitle"></h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                data-i18n-aria="misc.video.close" aria-label="بستن"></button>
+      </div>
+      <div class="modal-body">
+        <video id="videoPlayer" class="w-100" controls preload="metadata" playsinline></video>
+        <div id="videoMissing" class="video-missing d-none" data-i18n="misc.video.missing">ویدیوی این محصول در دسترس نیست.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<a href="#home" id="backToTop" class="backtop" aria-label="بازگشت به بالا" data-i18n-aria="misc.backtop">
+  <i class="bi bi-arrow-up" aria-hidden="true"></i>
+</a>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/main.js"></script>
+</body>
+</html>

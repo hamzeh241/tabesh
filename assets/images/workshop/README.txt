@@ -1,0 +1,1 @@
+Workshop images go here (replaces the placeholder tiles in the Workshop section).
