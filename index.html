@@ -265,23 +265,9 @@
       <span class="head-bar" aria-hidden="true"></span>
       <p class="section-note" data-i18n="projects.subtitle">نمونه‌ای از پروژه‌های اجراشده. (جایگاه‌دار)</p>
     </div>
-    <div class="tile-grid" data-reveal>
-      <div class="place-tile">
-        <i class="bi bi-collection" aria-hidden="true"></i>
-        <span class="tile-label" data-i18n="projects.tile.label">پروژه — در انتظار تکمیل</span>
-        <span class="tile-caption" data-i18n="projects.tile.caption">تصویر و توضیحات پروژه</span>
-      </div>
-      <div class="place-tile">
-        <i class="bi bi-collection" aria-hidden="true"></i>
-        <span class="tile-label" data-i18n="projects.tile.label">پروژه — در انتظار تکمیل</span>
-        <span class="tile-caption" data-i18n="projects.tile.caption">تصویر و توضیحات پروژه</span>
-      </div>
-      <div class="place-tile">
-        <i class="bi bi-collection" aria-hidden="true"></i>
-        <span class="tile-label" data-i18n="projects.tile.label">پروژه — در انتظار تکمیل</span>
-        <span class="tile-caption" data-i18n="projects.tile.caption">تصویر و توضیحات پروژه</span>
-      </div>
-    </div>
+    <!-- Project cards are rendered by main.js from TABESH.PROJECTS (assets/js/data.js).
+         While the array is empty the preserved placeholder tiles are shown. -->
+    <div class="tile-grid" id="projectsGrid"></div>
   </div>
 </section>
 
@@ -295,12 +281,11 @@
       <p class="section-note" data-i18n="workshop.subtitle">نگاهی به فضای کاری و تجهیزات کارگاه. (جایگاه‌دار)</p>
       <p class="workshop-lead" data-i18n="workshop.lead">کارگاه، جایی است که طراحی به محصول تبدیل می‌شود.</p>
     </div>
-    <div class="tile-grid" data-reveal>
-      <div class="place-tile"><i class="bi bi-hammer" aria-hidden="true"></i><span class="tile-label" data-i18n="workshop.tile.label">تصویر کارگاه</span></div>
-      <div class="place-tile"><i class="bi bi-gear" aria-hidden="true"></i><span class="tile-label" data-i18n="workshop.tile.label">تصویر کارگاه</span></div>
-      <div class="place-tile"><i class="bi bi-wrench-adjustable" aria-hidden="true"></i><span class="tile-label" data-i18n="workshop.tile.label">تصویر کارگاه</span></div>
-      <div class="place-tile"><i class="bi bi-nut-fill" aria-hidden="true"></i><span class="tile-label" data-i18n="workshop.tile.label">تصویر کارگاه</span></div>
-    </div>
+    <!-- Workshop tiles are rendered by main.js from TABESH.WORKSHOP (assets/js/data.js).
+         Supported image categories: workshop | cnc | welding | assembly | electronics
+         | testing | manufacturing. While the array is empty the preserved placeholder
+         tiles are shown. -->
+    <div class="tile-grid" id="workshopGrid"></div>
   </div>
 </section>
 
@@ -395,14 +380,10 @@
       <span class="head-bar" aria-hidden="true"></span>
       <p class="section-note" data-i18n="gallery.subtitle">تصاویری از فعالیت‌ها و محصولات ما. (جایگاه‌دار)</p>
     </div>
-    <div class="tile-grid" data-reveal>
-      <div class="place-tile"><i class="bi bi-image" aria-hidden="true"></i><span class="tile-label" data-i18n="gallery.tile.label">جایگاه تصویر</span></div>
-      <div class="place-tile"><i class="bi bi-image" aria-hidden="true"></i><span class="tile-label" data-i18n="gallery.tile.label">جایگاه تصویر</span></div>
-      <div class="place-tile"><i class="bi bi-image" aria-hidden="true"></i><span class="tile-label" data-i18n="gallery.tile.label">جایگاه تصویر</span></div>
-      <div class="place-tile"><i class="bi bi-image" aria-hidden="true"></i><span class="tile-label" data-i18n="gallery.tile.label">جایگاه تصویر</span></div>
-      <div class="place-tile"><i class="bi bi-image" aria-hidden="true"></i><span class="tile-label" data-i18n="gallery.tile.label">جایگاه تصویر</span></div>
-      <div class="place-tile"><i class="bi bi-image" aria-hidden="true"></i><span class="tile-label" data-i18n="gallery.tile.label">جایگاه تصویر</span></div>
-    </div>
+    <!-- Gallery items are rendered by main.js from TABESH.GALLERY (assets/js/data.js).
+         Clicking an item opens the image viewer (Bootstrap modal). While the array is
+         empty the preserved placeholder tiles are shown. -->
+    <div class="tile-grid" id="galleryGrid"></div>
   </div>
 </section>
 <!-- ============================ CONTACT ============================ -->
@@ -547,7 +528,7 @@
 </footer>
 
 <!-- ========================== VIDEO MODAL ========================== -->
-<div class="modal fade" id="videoModal" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="videoModal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="videoModalTitle" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content video-modal-content">
       <div class="modal-header">
@@ -558,6 +539,40 @@
       <div class="modal-body">
         <video id="videoPlayer" class="w-100" controls preload="none" playsinline></video>
         <div id="videoMissing" class="video-missing d-none" data-i18n="misc.video.missing">ویدیوی این محصول در دسترس نیست.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========================== IMAGE VIEWER ========================== -->
+<!-- Bootstrap modal image viewer for the Gallery (no extra library).
+     prev/next navigation, Escape, background scroll lock and focus
+     handling are provided by the Bootstrap modal; focus returns to the
+     opened thumbnail when the modal closes. -->
+<div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="imageModalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered">
+    <div class="modal-content image-viewer-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="imageModalTitle"></h5>
+        <div class="image-viewer-actions">
+          <button type="button" class="img-nav" id="imagePrev" data-i18n-aria="gallery.prev" aria-label="تصویر قبلی">
+            <i class="bi bi-chevron-left" aria-hidden="true"></i>
+          </button>
+          <button type="button" class="img-nav" id="imageNext" data-i18n-aria="gallery.next" aria-label="تصویر بعدی">
+            <i class="bi bi-chevron-right" aria-hidden="true"></i>
+          </button>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" id="imageViewerClose"
+                  data-i18n-aria="misc.video.close" aria-label="بستن"></button>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div class="image-frame">
+          <img id="imageViewerImg" alt="" decoding="async">
+        </div>
+        <div class="image-viewer-caption">
+          <span id="imageCaption"></span>
+          <span id="imageCounter" class="image-counter"></span>
+        </div>
       </div>
     </div>
   </div>

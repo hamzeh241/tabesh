@@ -1350,6 +1350,229 @@ html.js .process-flow > li:nth-child(12) { transition-delay: .49s; }
   html.js [data-reveal] { opacity: 1; transform: none; }
 }
 
+/* ==========================================================================
+ * Phase 6 — projects, workshop, gallery and image viewer.
+ * Keeps the Phase 3 design language: machined cards, technical chips,
+ * blueprint grids and restrained hover motion.
+ * object-fit: cover is used ONLY in these uniform gallery frames (the crop is
+ * fluid and follows the frame, never a forced pixel crop); product images
+ * keep object-fit: contain so they are never cropped.
+ * ========================================================================== */
+
+/* ------------------------- Project card ------------------------- */
+.proj-card {
+  position: relative;
+  background: var(--tab-white);
+  border: 1px solid var(--tab-steel-200);
+  border-radius: var(--tab-radius);
+  overflow: hidden;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  transition: box-shadow .2s, transform .2s, border-color .2s;
+}
+.proj-card::before {
+  content: '';
+  display: block;
+  height: 3px;
+  background: linear-gradient(90deg, var(--tab-gold-500) 0 46px, var(--tab-sky-400) 46px 64px, transparent 64px);
+}
+.proj-card:hover {
+  box-shadow: var(--tab-shadow-2);
+  transform: translateY(-5px);
+  border-color: rgba(242, 183, 5, .55);
+}
+.proj-media {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  background: var(--tab-grid-light), #f6f9fc;
+  border-bottom: 1px solid var(--tab-steel-200);
+  overflow: hidden;
+}
+.proj-media img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.proj-body { padding: 1.1rem 1.2rem 1.05rem; }
+.proj-meta { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: .7rem; }
+.proj-title { font-size: 1.08rem; font-weight: 800; color: var(--tab-navy-900); }
+.proj-short { color: var(--tab-muted); font-size: .92rem; margin: .35rem 0 0; }
+/* same details disclosure used by products (see .product-more) */
+.proj-more { margin-top: .6rem; }
+.proj-more summary {
+  cursor: pointer;
+  font-size: .88rem;
+  font-weight: 700;
+  color: var(--tab-navy-700);
+  padding: .35rem .6rem;
+  border: 1px solid var(--tab-steel-200);
+  border-radius: var(--tab-radius-sm);
+  background: var(--tab-steel-100);
+}
+.proj-more summary::before { content: '+  '; color: var(--tab-gold-600); }
+.proj-more[open] summary::before { content: '\2212  '; }
+.proj-more p { color: var(--tab-muted); font-size: .94rem; margin: .5rem 0 0; }
+
+/* --------------------- Workshop image tiles --------------------- */
+.ws-item {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  border: 1px solid var(--tab-steel-300);
+  border-radius: var(--tab-radius);
+  background: var(--tab-grid-light), var(--tab-steel-100);
+  overflow: hidden;
+  margin: 0;
+  transition: border-color .2s, transform .2s, box-shadow .2s;
+}
+.ws-media { position: absolute; inset: 0; overflow: hidden; }
+.ws-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .45s ease;
+}
+.ws-item:hover .ws-media img { transform: scale(1.04); }
+.ws-cap {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  padding: .32rem .7rem;
+  font-size: .82rem;
+  font-weight: 700;
+  color: var(--tab-navy-900);
+  background: linear-gradient(180deg, transparent, rgba(7, 20, 38, .72));
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ws-cap i { color: var(--tab-gold-500); font-size: .9em; }
+
+/* ------------------------- Gallery items ------------------------- */
+.gallery-item {
+  appearance: none;
+  font-family: inherit;
+  text-align: start;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  border: 1px solid var(--tab-steel-300);
+  border-radius: var(--tab-radius);
+  background: var(--tab-grid-light), var(--tab-steel-100);
+  padding: 0;
+  overflow: hidden;
+  color: inherit;
+  cursor: pointer;
+  transition: border-color .2s, transform .2s, box-shadow .2s;
+}
+.gallery-item:hover {
+  border-color: var(--tab-gold-500);
+  transform: translateY(-3px);
+  box-shadow: var(--tab-shadow-2);
+}
+.gallery-item img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .45s ease;
+}
+.gallery-item:hover img { transform: scale(1.04); }
+.gallery-cap {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  padding: .3rem .7rem;
+  font-size: .8rem;
+  font-weight: 700;
+  color: var(--tab-white);
+  background: linear-gradient(180deg, transparent, rgba(7, 20, 38, .78));
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ------------------------- Image viewer modal ------------------------- */
+.image-viewer-content {
+  background: linear-gradient(180deg, var(--tab-navy-900), var(--tab-navy-950));
+  color: var(--tab-white);
+  border: 1px solid rgba(255, 255, 255, .15);
+  border-top: 3px solid var(--tab-gold-500);
+  border-radius: var(--tab-radius);
+}
+.image-viewer-content .modal-header { border-bottom: 1px solid rgba(255, 255, 255, .12); }
+.image-viewer-content .modal-title { font-size: 1rem; font-weight: 700; }
+.image-viewer-actions { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; }
+.img-nav {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--tab-radius-sm);
+  background: transparent;
+  border: 1.5px solid rgba(255, 255, 255, .45);
+  color: var(--tab-white);
+  font-size: 1.15rem;
+  line-height: 1;
+  transition: background-color .2s, border-color .2s, color .2s, transform .2s;
+}
+.img-nav:hover, .img-nav:focus {
+  background: rgba(242, 183, 5, .18);
+  border-color: var(--tab-gold-500);
+  color: var(--tab-gold-400);
+  transform: translateY(-2px);
+}
+/* chevron glyphs flip with direction so prev/next stay intuitive in RTL */
+[dir="rtl"] #imagePrev i, [dir="rtl"] #imageNext i { transform: scaleX(-1); }
+.image-frame {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(7, 20, 38, .55);
+  min-height: 320px;
+}
+/* the viewer never stretches an image (object-fit: contain) */
+.image-frame img {
+  max-width: 100%;
+  max-height: 62vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: var(--tab-radius-sm);
+}
+.image-viewer-caption {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  align-items: center;
+  justify-content: center;
+  padding: .7rem 0 .4rem;
+  color: #b9c7da;
+  font-size: .9rem;
+}
+.image-counter {
+  font-family: var(--tab-font-tech);
+  font-variant-numeric: tabular-nums;
+  color: var(--tab-gold-400);
+  font-size: .8rem;
+}
+
+@media (max-width: 575.98px) {
+  .proj-body { padding: .95rem 1rem .9rem; }
+  .image-frame { min-height: 240px; }
+  .image-frame img { max-height: 50vh; }
+  .img-nav { width: 36px; height: 36px; }
+}
+
 /* --------------------------- Small screens --------------------------- */
 @media (max-width: 991.98px) {
   .hero-rig { bottom: 11%; }

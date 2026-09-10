@@ -11,6 +11,10 @@
   var LANGS = DATA.LANGS || {};
   var TRANSLATIONS = DATA.TRANSLATIONS || {};
   var PRODUCTS = DATA.PRODUCTS || [];
+  var PROJECTS = DATA.PROJECTS || [];
+  var WORKSHOP = DATA.WORKSHOP || [];
+  var WORKSHOP_CATEGORIES = DATA.WORKSHOP_CATEGORIES || {};
+  var GALLERY = DATA.GALLERY || [];
 
   var STORAGE_KEY = 'tabesh.lang';
   var PLACEHOLDER_IMG = 'assets/images/placeholder.svg';
@@ -98,6 +102,9 @@
     updateDirDependent();
     setLangButton();
     renderProducts();
+    renderProjects();
+    renderWorkshop();
+    renderGallery();
   }
 
   /* ---------------------------- products ---------------------------- */
@@ -190,8 +197,203 @@
     grid.innerHTML = h;
     revealInit();
   }
-  /* -------------------------- video modal -------------------------- */
-  function openVideoFor(productId) {
+
+  /* -------------------- projects / workshop / gallery -------------------- */
+  /* Phase 6 data-driven sections. Images use a shared helper: every non-hero
+     image is lazy-loaded, decoded asynchronously and falls back to the
+     preserved placeholder when missing. */
+
+  /** Standard non-hero image markup with placeholder fallback. */
+  function renderImg(src, alt, klass) {
+    var s = src || PLACEHOLDER_IMG;
+    var c = klass ? ' class="' + esc(klass) + '"' : '';
+    return '<img src="' + esc(s) + '" alt="' + esc(alt) + '"' + c +
+           ' loading="lazy" decoding="async"' +
+           ' onerror="this.onerror=null;this.src=\'' + PLACEHOLDER_IMG + '\';">';
+  }
+
+  /** Preserved Phase 3 placeholder tile (icon + label), generated from data
+      so the sections stay data-driven even while the arrays are empty. */
+  function placeholderTile(icon, labelKey, captionKey) {
+    var h = '<div class="place-tile" data-reveal>';
+    h += '<i class="bi ' + esc(icon) + '" aria-hidden="true"></i>';
+    h += '<span class="tile-label">' + esc(t(labelKey)) + '</span>';
+    if (captionKey) h += '<span class="tile-caption">' + esc(t(captionKey)) + '</span>';
+    h += '</div>';
+    return h;
+  }
+
+  function projectCard(p) {
+    var cat = categoryOf(p);
+    var h = '<article class="proj-card" data-reveal>';
+    h += '<div class="proj-media">' + renderImg(p.image, loc(p.title) || t('projects.tile.label')) + '</div>';
+    h += '<div class="proj-body">';
+    if (cat || p.year || p.location) {
+      h += '<div class="proj-meta">';
+      if (cat) {
+        h += '<span class="chip chip-gold"><i class="bi ' + esc(cat.icon || 'bi-grid-1x2-gap') +
+             '" aria-hidden="true"></i>' + esc(loc(cat.label || cat)) + '</span>';
+      }
+      if (p.year) {
+        h += '<span class="chip"><i class="bi bi-calendar3" aria-hidden="true"></i>' +
+             esc(t('projects.year')) + ': ' + esc(p.year) + '</span>';
+      }
+      if (p.location) {
+        h += '<span class="chip"><i class="bi bi-geo-alt" aria-hidden="true"></i>' + esc(loc(p.location)) + '</span>';
+      }
+      h += '</div>';
+    }
+    h += '<h3 class="proj-title">' + esc(loc(p.title)) + '</h3>';
+    if (p.shortDescription) {
+      h += '<p class="proj-short">' + esc(loc(p.shortDescription)) + '</p>';
+    }
+    if (p.description) {
+      h += '<details class="proj-more"><summary>' + esc(t('projects.details')) + '</summary>' +
+           '<p>' + esc(loc(p.description)) + '</p></details>';
+    }
+    h += '</div></article>';
+    return h;
+  }
+
+  function renderProjects() {
+    var grid = document.getElementById('projectsGrid');
+    if (!grid) return;
+    var h = '';
+    if (!PROJECTS || !PROJECTS.length) {
+      for (var i = 0; i < 3; i++) {
+        h += placeholderTile('bi-collection', 'projects.tile.label', 'projects.tile.caption');
+      }
+    } else {
+      for (var j = 0; j < PROJECTS.length; j++) h += projectCard(PROJECTS[j]);
+    }
+    grid.innerHTML = h;
+    revealInit();
+  }
+
+  /** Resolve a workshop category key via TABESH.WORKSHOP_CATEGORIES (or inline). */
+  function workshopCategoryOf(w) {
+    if (!w || !w.category) return null;
+    if (typeof w.category === 'string') return WORKSHOP_CATEGORIES[w.category] || null;
+    return w.category; /* inline localized object */
+  }
+
+  function workshopItem(w) {
+    var cat = workshopCategoryOf(w);
+    var title = w.title ? loc(w.title) : (cat ? loc(cat.label) : '');
+    var h = '<figure class="ws-item" data-reveal>';
+    h += '<div class="ws-media">' + renderImg(w.image, w.alt || title || t('workshop.tile.label')) + '</div>';
+    if (title) {
+      h += '<figcaption class="ws-cap"><i class="bi ' + esc((cat && cat.icon) || 'bi-image') +
+           '" aria-hidden="true"></i>' + esc(title) + '</figcaption>';
+    }
+    h += '</figure>';
+    return h;
+  }
+
+  function renderWorkshop() {
+    var grid = document.getElementById('workshopGrid');
+    if (!grid) return;
+    var h = '';
+    if (!WORKSHOP || !WORKSHOP.length) {
+      var icons = ['bi-hammer', 'bi-gear', 'bi-wrench-adjustable', 'bi-nut-fill'];
+      for (var i = 0; i < icons.length; i++) {
+        h += placeholderTile(icons[i], 'workshop.tile.label', null);
+      }
+    } else {
+      for (var j = 0; j < WORKSHOP.length; j++) h += workshopItem(WORKSHOP[j]);
+    }
+    grid.innerHTML = h;
+    revealInit();
+  }
+
+  function galleryItem(g, index) {
+    var cat = categoryOf(g);
+    var title = g.title ? loc(g.title) : '';
+    var alt = g.alt || title || t('gallery.open');
+    var cap = title + (cat ? (title ? ' — ' : '') + loc(cat.label) : '');
+    var h = '<button type="button" class="gallery-item" data-reveal data-gallery-index="' + index + '"' +
+            ' aria-label="' + esc(alt) + '">';
+    h += renderImg(g.image, alt);
+    if (cap) h += '<span class="gallery-cap">' + esc(cap) + '</span>';
+    h += '</button>';
+    return h;
+  }
+
+  function renderGallery() {
+    var grid = document.getElementById('galleryGrid');
+    if (!grid) return;
+    var h = '';
+    if (!GALLERY || !GALLERY.length) {
+      for (var i = 0; i < 6; i++) {
+        h += placeholderTile('bi-image', 'gallery.tile.label', null);
+      }
+    } else {
+      for (var j = 0; j < GALLERY.length; j++) h += galleryItem(GALLERY[j], j);
+    }
+    grid.innerHTML = h;
+    revealInit();
+  }
+
+  /* ------------------------- image viewer modal ------------------------- */
+  /* Bootstrap-modal lightbox for the Gallery: large image, title, prev/next
+     (only when more than one item), Escape / backdrop close, focus return to
+     the opened thumbnail and background scroll lock (native Bootstrap). */
+  var viewerState = { trigger: null, items: [], index: 0 };
+
+  function wrapIndex(i) {
+    var n = viewerState.items.length;
+    return ((i % n) + n) % n;
+  }
+
+  function showViewerImage() {
+    var item = viewerState.items[viewerState.index];
+    var img = document.getElementById('imageViewerImg');
+    if (!img) return;
+    img.src = item.image || PLACEHOLDER_IMG;
+    img.setAttribute('onerror', "this.onerror=null;this.src='" + PLACEHOLDER_IMG + "';");
+    var title = item.title ? loc(item.title) : (item.alt || t('gallery.open'));
+    var titleEl = document.getElementById('imageModalTitle');
+    if (titleEl) titleEl.textContent = title;
+    var cap = document.getElementById('imageCaption');
+    if (cap) cap.textContent = item.alt || title;
+    var counter = document.getElementById('imageCounter');
+    var multiple = viewerState.items.length > 1;
+    if (counter) counter.textContent = multiple ? (viewerState.index + 1) + ' / ' + viewerState.items.length : '';
+    var prev = document.getElementById('imagePrev');
+    var next = document.getElementById('imageNext');
+    if (prev) prev.classList.toggle('d-none', !multiple);
+    if (next) next.classList.toggle('d-none', !multiple);
+  }
+
+  function openImageViewer(items, index, triggerEl) {
+    if (!items || !items.length) return;
+    var modalEl = document.getElementById('imageModal');
+    if (!modalEl || !window.bootstrap) return;
+    viewerState.items = items;
+    viewerState.index = Math.max(0, Math.min(index, items.length - 1));
+    viewerState.trigger = triggerEl || null;
+    showViewerImage();
+    bootstrap.Modal.getOrCreateInstance(modalEl).show();
+    var closeEl = document.getElementById('imageViewerClose');
+    modalEl.addEventListener('shown.bs.modal', function () {
+      if (closeEl) closeEl.focus();
+    }, { once: true });
+    modalEl.addEventListener('hidden.bs.modal', function () {
+      viewerState.items = [];
+      viewerState.index = 0;
+      var trig = viewerState.trigger;
+      viewerState.trigger = null;
+      if (trig) trig.focus();
+    }, { once: true });
+  }
+
+  function stepViewer(delta) {
+    if (!viewerState.items.length) return;
+    viewerState.index = wrapIndex(viewerState.index + delta);
+    showViewerImage();
+  }
+
+  function openVideoFor(productId, triggerEl) {
     var p = null;
     for (var i = 0; i < PRODUCTS.length; i++) {
       if (PRODUCTS[i].id === productId) { p = PRODUCTS[i]; break; }
@@ -220,10 +422,12 @@
     modalEl.addEventListener('hidden.bs.modal', function () {
       player.onerror = null;
       player.pause();
+      try { player.currentTime = 0; } catch (guard) { /* ignore */ }
       player.removeAttribute('src');
       player.load();
       player.classList.remove('d-none');
       if (missing) missing.classList.add('d-none');
+      if (triggerEl && triggerEl.focus) triggerEl.focus();
     }, { once: true });
   }
 
@@ -272,14 +476,33 @@
       });
     }
 
-    /* product "Watch Video" buttons (delegated) */
+    /* product "Watch Video" buttons (delegated) — the button keeps focus and
+       receives it back when the video modal closes */
     var grid = document.getElementById('productsGrid');
     if (grid) {
       grid.addEventListener('click', function (e) {
         var btn = e.target.closest('.watch-video');
-        if (btn) openVideoFor(btn.getAttribute('data-product-id'));
+        if (btn) openVideoFor(btn.getAttribute('data-product-id'), btn);
       });
     }
+
+    /* gallery image viewer (delegated): opening thumbnail keeps focus and
+       receives it back when the modal closes */
+    var gal = document.getElementById('galleryGrid');
+    if (gal) {
+      gal.addEventListener('click', function (e) {
+        var btn = e.target.closest('.gallery-item');
+        if (!btn) return;
+        var idx = Number(btn.getAttribute('data-gallery-index'));
+        openImageViewer(GALLERY, idx, btn);
+      });
+    }
+
+    /* image viewer previous / next */
+    var prevBtn = document.getElementById('imagePrev');
+    if (prevBtn) prevBtn.addEventListener('click', function () { stepViewer(-1); });
+    var nextBtn = document.getElementById('imageNext');
+    if (nextBtn) nextBtn.addEventListener('click', function () { stepViewer(1); });
 
     /* contact form — demo only; a delivery service is connected in a later phase */
     var form = document.getElementById('contactForm');

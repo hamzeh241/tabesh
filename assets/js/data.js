@@ -89,6 +89,9 @@ TABESH.TRANSLATIONS = {
     'projects.subtitle': 'نمونه‌ای از پروژه‌های اجراشده در حوزه‌های فعالیت ما. (جایگاه‌دار — تصاویر و جزئیات پس از تأیید شرکت تکمیل می‌شود)',
     'projects.tile.label': 'پروژه — در انتظار تکمیل',
     'projects.tile.caption': 'تصویر و توضیحات پروژه',
+    'projects.details': 'جزئیات پروژه',
+    'projects.year': 'سال اجرا',
+    'projects.location': 'موقع',
 
     'workshop.eyebrow': 'کارگاه',
     'workshop.title': 'کارگاه ما',
@@ -116,6 +119,9 @@ TABESH.TRANSLATIONS = {
     'gallery.title': 'گالری تصاویر',
     'gallery.subtitle': 'تصاویری از فعالیت‌ها و محصولات ما. (جایگاه‌دار — تصاویر واقعی بعداً جایگزین می‌شوند)',
     'gallery.tile.label': 'جایگاه تصویر',
+    'gallery.open': 'باز کردن تصویر',
+    'gallery.prev': 'تصویر قبلی',
+    'gallery.next': 'تصویر بعدی',
 
     'contact.eyebrow': 'تماس',
     'contact.title': 'تماس با ما',
@@ -234,6 +240,9 @@ TABESH.TRANSLATIONS = {
     'projects.subtitle': 'A sample of projects carried out in our fields of activity. (Placeholder — images and details will be completed after company approval.)',
     'projects.tile.label': 'Project — to be completed',
     'projects.tile.caption': 'Project image and description',
+    'projects.details': 'Project details',
+    'projects.year': 'Year',
+    'projects.location': 'Location',
 
     'workshop.eyebrow': 'Workshop',
     'workshop.title': 'Our Workshop',
@@ -261,6 +270,9 @@ TABESH.TRANSLATIONS = {
     'gallery.title': 'Image Gallery',
     'gallery.subtitle': 'Images from our activities and products. (Placeholder — real images will replace them later.)',
     'gallery.tile.label': 'Image placeholder',
+    'gallery.open': 'Open image',
+    'gallery.prev': 'Previous image',
+    'gallery.next': 'Next image',
 
     'contact.eyebrow': 'Contact',
     'contact.title': 'Contact Us',
@@ -379,6 +391,9 @@ TABESH.TRANSLATIONS = {
     'projects.subtitle': 'نموذج من المشاريع المنفذة في مجالات نشاطنا. (قيمة مؤقتة — سيتم استكمال الصور والتفاصيل بعد موافقة الشركة.)',
     'projects.tile.label': 'مشروع — بانتظار الاستكمال',
     'projects.tile.caption': 'صورة المشروع ووصفه',
+    'projects.details': 'تفاصيل المشروع',
+    'projects.year': 'السنة',
+    'projects.location': 'الموقع',
 
     'workshop.eyebrow': 'الورشة',
     'workshop.title': 'ورشتنا',
@@ -406,6 +421,9 @@ TABESH.TRANSLATIONS = {
     'gallery.title': 'معرض الصور',
     'gallery.subtitle': 'صور من أنشطتنا ومنتجاتنا. (قيمة مؤقتة — ستستبدل بالصور الحقيقية لاحقًا.)',
     'gallery.tile.label': 'موضع الصورة',
+    'gallery.open': 'فتح الصورة',
+    'gallery.prev': 'الصورة السابقة',
+    'gallery.next': 'الصورة التالية',
 
     'contact.eyebrow': 'التواصل',
     'contact.title': 'اتصل بنا',
@@ -524,6 +542,9 @@ TABESH.TRANSLATIONS = {
     'projects.subtitle': 'Faaliyet alanlarımızda yürütülen projelerden bir örnek. (Yer tutucu — görseller ve ayrıntılar şirket onayından sonra tamamlanacaktır.)',
     'projects.tile.label': 'Proje — tamamlanacak',
     'projects.tile.caption': 'Proje görseli ve açıklaması',
+    'projects.details': 'Proje detayları',
+    'projects.year': 'Yıl',
+    'projects.location': 'Konum',
 
     'workshop.eyebrow': 'Atölye',
     'workshop.title': 'Atölyemiz',
@@ -551,6 +572,9 @@ TABESH.TRANSLATIONS = {
     'gallery.title': 'Görsel Galerisi',
     'gallery.subtitle': 'Faaliyetlerimizden ve ürünlerimizden görüntüler. (Yer tutucu — gerçek görseller daha sonra eklenecektir.)',
     'gallery.tile.label': 'Görsel yer tutucu',
+    'gallery.open': 'Resmi aç',
+    'gallery.prev': 'Önceki görsel',
+    'gallery.next': 'Sonraki görsel',
 
     'contact.eyebrow': 'İletişim',
     'contact.title': 'Bize Ulaşın',
@@ -768,3 +792,117 @@ TABESH.PRODUCTS = [
     ]
   }
 ];
+
+/* --------------------------------------------------------------------------
+ * Phase 6 — projects, workshop and gallery architecture.
+ *
+ * PROJECTS — data-driven project portfolio. Every project can carry:
+ *   id                string  unique identifier
+ *   image             asset path (optional; falls back to placeholder.svg)
+ *   title             localized string
+ *   shortDescription  localized string (shown on the card)
+ *   description       localized string (optional; rendered via <details>)
+ *   category          string  key into TABESH.CATEGORIES (or inline object)
+ *   year              string  (optional; shown as a meta chip)
+ *   location          localized string (optional; shown as a meta chip)
+ *   gallery           array of gallery item ids OR image paths (optional)
+ *
+ * WORKSHOP — ready for real workshop photographs. Supported image categories:
+ *   workshop | cnc | welding | assembly | electronics | testing | manufacturing
+ *   Each item: { id, image, category, title?, alt? }
+ *
+ * WORKSHOP_CATEGORIES — localized labels for the supported workshop image
+ *   categories. This is a neutral taxonomy (the label of a photograph), not a
+ *   claim about the workshop's actual capabilities.
+ *
+ * GALLERY — data-driven image gallery. Every item can carry:
+ *   id          string  unique identifier (also referenced by PROJECTS gallery)
+ *   image       asset path
+ *   title       localized string (optional)
+ *   category    string  key into TABESH.CATEGORIES (or inline object)
+ *   alt         string  (optional; falls back to title / gallery.open)
+ *   projectId   string  (optional) related project id
+ *
+ * All four structures are currently empty on purpose: the sections keep
+ * rendering their preserved placeholders until the company provides real
+ * content. Nothing is invented. Adding a real project, workshop photo or
+ * gallery item requires only an entry here — no HTML or renderer changes.
+ * ------------------------------------------------------------------------ */
+TABESH.PROJECTS = [];
+
+TABESH.WORKSHOP = [];
+
+TABESH.WORKSHOP_CATEGORIES = {
+  workshop: {
+    id: 'workshop',
+    icon: 'bi-buildings',
+    label: {
+      fa: 'فضای کارگاه',
+      en: 'Workshop',
+      ar: 'الورشة',
+      tr: 'Atölye'
+    }
+  },
+  cnc: {
+    id: 'cnc',
+    icon: 'bi-gear-wide-connected',
+    label: {
+      fa: 'ماشین‌کاری CNC',
+      en: 'CNC Machining',
+      ar: 'تشغيل CNC',
+      tr: 'CNC İşleme'
+    }
+  },
+  welding: {
+    id: 'welding',
+    icon: 'bi-lightning-charge',
+    label: {
+      fa: 'جوش‌کاری',
+      en: 'Welding',
+      ar: 'اللحام',
+      tr: 'Kaynak'
+    }
+  },
+  assembly: {
+    id: 'assembly',
+    icon: 'bi-wrench-adjustable',
+    label: {
+      fa: 'مونتاژ',
+      en: 'Assembly',
+      ar: 'التجميع',
+      tr: 'Montaj'
+    }
+  },
+  electronics: {
+    id: 'electronics',
+    icon: 'bi-cpu',
+    label: {
+      fa: 'الکترونیک',
+      en: 'Electronics',
+      ar: 'الإلكترونيات',
+      tr: 'Elektronik'
+    }
+  },
+  testing: {
+    id: 'testing',
+    icon: 'bi-clipboard-check',
+    label: {
+      fa: 'تست و آزمون',
+      en: 'Testing',
+      ar: 'الاختبار',
+      tr: 'Test'
+    }
+  },
+  manufacturing: {
+    id: 'manufacturing',
+    icon: 'bi-tools',
+    label: {
+      fa: 'تولید و ساخت',
+      en: 'Manufacturing',
+      ar: 'التصنيع',
+      tr: 'İmalat'
+    }
+  }
+};
+
+TABESH.GALLERY = [];
