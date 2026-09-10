@@ -64,6 +64,8 @@ TABESH.TRANSLATIONS = {
     'products.apps.title': 'کاربردها',
     'products.video.btn': 'تماشای ویدیو',
     'products.placeholder.spec': 'در انتظار تکمیل مشخصات فنی',
+    'products.empty': 'در حال حاضر محصولی برای نمایش وجود ندارد.',
+    'products.more': 'توضیح بیشتر',
 
     'mfg.eyebrow': 'توانمندی ساخت',
     'mfg.title': 'از نیاز تا تحویل، در یک مسیر',
@@ -207,6 +209,8 @@ TABESH.TRANSLATIONS = {
     'products.apps.title': 'Applications',
     'products.video.btn': 'Watch Video',
     'products.placeholder.spec': 'Technical specifications to be completed',
+    'products.empty': 'No products are available at the moment.',
+    'products.more': 'More details',
 
     'mfg.eyebrow': 'Manufacturing Capability',
     'mfg.title': 'From Requirement to Delivery, in One Path',
@@ -350,6 +354,8 @@ TABESH.TRANSLATIONS = {
     'products.apps.title': 'التطبيقات',
     'products.video.btn': 'شاهد الفيديو',
     'products.placeholder.spec': 'سيتم استكمال المواصفات الفنية',
+    'products.empty': 'لا توجد منتجات متاحة حالياً.',
+    'products.more': 'المزيد من التفاصيل',
 
     'mfg.eyebrow': 'قدرات التصنيع',
     'mfg.title': 'من الاحتياج إلى التسليم في مسار واحد',
@@ -493,6 +499,8 @@ TABESH.TRANSLATIONS = {
     'products.apps.title': 'Uygulamalar',
     'products.video.btn': 'Videoyu İzle',
     'products.placeholder.spec': 'Teknik özellikler tamamlanacak',
+    'products.empty': 'Şu anda görüntülenecek ürün bulunmamaktadır.',
+    'products.more': 'Daha Fazla Bilgi',
 
     'mfg.eyebrow': 'İmalat Yeteneği',
     'mfg.title': 'İhtiyaçtan Teslimata Tek Yolda',
@@ -591,42 +599,82 @@ TABESH.TRANSLATIONS = {
 };
 
 /* --------------------------------------------------------------------------
- * Products.
- *   id, icon                     internal id + Bootstrap Icon (image fallback)
- *   name / short / applications  localized as { fa, en, ar, tr }
- *   specs                        [{ label: {..}, value: {..} | null }]
- *                                value === null  ->  clearly-marked placeholder
- *   image                        assets/images/products/<id>.jpg (optional,
- *                                falls back to assets/images/placeholder.svg)
- *   poster                       assets/images/products/posters/<id>.jpg (optional)
- *   video                        assets/videos/products/<id>.mp4 (OPTIONAL —
- *                                when null, no "Watch Video" button is shown)
+ * Product catalog architecture (Phase 5).
+ *
+ * CATEGORIES — central, reusable category definitions. Products reference a
+ * category by its string id, so translated labels live in exactly one place
+ * instead of being duplicated in every product object.
+ *
+ * PRODUCTS — every product can carry:
+ *   id                string  unique identifier
+ *   code              string  catalog code (optional; omitted when unknown)
+ *   category          string  key into TABESH.CATEGORIES (or inline object)
+ *   name              localized string
+ *   shortDescription  localized string (shown on the card)
+ *   description       localized string (optional; rendered via <details>)
+ *   image             asset path (falls back to placeholder.svg)
+ *   poster            asset path (optional video poster)
+ *   video             asset path (optional — when null/absent, no button)
+ *   inquiry           { type: 'info'|'quote'|'build'|'contact', href? }
+ *                     data-driven CTA; href defaults to '#contact'
+ *   specs             [{ label: {..}, value: {..}|null, unit?: {..} }]
+ *   applications      [localized strings]
  * ------------------------------------------------------------------------ */
+TABESH.CATEGORIES = {
+  solar: {
+    id: 'solar',
+    icon: 'bi-sun',
+    label: {
+      fa: 'انرژی خورشیدی',
+      en: 'Solar Energy',
+      ar: 'الطاقة الشمسية',
+      tr: 'Güneş Enerjisi'
+    }
+  },
+  cnc: {
+    id: 'cnc',
+    icon: 'bi-gear-wide-connected',
+    label: {
+      fa: 'ماشین‌کاری و ساخت قطعه',
+      en: 'CNC Machinery',
+      ar: 'ماكينات CNC',
+      tr: 'CNC Makineleri'
+    }
+  },
+  wood: {
+    id: 'wood',
+    icon: 'bi-tree',
+    label: {
+      fa: 'ماشین‌آلات چوب',
+      en: 'Woodworking Machinery',
+      ar: 'ماكينات الخشب',
+      tr: 'Ahşap Makineleri'
+    }
+  }
+};
+
 TABESH.PRODUCTS = [
   {
     id: 'solar-tracker',
-    icon: 'bi-sun',
-    category: {
-      fa: 'انرژی خورشیدی',
-      en: 'Solar energy',
-      ar: 'الطاقة الشمسية',
-      tr: 'Güneş enerjisi'
-    },
+    code: 'SOL-TRK',
+    category: 'solar',
     name: {
       fa: 'ترکر خورشیدی دو محوره',
       en: 'Dual-Axis Solar Tracker',
       ar: 'المتعقب الشمسي ثنائي المحاور',
       tr: 'Çift Eksenli Güneş Takipçisi'
     },
-    short: {
+    shortDescription: {
       fa: 'سامانه ردیاب خورشیدی دو محوره برای پیگیری حرکت خورشید و افزایش دریافت تابش در پنل‌های خورشیدی.',
       en: 'A dual-axis solar tracking system that follows the sun to increase solar radiation capture in photovoltaic panels.',
       ar: 'نظام تتبع شمسي ثنائي المحاور يتبع حركة الشمس لزيادة استقبال الإشعاع الشمسي في الألواح الكهروضوئية.',
       tr: 'Fotovoltaik panellerde güneş radyasyonu alınımını artırmak için güneşi takip eden çift eksenli bir güneş izleme sistemi.'
     },
+    description: null,
     image: 'assets/images/products/solar-tracker.jpg',
     poster: 'assets/images/products/posters/solar-tracker.jpg',
     video: null,
+    inquiry: { type: 'info' },
     specs: [
       { label: { fa: 'نوع سامانه',        en: 'System type',       ar: 'نوع النظام',          tr: 'Sistem tipi' },
         value: { fa: 'ردیاب دو محوره',    en: 'Dual-axis tracker', ar: 'متعقب ثنائي المحاور', tr: 'Çift eksenli takipçi' } },
@@ -647,28 +695,25 @@ TABESH.PRODUCTS = [
   },
   {
     id: 'cnc-machine',
-    icon: 'bi-gear-wide-connected',
-    category: {
-      fa: 'ماشین‌کاری و ساخت قطعه',
-      en: 'Machining & part manufacturing',
-      ar: 'تشغيل القطع وتصنيعها',
-      tr: 'Parça işleme ve imalatı'
-    },
+    code: 'CNC-01',
+    category: 'cnc',
     name: {
       fa: 'ماشین CNC',
       en: 'CNC Machine',
       ar: 'ماكينة CNC',
       tr: 'CNC Tezgahı'
     },
-    short: {
+    shortDescription: {
       fa: 'ماشین ابزار کنترل عددی برای ماشین‌کاری دقیق قطعات صنعتی.',
       en: 'A computer numerical control machine tool for precise machining of industrial parts.',
       ar: 'ماكينة أدوات تحكم رقمي حاسوبي لتشغيل دقيق للقطع الصناعية.',
       tr: 'Endüstriyel parçaların hassas işlenmesi için bilgisayarlı sayısal kontrollü bir takım tezgahı.'
     },
+    description: null,
     image: 'assets/images/products/cnc-machine.jpg',
     poster: 'assets/images/products/posters/cnc-machine.jpg',
     video: null,
+    inquiry: { type: 'info' },
     specs: [
       { label: { fa: 'نوع ماشین',        en: 'Machine type',   ar: 'نوع الآلة',       tr: 'Tezgah tipi' },
         value: { fa: 'کنترل عددی (CNC)', en: 'CNC',            ar: 'تحكم رقمي (CNC)', tr: 'CNC' } },
@@ -687,28 +732,25 @@ TABESH.PRODUCTS = [
   },
   {
     id: 'wood-turning',
-    icon: 'bi-tree',
-    category: {
-      fa: 'ماشین‌آلات چوب',
-      en: 'Wood machinery',
-      ar: 'ماكينات الخشب',
-      tr: 'Ahşap makineleri'
-    },
+    code: 'WOOD-TRN',
+    category: 'wood',
     name: {
       fa: 'ماشین تراش چوب',
       en: 'Wood Turning Machine',
       ar: 'ماكينة خراطة الخشب',
       tr: 'Ahşap Torna Tezgahı'
     },
-    short: {
+    shortDescription: {
       fa: 'ماشین تراش چوب برای خراطی و تولید قطعات و ستون‌های چوبی.',
       en: 'A wood turning machine for wood turning and production of wooden parts and columns.',
       ar: 'ماكينة خراطة الخشب لخراطة وإنتاج القطع والأعمدة الخشبية.',
       tr: 'Ahşap torna ve ahşap parça ile sütun üretimi için bir ahşap torna tezgahı.'
     },
+    description: null,
     image: 'assets/images/products/wood-turning.jpg',
     poster: 'assets/images/products/posters/wood-turning.jpg',
     video: null,
+    inquiry: { type: 'info' },
     specs: [
       { label: { fa: 'نوع ماشین',        en: 'Machine type',   ar: 'نوع الآلة',       tr: 'Tezgah tipi' },
         value: { fa: 'تراش چوب',         en: 'Wood turning',   ar: 'خراطة الخشب',     tr: 'Ahşap torna' } },

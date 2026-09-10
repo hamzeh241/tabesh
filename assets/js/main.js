@@ -101,30 +101,53 @@
   }
 
   /* ---------------------------- products ---------------------------- */
+  /** Resolve a category object from TABESH.CATEGORIES (or inline object). */
+  function categoryOf(p) {
+    if (!p || !p.category) return null;
+    var cats = DATA.CATEGORIES || {};
+    if (typeof p.category === 'string') return cats[p.category] || null;
+    return p.category; /* backward compat: inline localized object */
+  }
+
   function productCard(p) {
     var img = p.image || PLACEHOLDER_IMG;
+    var cat = categoryOf(p);
     var h = '';
     h += '<div class="col-12 col-lg-4" data-reveal>';
     h += '<article class="product-card">';
     h += '<div class="product-media"><img src="' + esc(img) + '" alt="' + esc(loc(p.name)) +
-         '" loading="lazy" onerror="this.onerror=null;this.src=\'' + PLACEHOLDER_IMG + '\';"></div>';
+         '" loading="lazy" decoding="async"' +
+         ' onerror="this.onerror=null;this.src=\'' + PLACEHOLDER_IMG + '\';"></div>';
     h += '<div class="product-body">';
-    if (p.category) {
-      h += '<span class="product-cat">' + esc(loc(p.category)) + '</span>';
+    if (cat) {
+      h += '<span class="product-cat">' + esc(loc(cat.label || cat)) + '</span>';
+    }
+    if (p.code) {
+      h += '<span class="product-code">' + esc(p.code) + '</span>';
     }
     h += '<h3 class="product-title">' + esc(loc(p.name)) + '</h3>';
-    h += '<p class="product-short">' + esc(loc(p.short)) + '</p>';
+    var short = p.shortDescription || p.short;
+    if (short) {
+      h += '<p class="product-short">' + esc(loc(short)) + '</p>';
+    }
+    if (p.description) {
+      h += '<details class="product-more"><summary>' + esc(t('products.more')) + '</summary>' +
+           '<p>' + esc(loc(p.description)) + '</p></details>';
+    }
 
     if (p.specs && p.specs.length) {
       h += '<h4 class="product-subhead">' + esc(t('products.specs.title')) + '</h4>';
       h += '<table class="spec-table"><tbody>';
       for (var i = 0; i < p.specs.length; i++) {
         var s = p.specs[i];
-        h += '<tr><th scope="row">' + esc(loc(s.label)) + '</th>';
-        h += s.value
-          ? '<td><span class="spec-value">' + esc(loc(s.value)) + '</span></td>'
-          : '<td><span class="spec-value spec-placeholder">' + esc(t('products.placeholder.spec')) + '</span></td>';
-        h += '</tr>';
+        h += '<tr><th scope="row">' + esc(loc(s.label)) + '</th><td>';
+        if (s.value) {
+          h += '<span class="spec-value">' + esc(loc(s.value)) + '</span>';
+          if (s.unit) h += ' <span class="spec-unit">' + esc(loc(s.unit)) + '</span>';
+        } else {
+          h += '<span class="spec-value spec-placeholder">' + esc(t('products.placeholder.spec')) + '</span>';
+        }
+        h += '</td></tr>';
       }
       h += '</tbody></table>';
     }
@@ -137,14 +160,17 @@
       h += '</div>';
     }
 
-    /* Action row: the "Watch Video" button exists ONLY when a video is set;
-       the inquiry link always points to the contact form. */
+    /* Action row: video button rendered ONLY when a video is set; the
+       inquiry link is data-driven (type/href) and defaults to #contact. */
     h += '<div class="product-actions">';
     if (p.video) {
       h += '<button type="button" class="btn btn-gold watch-video" data-product-id="' + esc(p.id) + '">' +
            '<i class="bi bi-play-circle" aria-hidden="true"></i><span>' + esc(t('products.video.btn')) + '</span></button>';
     }
-    h += '<a class="product-inquiry" href="#contact">' +
+    var inq = p.inquiry || {};
+    var inqHref = inq.href || '#contact';
+    h += '<a class="product-inquiry" href="' + esc(inqHref) + '" aria-label="' +
+         esc(t('products.inquiry') + ' — ' + loc(p.name)) + '">' +
          '<i class="bi bi-chat-square-text" aria-hidden="true"></i><span>' + esc(t('products.inquiry')) + '</span></a>';
     h += '</div>';
 
@@ -155,6 +181,10 @@
   function renderProducts() {
     var grid = document.getElementById('productsGrid');
     if (!grid) return;
+    if (!PRODUCTS || !PRODUCTS.length) {
+      grid.innerHTML = '<div class="products-empty">' + esc(t('products.empty')) + '</div>';
+      return;
+    }
     var h = '';
     for (var i = 0; i < PRODUCTS.length; i++) h += productCard(PRODUCTS[i]);
     grid.innerHTML = h;
