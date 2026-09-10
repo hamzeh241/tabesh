@@ -341,6 +341,15 @@ Object.keys(refs).forEach(k => LANGS.forEach(l => {
 }));
 done('HTML sanity: ids, video preload, i18n references (' + Object.keys(refs).length + ' unique refs)');
 
+/* ------------------------- SEO / social meta (Phase 7) ------------------------- */
+ok(/<meta property="og:title"/.test(html), 'HTML: og:title present');
+ok(/<meta property="og:description"/.test(html), 'HTML: og:description present');
+ok(/<meta property="og:type" content="website"/.test(html), 'HTML: og:type website');
+ok(/<meta property="og:locale" content="fa_IR"/.test(html), 'HTML: og:locale defaults to fa_IR');
+ok(/<meta name="twitter:card"/.test(html), 'HTML: twitter:card present');
+ok(!/<meta[^>]*property="og:image"/.test(html), 'HTML: no fabricated og:image (added only with a real image)');
+ok(!/<meta[^>]*property="og:url"/.test(html), 'HTML: no fabricated og:url (added only with the real domain)');
+
 /* ----------------------- product images stay "contain" ----------------------- */
 const css = read('assets/css/style.css');
 const productMediaBlock = css.split('.product-media img {')[1].split('}')[0];
@@ -349,6 +358,8 @@ ok(/\.proj-media img\s*{[^}]*object-fit: cover[^}]*}/s.test(css), 'CSS: project 
 ok(/\.ws-media img\s*{[^}]*object-fit: cover[^}]*}/s.test(css), 'CSS: workshop frames use cover');
 ok(/\.gallery-item img\s*{[^}]*object-fit: cover[^}]*}/s.test(css), 'CSS: gallery frames use cover');
 ok(/\[dir="rtl"\] #imagePrev i/.test(css) && /\[dir="rtl"\] #imageNext i/.test(css), 'CSS: viewer chevrons flip for RTL');
+ok(css.indexOf('.spec-scroll') !== -1, 'CSS: spec-table horizontal-scroll guard (.spec-scroll)');
+ok(/#videoModal \.btn-close/.test(css) && /#imageModal \.btn-close/.test(css), 'CSS: modal close buttons enlarged for touch');
 
 /* --------------------------------- report ---------------------------------- */
 console.log('---');

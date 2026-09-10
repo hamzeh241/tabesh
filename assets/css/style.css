@@ -66,6 +66,7 @@ body {
   background: var(--tab-white);
   line-height: 1.8;
   font-size: 1rem;
+  overflow-x: hidden; /* fallback for browsers without overflow: clip */
   overflow-x: clip; /* decorative layers must never create horizontal scroll */
   -webkit-font-smoothing: antialiased;
 }
@@ -723,6 +724,8 @@ a { color: var(--tab-navy-700); }
 }
 [dir="rtl"] .product-subhead { letter-spacing: 0; }
 /* technical datasheet table */
+/* narrow screens: the datasheet scrolls inside the card instead of stretching it */
+.spec-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
 .spec-table { width: 100%; border-collapse: collapse; font-size: .9rem; }
 .spec-table tbody tr:nth-child(odd) { background: rgba(18, 48, 94, .035); }
 .spec-table th {
@@ -1570,8 +1573,22 @@ html.js .process-flow > li:nth-child(12) { transition-delay: .49s; }
   .proj-body { padding: .95rem 1rem .9rem; }
   .image-frame { min-height: 240px; }
   .image-frame img { max-height: 50vh; }
-  .img-nav { width: 36px; height: 36px; }
+  .img-nav { width: 44px; height: 44px; }
 }
+
+/* ==========================================================================
+ * Phase 7 — technical hardening (no visual redesign).
+ * Comfortable touch targets, mobile nav spacing and larger modal close
+ * buttons so every interactive element stays usable on small screens.
+ * ========================================================================== */
+@media (max-width: 991.98px) {
+  #mainNav .nav-link { padding: .75rem 1rem; }
+}
+.lang-dropdown .dropdown-item { padding-top: .55rem; padding-bottom: .55rem; }
+/* Bootstrap renders the close glyph at 1em — scale it so the hit area is
+   comfortably tappable on touch screens (glyph and padding scale together) */
+#videoModal .btn-close,
+#imageModal .btn-close { font-size: 1.8rem; }
 
 /* --------------------------- Small screens --------------------------- */
 @media (max-width: 991.98px) {

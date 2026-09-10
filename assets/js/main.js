@@ -22,6 +22,8 @@
     ltr: 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css',
     rtl: 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css'
   };
+  /* Open Graph locales kept in sync with the selected language (Phase 7). */
+  var OG_LOCALES = { fa: 'fa_IR', en: 'en_US', ar: 'ar_AR', tr: 'tr_TR' };
 
   var state = { lang: 'fa' };
 
@@ -67,6 +69,13 @@
     document.title = t('meta.title');
     var md = document.querySelector('meta[name="description"]');
     if (md) md.setAttribute('content', t('meta.description'));
+    /* share metadata follows the active language too (Phase 7) */
+    var ogt = document.querySelector('meta[property="og:title"]');
+    if (ogt) ogt.setAttribute('content', t('meta.title'));
+    var ogd = document.querySelector('meta[property="og:description"]');
+    if (ogd) ogd.setAttribute('content', t('meta.description'));
+    var ogl = document.querySelector('meta[property="og:locale"]');
+    if (ogl) ogl.setAttribute('content', OG_LOCALES[state.lang] || 'fa_IR');
     var yr = document.getElementById('footerYear');
     if (yr) yr.textContent = String(new Date().getFullYear());
   }
@@ -144,7 +153,7 @@
 
     if (p.specs && p.specs.length) {
       h += '<h4 class="product-subhead">' + esc(t('products.specs.title')) + '</h4>';
-      h += '<table class="spec-table"><tbody>';
+      h += '<div class="spec-scroll"><table class="spec-table"><tbody>';
       for (var i = 0; i < p.specs.length; i++) {
         var s = p.specs[i];
         h += '<tr><th scope="row">' + esc(loc(s.label)) + '</th><td>';
@@ -156,7 +165,7 @@
         }
         h += '</td></tr>';
       }
-      h += '</tbody></table>';
+      h += '</tbody></table></div>';
     }
 
     if (p.applications && p.applications.length) {
