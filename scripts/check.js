@@ -75,6 +75,11 @@ const requiredKeys = [
   'workshop.cap.milling', 'workshop.cap.measurement', 'workshop.cap.electronics',
   'workshop.cap.assembly', 'workshop.cap.testing',
   'why.5.title', 'why.5.desc', 'mfg.caps.title',
+  /* product inquiry modal (Formspree) */
+  'inquiry.modal.title', 'inquiry.modal.text', 'inquiry.modal.phone.label',
+  'inquiry.modal.placeholder', 'inquiry.modal.error.invalid', 'inquiry.modal.legal',
+  'inquiry.modal.submit', 'inquiry.modal.loading', 'inquiry.modal.success',
+  'inquiry.modal.error',
   /* legacy projects keys (kept for future reactivation of the section) */
   'projects.details', 'projects.year', 'projects.location',
   'projects.tile.label', 'projects.tile.caption'
@@ -345,6 +350,9 @@ runSandbox('render: sample content', sampleData, (els) => {
   ok(prods.indexOf('class="spec-note"') !== -1 && prods.indexOf('یادداشت آزمایشی') !== -1, 'products: datasheet note rendered');
   ok(prods.split('class="spec-note"').length - 1 === 1, 'products: note only for the product that has one');
   ok(prods.split('>ویژگی‌ها<').length - 1 === 1, 'products: features block only for the product that has features');
+  ok(prods.indexOf('class="product-inquiry inquiry-open"') !== -1, 'products: inquiry button rendered');
+  ok(prods.indexOf('data-product-name="محصول آزمایشی ۱"') !== -1 && prods.indexOf('data-product-name="محصول آزمایشی ۲"') !== -1,
+     'products: inquiry buttons carry the dynamic localized product name');
 });
 
 /* ---- render with empty arrays: preserved placeholders, no broken layout ---- */
@@ -372,6 +380,8 @@ while ((m = idRe.exec(html)) !== null) idCounts[m[1]] = (idCounts[m[1]] || 0) + 
 Object.keys(idCounts).forEach(id => ok(idCounts[id] === 1, 'HTML: duplicate id="' + id + '"'));
 ['productsGrid', 'workshopGrid', 'galleryGrid',
  'videoModal', 'videoPlayer', 'videoModalTitle', 'videoMissing',
+ 'inquiryModal', 'inquiryModalTitle', 'inquiryForm', 'inquiryPhone',
+ 'inquiryProduct', 'inquirySubmit', 'inquirySuccess', 'inquiryError',
  'imageModal', 'imageViewerImg', 'imagePrev', 'imageNext', 'imageViewerClose',
  'imageModalTitle', 'imageCaption', 'imageCounter'].forEach(id => {
   ok(idCounts[id] === 1, 'HTML: required element id="' + id + '" present exactly once');
@@ -474,6 +484,15 @@ LANGS.forEach(l => {
 /* No fake social links / external images / base64 */
 ok(!/twitter\.com|instagram\.com|linkedin\.com|t\.me|wa\.me|whatsapp\.com|facebook\.com/.test(html), 'HTML: no fake social links');
 ok(!/https?:\/\/[^"']*\.jpg|https?:\/\/[^"']*\.png|https?:\/\/[^"']*\.webp/.test(html), 'HTML: no external image URLs');
+
+/* ---------------- product inquiry modal (Formspree, Phase 10) ---------------- */
+ok(html.indexOf('id="inquiryModal"') !== -1, 'HTML: shared inquiry modal present');
+ok(html.indexOf('data-i18n="inquiry.modal.title"') !== -1, 'HTML: inquiry modal title wired to i18n');
+ok(html.indexOf('data-i18n-placeholder="inquiry.modal.placeholder"') !== -1, 'HTML: inquiry phone placeholder wired to i18n');
+ok(mainSrc.indexOf('FORMSPREE_ENDPOINT') !== -1, 'main.js: Formspree endpoint constant defined');
+ok(/https:\/\/formspree\.io\/f\/[A-Za-z0-9]+/.test(mainSrc), 'main.js: Formspree endpoint URL set');
+ok(mainSrc.indexOf('data-product-name') !== -1, 'main.js: inquiry button passes the dynamic product name');
+ok(mainSrc.indexOf('preventDefault') !== -1, 'main.js: inquiry form submits without page reload');
 
 /* --------------------------------- report ---------------------------------- */
 console.log('---');

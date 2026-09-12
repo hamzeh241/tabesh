@@ -210,6 +210,18 @@ TABESH.TRANSLATIONS = {
     'contact.form.notice': 'این فرم در حال حاضر فرانت‌اند است و در فاز بعدی به سرویس ارسال پیام متصل می‌شود.',
     'contact.form.success': 'پیام شما ثبت شد. برای پیگیری سریع‌تر، با شماره‌های تماس ما در ارتباط باشید.',
 
+    /* Product inquiry modal (Formspree) — one shared modal for all products */
+    'inquiry.modal.title': 'استعلام محصول',
+    'inquiry.modal.text': 'لطفاً شماره موبایل خود را وارد کنید تا کارشناسان تابش برای پیگیری سفارش این محصول با شما تماس بگیرند.',
+    'inquiry.modal.phone.label': 'شماره موبایل',
+    'inquiry.modal.placeholder': '0912xxxxxxx',
+    'inquiry.modal.error.invalid': 'لطفاً یک شماره موبایل معتبر وارد کنید (مثلاً 09123456789).',
+    'inquiry.modal.legal': 'شماره موبایل شما صرفاً برای پیگیری سفارش این محصول استفاده می‌شود و برای تبلیغات، ارسال پیام‌های ناخواسته یا اهداف دیگر استفاده نخواهد شد.',
+    'inquiry.modal.submit': 'درخواست تماس',
+    'inquiry.modal.loading': 'در حال ارسال…',
+    'inquiry.modal.success': 'درخواست شما با موفقیت ثبت شد. کارشناسان تابش در اولین فرصت با شما تماس خواهند گرفت.',
+    'inquiry.modal.error': 'ارسال درخواست با خطا مواجه شد. لطفاً دوباره تلاش کنید یا با شماره‌های تماس ما در ارتباط باشید.',
+
     'footer.about': 'تابش انرژی بام شهر — مجموعه مهندسی و تولیدی در حوزه طراحی، ساخت و توسعه تجهیزات و راهکارهای صنعتی.',
     'footer.links.title': 'دسترسی سریع',
     'footer.activities.title': 'حوزه‌های فعالیت',
@@ -434,6 +446,18 @@ TABESH.TRANSLATIONS = {
     'contact.form.send': 'Send Message',
     'contact.form.notice': 'This form is front-end only for now and will be connected to a message delivery service in a later phase.',
     'contact.form.success': 'Your message has been recorded. For a quicker follow-up, please contact us by phone.',
+
+    /* Product inquiry modal (Formspree) — one shared modal for all products */
+    'inquiry.modal.title': 'Product Inquiry',
+    'inquiry.modal.text': 'Please enter your mobile number so TABESH specialists can contact you to follow up on your order for this product.',
+    'inquiry.modal.phone.label': 'Mobile number',
+    'inquiry.modal.placeholder': '0912xxxxxxx',
+    'inquiry.modal.error.invalid': 'Please enter a valid mobile number (e.g. 09123456789).',
+    'inquiry.modal.legal': 'Your mobile number is used only to follow up on your order for this product. It will not be used for advertising, unsolicited messages or any other purpose.',
+    'inquiry.modal.submit': 'Request a Call',
+    'inquiry.modal.loading': 'Sending…',
+    'inquiry.modal.success': 'Your request has been registered successfully. TABESH specialists will contact you as soon as possible.',
+    'inquiry.modal.error': 'Submitting your request failed. Please try again or contact us by phone.',
 
     'footer.about': 'TABESH Bam Shahr Energy — an engineering and manufacturing company in the design, manufacture and development of industrial equipment and solutions.',
     'footer.links.title': 'Quick Links',
@@ -660,6 +684,18 @@ TABESH.TRANSLATIONS = {
     'contact.form.notice': 'هذا النموذج حاليًا للواجهة الأمامية فقط وسيتم ربطه بخدمة إرسال الرسائل في مرحلة لاحقة.',
     'contact.form.success': 'تم تسجيل رسالتك. للمتابعة الأسرع، يرجى التواصل معنا عبر الهاتف.',
 
+    /* Product inquiry modal (Formspree) — one shared modal for all products */
+    'inquiry.modal.title': 'الاستفسار عن المنتج',
+    'inquiry.modal.text': 'يرجى إدخال رقم هاتفك المحمول ليتواصل معك خبراء تابش لمتابعة طلب هذا المنتج.',
+    'inquiry.modal.phone.label': 'رقم الهاتف المحمول',
+    'inquiry.modal.placeholder': '0912xxxxxxx',
+    'inquiry.modal.error.invalid': 'يرجى إدخال رقم هاتف محمول صحيح (مثلاً 09123456789).',
+    'inquiry.modal.legal': 'يُستخدم رقم هاتفك المحمول فقط لمتابعة طلب هذا المنتج، ولن يُستخدم للإعلانات أو الرسائل غير المرغوبة أو أغراض أخرى.',
+    'inquiry.modal.submit': 'طلب اتصال',
+    'inquiry.modal.loading': 'جارٍ الإرسال…',
+    'inquiry.modal.success': 'تم تسجيل طلبك بنجاح. سيتواصل معك خبراء تابش في أقرب فرصة.',
+    'inquiry.modal.error': 'تعذّر إرسال الطلب. يرجى المحاولة مرة أخرى أو التواصل معنا عبر الهاتف.',
+
     'footer.about': 'تابش للطاقة بام شهر — مؤسسة هندسية وإنتاجية في مجال تصميم وتصنيع وتطوير المعدات والحلول الصناعية.',
     'footer.links.title': 'روابط سريعة',
     'footer.activities.title': 'مجالات النشاط',
@@ -884,6 +920,18 @@ TABESH.TRANSLATIONS = {
     'contact.form.send': 'Mesajı Gönder',
     'contact.form.notice': 'Bu form şu anda yalnızca ön yüz aşamasındadır; sonraki aşamada bir mesaj gönderme servisine bağlanacaktır.',
     'contact.form.success': 'Mesajınız kaydedildi. Daha hızlı bir takip için lütfen telefonla bize ulaşın.',
+
+    /* Product inquiry modal (Formspree) — one shared modal for all products */
+    'inquiry.modal.title': 'Ürün Talebi',
+    'inquiry.modal.text': 'Bu ürünün siparişini takip etmek için TABESH uzmanlarının sizinle iletişime geçebilmesi adına lütfen cep telefonu numaranızı girin.',
+    'inquiry.modal.phone.label': 'Cep telefonu numarası',
+    'inquiry.modal.placeholder': '0912xxxxxxx',
+    'inquiry.modal.error.invalid': 'Lütfen geçerli bir cep telefonu numarası girin (örn. 09123456789).',
+    'inquiry.modal.legal': 'Cep telefonu numaranız yalnızca bu ürünün siparişini takip etmek için kullanılır; reklam, istenmeyen mesaj veya başka amaçlar için kullanılmayacaktır.',
+    'inquiry.modal.submit': 'Arama Talebi',
+    'inquiry.modal.loading': 'Gönderiliyor…',
+    'inquiry.modal.success': 'Talebiniz başarıyla kaydedildi. TABESH uzmanları en kısa sürede sizinle iletişime geçecektir.',
+    'inquiry.modal.error': 'Talep gönderilemedi. Lütfen tekrar deneyin veya telefonla bize ulaşın.',
 
     'footer.about': 'TABESH — endüstriyel ekipman ve çözümlerin tasarımı, üretimi ve geliştirilmesi alanında bir mühendislik ve üretim kuruluşu.',
     'footer.links.title': 'Hızlı Bağlantılar',

@@ -24,6 +24,12 @@
   };
   /* Open Graph locales kept in sync with the selected language (Phase 7). */
   var OG_LOCALES = { fa: 'fa_IR', en: 'en_US', ar: 'ar_AR', tr: 'tr_TR' };
+  /* Product inquiry modal → Formspree endpoint (Phase 10).
+     ONE shared endpoint for every product; the product name is sent as the
+     `product` field. Replace this single constant if the form ID changes. */
+  var FORMSPREE_ENDPOINT = 'https://formspree.io/f/xrpgddvk';
+  /* Iranian mobile: 09 + 9 digits (after normalization). */
+  var PHONE_RE = /^09\d{9}$/;
 
   var state = { lang: 'fa' };
 
@@ -198,17 +204,16 @@
     }
 
     /* Action row: video button rendered ONLY when a video is set; the
-       inquiry link is data-driven (type/href) and defaults to #contact. */
+       inquiry button opens the shared Formspree-powered modal and carries
+       the localized product name (data-product-name) dynamically. */
     h += '<div class="product-actions">';
     if (p.video) {
       h += '<button type="button" class="btn btn-gold watch-video" data-product-id="' + esc(p.id) + '">' +
            '<i class="bi bi-play-circle" aria-hidden="true"></i><span>' + esc(t('products.video.btn')) + '</span></button>';
     }
-    var inq = p.inquiry || {};
-    var inqHref = inq.href || '#contact';
-    h += '<a class="product-inquiry" href="' + esc(inqHref) + '" aria-label="' +
-         esc(t('products.inquiry') + ' — ' + loc(p.name)) + '">' +
-         '<i class="bi bi-chat-square-text" aria-hidden="true"></i><span>' + esc(t('products.inquiry')) + '</span></a>';
+    h += '<button type="button" class="product-inquiry inquiry-open" data-product-name="' + esc(loc(p.name)) + '"' +
+         ' aria-haspopup="dialog" aria-label="' + esc(t('products.inquiry') + ' — ' + loc(p.name)) + '">' +
+         '<i class="bi bi-chat-square-text" aria-hidden="true"></i><span>' + esc(t('products.inquiry')) + '</span></button>';
     h += '</div>';
 
     h += '</div></article></div>';
@@ -461,6 +466,114 @@
     }, { once: true });
   }
 
+  /* -------------------- product inquiry (Formspree) -------------------- */
+  /* ONE shared Bootstrap modal for every product. The trigger carries the
+     localized product name (data-product-name); the form posts only
+     { phone, product } to FORMSPREE_ENDPOINT via fetch — no page reload.
+     The button shows a loading state while the request is in flight and
+     never submits twice. */
+
+  var inquiryBusy = false;
+
+  /** Normalize Persian/Arabic digits and +98/0098/98/9xx prefixes to 09xxxxxxxxx. */
+  function normalizePhone(raw) {
+    var s = String(raw == null ? '' : raw).trim()
+      .replace(/[\u06F0-\u06F9]/g, function (d) { return String(d.charCodeAt(0) - 0x06F0); })
+      .replace(/[\u0660-\u0669]/g, function (d) { return String(d.charCodeAt(0) - 0x0660); })
+      .replace(/[\s\-().]/g, '');
+    if (/^\+98/.test(s)) s = '0' + s.slice(3);
+    else if (/^0098/.test(s)) s = '0' + s.slice(4);
+    else if (/^98\d{10}$/.test(s)) s = '0' + s.slice(2);
+    else if (/^9\d{9}$/.test(s)) s = '0' + s;
+    return s;
+  }
+
+  /** Open the shared inquiry modal pre-filled with the product name. */
+  function openInquiryFor(trigger) {
+    var modalEl = document.getElementById('inquiryModal');
+    if (!modalEl || !window.bootstrap) return;
+    var nameEl = document.getElementById('inquiryProduct');
+    if (nameEl) nameEl.textContent = trigger.getAttribute('data-product-name') || '';
+    var form = document.getElementById('inquiryForm');
+    if (form) {
+      form.reset();
+      form.classList.remove('was-validated');
+      var phoneEl = document.getElementById('inquiryPhone');
+      if (phoneEl) phoneEl.classList.remove('is-invalid');
+      var okMsg = document.getElementById('inquirySuccess');
+      var errMsg = document.getElementById('inquiryError');
+      if (okMsg) okMsg.classList.add('d-none');
+      if (errMsg) errMsg.classList.add('d-none');
+    }
+    setInquiryBusy(false);
+    bootstrap.Modal.getOrCreateInstance(modalEl).show();
+    modalEl.addEventListener('shown.bs.modal', function () {
+      var phoneEl = document.getElementById('inquiryPhone');
+      if (phoneEl) phoneEl.focus();
+    }, { once: true });
+    modalEl.addEventListener('hidden.bs.modal', function () {
+      if (trigger && trigger.focus) trigger.focus();
+    }, { once: true });
+  }
+
+  /** Loading state: disable the submit button, show spinner, swap label. */
+  function setInquiryBusy(busy) {
+    inquiryBusy = !!busy;
+    var btn = document.getElementById('inquirySubmit');
+    var label = document.getElementById('inquirySubmitLabel');
+    var spinner = document.querySelector('.inquiry-spinner');
+    if (btn) btn.disabled = busy;
+    if (label) label.textContent = busy ? t('inquiry.modal.loading') : t('inquiry.modal.submit');
+    if (spinner) spinner.classList.toggle('d-none', !busy);
+  }
+
+  /** Show exactly one of the success / error alerts. */
+  function showInquiryResult(kind) {
+    var okMsg = document.getElementById('inquirySuccess');
+    var errMsg = document.getElementById('inquiryError');
+    if (okMsg) okMsg.classList.toggle('d-none', kind !== 'success');
+    if (errMsg) errMsg.classList.toggle('d-none', kind !== 'error');
+  }
+
+  /** Validate → POST { phone, product } to Formspree → success/error UI. */
+  function submitInquiry(form) {
+    if (inquiryBusy) return;
+    var phoneEl = document.getElementById('inquiryPhone');
+    if (!phoneEl) return;
+    var phone = normalizePhone(phoneEl.value);
+    if (!PHONE_RE.test(phone)) {
+      phoneEl.classList.add('is-invalid');
+      if (form) form.classList.add('was-validated');
+      phoneEl.focus();
+      return;
+    }
+    phoneEl.classList.remove('is-invalid');
+    if (form) form.classList.remove('was-validated');
+
+    var nameEl = document.getElementById('inquiryProduct');
+    var product = (nameEl && nameEl.textContent) || '';
+
+    setInquiryBusy(true);
+    showInquiryResult(null);
+    fetch(FORMSPREE_ENDPOINT, {
+      method: 'POST',
+      headers: { Accept: 'application/json' },
+      body: (typeof FormData === 'function'
+        ? (function () { var fd = new FormData(); fd.append('phone', phone); fd.append('product', product); return fd; })()
+        : JSON.stringify({ phone: phone, product: product }))
+    }).then(function (res) {
+      if (!res.ok) throw new Error('Formspree HTTP ' + res.status);
+      return res.json().catch(function () { return {}; });
+    }).then(function () {
+      setInquiryBusy(false);
+      if (form) form.reset();
+      showInquiryResult('success');
+    }).catch(function () {
+      setInquiryBusy(false);
+      showInquiryResult('error');
+    });
+  }
+
   /* ----------------------- reveal on scroll ----------------------- */
   var revealObserver = null;
   function revealInit() {
@@ -512,8 +625,25 @@
     if (grid) {
       grid.addEventListener('click', function (e) {
         var btn = e.target.closest('.watch-video');
-        if (btn) openVideoFor(btn.getAttribute('data-product-id'), btn);
+        if (btn) { openVideoFor(btn.getAttribute('data-product-id'), btn); return; }
+        var inqBtn = e.target.closest('.inquiry-open');
+        if (inqBtn) openInquiryFor(inqBtn);
       });
+    }
+
+    /* product inquiry form → Formspree via fetch (no page reload) */
+    var inquiryForm = document.getElementById('inquiryForm');
+    if (inquiryForm) {
+      inquiryForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        submitInquiry(inquiryForm);
+      });
+      var inquiryPhone = document.getElementById('inquiryPhone');
+      if (inquiryPhone) {
+        inquiryPhone.addEventListener('input', function () {
+          inquiryPhone.classList.remove('is-invalid');
+        });
+      }
     }
 
     /* gallery image viewer (delegated): opening thumbnail keeps focus and

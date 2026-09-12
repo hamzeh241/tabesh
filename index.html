@@ -470,42 +470,32 @@
       <h2 class="section-title" data-i18n="why.title">چرا تابش انرژی بام شهر؟</h2>
       <span class="head-bar" aria-hidden="true"></span>
     </div>
-    <div class="row g-4">
-      <div class="col-md-6 col-lg-3" data-reveal>
-        <article class="why-card">
-          <span class="why-icon"><i class="bi bi-patch-check" aria-hidden="true"></i></span>
-          <h3 class="why-title" data-i18n="why.1.title">تعهد به کیفیت</h3>
-          <p class="why-desc" data-i18n="why.1.desc">مطابق شعار ما، کیفیت در مرکز کار ما قرار دارد.</p>
-        </article>
-      </div>
-      <div class="col-md-6 col-lg-3" data-reveal>
-        <article class="why-card">
-          <span class="why-icon"><i class="bi bi-diagram-3" aria-hidden="true"></i></span>
-          <h3 class="why-title" data-i18n="why.2.title">مهندسی و ساخت یکپارچه</h3>
-          <p class="why-desc" data-i18n="why.2.desc">از طراحی تا ساخت و تحویل، همه مراحل در یک مجموعه انجام می‌شود.</p>
-        </article>
-      </div>
-      <div class="col-md-6 col-lg-3" data-reveal>
-        <article class="why-card">
-          <span class="why-icon"><i class="bi bi-grid-3x3-gap" aria-hidden="true"></i></span>
-          <h3 class="why-title" data-i18n="why.3.title">تنوع حوزه فعالیت</h3>
-          <p class="why-desc" data-i18n="why.3.desc">از انرژی خورشیدی تا ماشین‌آلات CNC و تراش چوب.</p>
-        </article>
-      </div>
-      <div class="col-md-6 col-lg-4" data-reveal>
-        <article class="why-card">
-          <span class="why-icon"><i class="bi bi-tools" aria-hidden="true"></i></span>
-          <h3 class="why-title" data-i18n="why.4.title">پاسخ به نیازهای سفارشی</h3>
-          <p class="why-desc" data-i18n="why.4.desc">ساخت سفارشی مطابق نیاز، از نیازسنجی تا تحویل.</p>
-        </article>
-      </div>
-      <div class="col-md-6 col-lg-4" data-reveal>
-        <article class="why-card">
-          <span class="why-icon"><i class="bi bi-lightning-charge" aria-hidden="true"></i></span>
-          <h3 class="why-title" data-i18n="why.5.title">سرعت</h3>
-          <p class="why-desc" data-i18n="why.5.desc">سرعت در پاسخ‌گویی و اجرای مراحل طراحی و ساخت.</p>
-        </article>
-      </div>
+    <div class="why-grid">
+      <article class="why-card" data-reveal>
+        <span class="why-icon"><i class="bi bi-patch-check" aria-hidden="true"></i></span>
+        <h3 class="why-title" data-i18n="why.1.title">تعهد به کیفیت</h3>
+        <p class="why-desc" data-i18n="why.1.desc">مطابق شعار ما، کیفیت در مرکز کار ما قرار دارد.</p>
+      </article>
+      <article class="why-card" data-reveal>
+        <span class="why-icon"><i class="bi bi-diagram-3" aria-hidden="true"></i></span>
+        <h3 class="why-title" data-i18n="why.2.title">مهندسی و ساخت یکپارچه</h3>
+        <p class="why-desc" data-i18n="why.2.desc">از طراحی تا ساخت و تحویل، همه مراحل در یک مجموعه انجام می‌شود.</p>
+      </article>
+      <article class="why-card" data-reveal>
+        <span class="why-icon"><i class="bi bi-grid-3x3-gap" aria-hidden="true"></i></span>
+        <h3 class="why-title" data-i18n="why.3.title">تنوع حوزه فعالیت</h3>
+        <p class="why-desc" data-i18n="why.3.desc">از انرژی خورشیدی تا ماشین‌آلات CNC و تراش چوب.</p>
+      </article>
+      <article class="why-card" data-reveal>
+        <span class="why-icon"><i class="bi bi-tools" aria-hidden="true"></i></span>
+        <h3 class="why-title" data-i18n="why.4.title">پاسخ به نیازهای سفارشی</h3>
+        <p class="why-desc" data-i18n="why.4.desc">ساخت سفارشی مطابق نیاز، از نیازسنجی تا تحویل.</p>
+      </article>
+      <article class="why-card" data-reveal>
+        <span class="why-icon"><i class="bi bi-lightning-charge" aria-hidden="true"></i></span>
+        <h3 class="why-title" data-i18n="why.5.title">سرعت</h3>
+        <p class="why-desc" data-i18n="why.5.desc">سرعت در پاسخ‌گویی و اجرای مراحل طراحی و ساخت.</p>
+      </article>
     </div>
   </div>
 </section>
@@ -680,6 +670,47 @@
         <video id="videoPlayer" class="w-100" controls preload="none" playsinline></video>
         <div id="videoMissing" class="video-missing d-none" data-i18n="misc.video.missing">ویدیوی این محصول در دسترس نیست.</div>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========================= PRODUCT INQUIRY MODAL ========================= -->
+<!-- Shared inquiry modal (ONE instance for ALL products). Opened by the
+     product-card "inquiry" button; the localized product name is passed
+     dynamically via data-product-name on the trigger. The form posts only
+     { phone, product } to Formspree via fetch (no page reload). -->
+<div class="modal fade" id="inquiryModal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="inquiryModalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content inquiry-modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="inquiryModalTitle" data-i18n="inquiry.modal.title">استعلام محصول</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" id="inquiryClose"
+                data-i18n-aria="misc.video.close" aria-label="بستن"></button>
+      </div>
+      <form id="inquiryForm" class="inquiry-form" novalidate>
+        <div class="modal-body">
+          <p class="inquiry-lead" data-i18n="inquiry.modal.text">لطفاً شماره موبایل خود را وارد کنید تا کارشناسان تابش برای پیگیری سفارش این محصول با شما تماس بگیرند.</p>
+          <div class="inquiry-product">
+            <i class="bi bi-box-seam" aria-hidden="true"></i>
+            <span id="inquiryProduct"></span>
+          </div>
+          <label class="form-label" for="inquiryPhone" data-i18n="inquiry.modal.phone.label">شماره موبایل</label>
+          <input type="tel" inputmode="tel" class="form-control" id="inquiryPhone" name="phone"
+                 placeholder="0912xxxxxxx" data-i18n-placeholder="inquiry.modal.placeholder"
+                 dir="ltr" autocomplete="tel" required>
+          <div class="invalid-feedback" data-i18n="inquiry.modal.error.invalid">لطفاً یک شماره موبایل معتبر وارد کنید (مثلاً 09123456789).</div>
+          <div class="alert form-alert d-none mt-2" id="inquirySuccess" role="status" data-i18n="inquiry.modal.success">درخواست شما با موفقیت ثبت شد.</div>
+          <div class="alert inquiry-error d-none mt-2" id="inquiryError" role="alert" data-i18n="inquiry.modal.error">ارسال درخواست با خطا مواجه شد.</div>
+          <p class="inquiry-legal" data-i18n="inquiry.modal.legal">شماره موبایل شما صرفاً برای پیگیری سفارش این محصول استفاده می‌شود و برای تبلیغات، ارسال پیام‌های ناخواسته یا اهداف دیگر استفاده نخواهد شد.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-ghost" data-bs-dismiss="modal" data-i18n="misc.video.close">بستن</button>
+          <button type="submit" class="btn btn-gold" id="inquirySubmit">
+            <span class="inquiry-spinner spinner-border spinner-border-sm d-none" aria-hidden="true"></span>
+            <span id="inquirySubmitLabel" data-i18n="inquiry.modal.submit">درخواست تماس</span>
+          </button>
+        </div>
+      </form>
     </div>
   </div>
 </div>
