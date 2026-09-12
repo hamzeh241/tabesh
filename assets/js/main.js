@@ -168,6 +168,27 @@
       h += '</tbody></table></div>';
     }
 
+    /* Optional datasheet note (localized), rendered directly under the table. */
+    if (p.note) {
+      h += '<p class="spec-note">' + esc(loc(p.note)) + '</p>';
+    }
+
+    if (p.features && p.features.length) {
+      h += '<h4 class="product-subhead">' + esc(t('products.features.title')) + '</h4><div class="app-chips">';
+      for (var fi = 0; fi < p.features.length; fi++) {
+        h += '<span class="app-chip"><i class="bi bi-check2" aria-hidden="true"></i>' + esc(loc(p.features[fi])) + '</span>';
+      }
+      h += '</div>';
+    }
+
+    if (p.services && p.services.length) {
+      h += '<h4 class="product-subhead">' + esc(t('products.services.title')) + '</h4><div class="app-chips">';
+      for (var si = 0; si < p.services.length; si++) {
+        h += '<span class="app-chip"><i class="bi bi-tools" aria-hidden="true"></i>' + esc(loc(p.services[si])) + '</span>';
+      }
+      h += '</div>';
+    }
+
     if (p.applications && p.applications.length) {
       h += '<h4 class="product-subhead">' + esc(t('products.apps.title')) + '</h4><div class="app-chips">';
       for (var j = 0; j < p.applications.length; j++) {

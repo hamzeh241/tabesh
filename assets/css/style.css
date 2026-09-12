@@ -758,6 +758,17 @@ a { color: var(--tab-navy-700); }
   font-weight: 500;
   font-size: .82rem;
 }
+/* optional datasheet note: renders directly under the spec table */
+.spec-note {
+  margin: .55rem 0 0;
+  padding: .5rem .7rem;
+  border-inline-start: 3px solid var(--tab-gold-500);
+  background: var(--tab-steel-100);
+  color: var(--tab-muted);
+  font-size: .85rem;
+  border-radius: 0 var(--tab-radius-sm) var(--tab-radius-sm) 0;
+}
+[dir="rtl"] .spec-note { border-radius: var(--tab-radius-sm) 0 0 var(--tab-radius-sm); }
 .app-chips { display: flex; flex-wrap: wrap; gap: .4rem; }
 .app-chip {
   font-size: .82rem;
@@ -1569,6 +1580,86 @@ html.js .process-flow > li:nth-child(12) { transition-delay: .49s; }
   font-size: .8rem;
 }
 
+
+/* ==========================================================================
+ * Final content phase — mission/vision, member-exp, capability strips,
+ * clickable tel: links and footer registration list.
+ * ========================================================================== */
+
+/* About — mission & vision cards */
+.mv-item {
+  background: var(--tab-steel-100);
+  border: 1px solid var(--tab-steel-200);
+  border-radius: var(--tab-radius-sm);
+  padding: 1rem 1.1rem;
+  height: 100%;
+}
+.mv-title {
+  font-size: .95rem;
+  font-weight: 800;
+  color: var(--tab-navy-800);
+  margin-bottom: .4rem;
+  display: flex;
+  align-items: center;
+  gap: .45rem;
+}
+.mv-title i { color: var(--tab-gold-600); }
+.mv-text {
+  font-size: .92rem;
+  color: var(--tab-muted);
+  margin: 0;
+  line-height: 1.9;
+}
+
+/* Team — expertise / experience line */
+.member-exp {
+  font-size: .78rem;
+  color: var(--tab-muted);
+  margin: .45rem 0 0;
+  line-height: 1.8;
+}
+
+/* Capability chip strips (activities / manufacturing / workshop) */
+.caps-strip { margin: .4rem 0 1.6rem; }
+.caps-title {
+  font-size: 1.02rem;
+  font-weight: 800;
+  color: var(--tab-navy-800);
+  margin-bottom: .8rem;
+}
+.section-navy .caps-title { color: var(--tab-white); }
+.section-navy .chip {
+  background: rgba(255, 255, 255, .08);
+  border-color: rgba(255, 255, 255, .22);
+  color: var(--tab-steel-100);
+}
+.section-navy .chip i { color: var(--tab-gold-400); }
+
+/* Clickable tel: links */
+a.info-value { color: inherit; text-decoration: none; }
+a.info-value:hover { color: var(--tab-gold-700); }
+.footer-contact a {
+  color: var(--tab-sky-300);
+  text-decoration: none;
+  font-weight: 600;
+}
+.footer-contact a:hover { color: var(--tab-gold-400); }
+
+/* Footer — registration information list */
+.footer-reg {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  color: var(--tab-steel-300);
+  font-size: .9rem;
+}
+.footer-reg li { display: flex; align-items: flex-start; gap: .5rem; margin-bottom: .5rem; }
+.footer-reg i { color: var(--tab-gold-500); margin-top: .25rem; }
+
+@media (max-width: 575.98px) {
+  .mv-text { font-size: .88rem; }
+  .member-exp { font-size: .74rem; }
+}
 @media (max-width: 575.98px) {
   .proj-body { padding: .95rem 1rem .9rem; }
   .image-frame { min-height: 240px; }
