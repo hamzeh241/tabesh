@@ -1730,3 +1730,39 @@ a.info-value:hover { color: var(--tab-gold-700); }
 
 
 
+/* Marquee strip for target customers (full-width, animated) */
+.marquee-strip {
+  width: 100%;
+  overflow: hidden;
+  mask-image: linear-gradient(to left, transparent 0, #000 4%, #000 96%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to left, transparent 0, #000 4%, #000 96%, transparent 100%);
+}
+.marquee-track {
+  display: flex;
+  gap: .5rem;
+  width: max-content;
+  animation: marquee-scroll 28s linear infinite;
+}
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+@keyframes marquee-scroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* RTL: scroll in the opposite direction */
+[dir="rtl"] .marquee-track {
+  animation-name: marquee-scroll-rtl;
+}
+@keyframes marquee-scroll-rtl {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track { animation: none !important; }
+}
+
+/* Ensure chip text stays intact on narrow screens inside marquee */
+.marquee-track .chip { white-space: nowrap; flex-shrink: 0; }
