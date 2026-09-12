@@ -58,11 +58,6 @@
 html {
   scroll-behavior: smooth;
   scroll-padding-top: calc(var(--tab-nav-h) + 12px);
-  /* NOTE: overflow-x lives on <html>, NOT <body>. Bootstrap ScrollSpy checks
-     getComputedStyle(body).overflowY — any non-visible value there makes it
-     treat <body> as the scroll root and breaks active-link highlighting. */
-  overflow-x: hidden; /* fallback for browsers without overflow: clip */
-  overflow-x: clip; /* decorative layers must never create horizontal scroll */
 }
 
 body {
@@ -71,6 +66,8 @@ body {
   background: var(--tab-white);
   line-height: 1.8;
   font-size: 1rem;
+  overflow-x: hidden; /* fallback for browsers without overflow: clip */
+  overflow-x: clip; /* decorative layers must never create horizontal scroll */
   -webkit-font-smoothing: antialiased;
 }
 
