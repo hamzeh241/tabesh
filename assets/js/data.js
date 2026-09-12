@@ -207,7 +207,9 @@ TABESH.TRANSLATIONS = {
     'contact.form.subject.other': 'سایر',
     'contact.form.message': 'متن پیام',
     'contact.form.send': 'ارسال پیام',
-    'contact.form.notice': 'این فرم در حال حاضر فرانت‌اند است و در فاز بعدی به سرویس ارسال پیام متصل می‌شود.',
+    'contact.form.loading': 'در حال ارسال…',
+    'contact.form.error': 'ارسال پیام با خطا مواجه شد. لطفاً دوباره تلاش کنید یا با شماره‌های تماس ما در ارتباط باشید.',
+    'contact.form.notice': 'برای پیگیری سریع‌تر می‌توانید مستقیماً با شماره‌های تماس ما در ارتباط باشید.',
     'contact.form.success': 'پیام شما ثبت شد. برای پیگیری سریع‌تر، با شماره‌های تماس ما در ارتباط باشید.',
 
     /* Product inquiry modal (Formspree) — one shared modal for all products */
@@ -444,7 +446,9 @@ TABESH.TRANSLATIONS = {
     'contact.form.subject.other': 'Other',
     'contact.form.message': 'Message',
     'contact.form.send': 'Send Message',
-    'contact.form.notice': 'This form is front-end only for now and will be connected to a message delivery service in a later phase.',
+    'contact.form.loading': 'Sending…',
+    'contact.form.error': 'Sending your message failed. Please try again or contact us by phone.',
+    'contact.form.notice': 'For a quicker follow-up, you can also reach us directly by phone.',
     'contact.form.success': 'Your message has been recorded. For a quicker follow-up, please contact us by phone.',
 
     /* Product inquiry modal (Formspree) — one shared modal for all products */
@@ -681,7 +685,9 @@ TABESH.TRANSLATIONS = {
     'contact.form.subject.other': 'أخرى',
     'contact.form.message': 'نص الرسالة',
     'contact.form.send': 'إرسال الرسالة',
-    'contact.form.notice': 'هذا النموذج حاليًا للواجهة الأمامية فقط وسيتم ربطه بخدمة إرسال الرسائل في مرحلة لاحقة.',
+    'contact.form.loading': 'جارٍ الإرسال…',
+    'contact.form.error': 'تعذّر إرسال الرسالة. يرجى المحاولة مرة أخرى أو التواصل معنا عبر الهاتف.',
+    'contact.form.notice': 'لمتابعة أسرع، يمكنك التواصل معنا مباشرة عبر الهاتف.',
     'contact.form.success': 'تم تسجيل رسالتك. للمتابعة الأسرع، يرجى التواصل معنا عبر الهاتف.',
 
     /* Product inquiry modal (Formspree) — one shared modal for all products */
@@ -918,7 +924,9 @@ TABESH.TRANSLATIONS = {
     'contact.form.subject.other': 'Diğer',
     'contact.form.message': 'Mesajınız',
     'contact.form.send': 'Mesajı Gönder',
-    'contact.form.notice': 'Bu form şu anda yalnızca ön yüz aşamasındadır; sonraki aşamada bir mesaj gönderme servisine bağlanacaktır.',
+    'contact.form.loading': 'Gönderiliyor…',
+    'contact.form.error': 'Mesaj gönderilemedi. Lütfen tekrar deneyin veya telefonla bize ulaşın.',
+    'contact.form.notice': 'Daha hızlı takip için bize doğrudan telefonla ulaşabilirsiniz.',
     'contact.form.success': 'Mesajınız kaydedildi. Daha hızlı bir takip için lütfen telefonla bize ulaşın.',
 
     /* Product inquiry modal (Formspree) — one shared modal for all products */

@@ -574,6 +574,65 @@
     });
   }
 
+  /* ---------------- contact form (Formspree, shared endpoint) ---------------- */
+  /* Posts { name, contact, subject, message } to FORMSPREE_ENDPOINT via
+     fetch — no page reload. Loading state on the send button, success /
+     error alerts, double-submit guard. */
+  var contactBusy = false;
+
+  function setContactBusy(busy) {
+    contactBusy = !!busy;
+    var btn = document.getElementById('contactSubmit');
+    var label = document.getElementById('contactSubmitLabel');
+    var spinner = document.querySelector('.contact-spinner');
+    if (btn) btn.disabled = busy;
+    if (label) label.textContent = busy ? t('contact.form.loading') : t('contact.form.send');
+    if (spinner) spinner.classList.toggle('d-none', !busy);
+  }
+
+  function submitContact(form) {
+    if (contactBusy) return;
+    var subjectSel = document.getElementById('cfSubject');
+    var subjectText = (subjectSel && subjectSel.selectedIndex > -1 && subjectSel.options[subjectSel.selectedIndex])
+      ? subjectSel.options[subjectSel.selectedIndex].textContent : '';
+    var fields = {
+      name: (document.getElementById('cfName') || {}).value || '',
+      contact: (document.getElementById('cfContact') || {}).value || '',
+      subject: subjectText,
+      message: (document.getElementById('cfMessage') || {}).value || ''
+    };
+    var okEl = document.getElementById('formAlert');
+    var errEl = document.getElementById('contactError');
+    if (okEl) okEl.classList.add('d-none');
+    if (errEl) errEl.classList.add('d-none');
+    setContactBusy(true);
+    fetch(FORMSPREE_ENDPOINT, {
+      method: 'POST',
+      headers: { Accept: 'application/json' },
+      body: (typeof FormData === 'function'
+        ? (function () {
+            var fd = new FormData();
+            fd.append('name', fields.name);
+            fd.append('contact', fields.contact);
+            fd.append('subject', fields.subject);
+            fd.append('message', fields.message);
+            fd.append('_subject', 'TABESH — ' + fields.subject);
+            return fd;
+          })()
+        : JSON.stringify(fields))
+    }).then(function (res) {
+      if (!res.ok) throw new Error('Formspree HTTP ' + res.status);
+      return res.json().catch(function () { return {}; });
+    }).then(function () {
+      setContactBusy(false);
+      form.reset();
+      if (okEl) okEl.classList.remove('d-none');
+    }).catch(function () {
+      setContactBusy(false);
+      if (errEl) errEl.classList.remove('d-none');
+    });
+  }
+
   /* ----------------------- reveal on scroll ----------------------- */
   var revealObserver = null;
   function revealInit() {
@@ -664,16 +723,14 @@
     var nextBtn = document.getElementById('imageNext');
     if (nextBtn) nextBtn.addEventListener('click', function () { stepViewer(1); });
 
-    /* contact form — demo only; a delivery service is connected in a later phase */
+    /* contact form → Formspree via fetch (no page reload) */
     var form = document.getElementById('contactForm');
     if (form) {
       form.addEventListener('submit', function (e) {
         e.preventDefault();
         if (!form.checkValidity()) { form.classList.add('was-validated'); return; }
         form.classList.remove('was-validated');
-        var alertEl = document.getElementById('formAlert');
-        if (alertEl) alertEl.classList.remove('d-none');
-        form.reset();
+        submitContact(form);
       });
     }
 

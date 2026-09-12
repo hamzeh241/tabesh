@@ -80,6 +80,8 @@ const requiredKeys = [
   'inquiry.modal.placeholder', 'inquiry.modal.error.invalid', 'inquiry.modal.legal',
   'inquiry.modal.submit', 'inquiry.modal.loading', 'inquiry.modal.success',
   'inquiry.modal.error',
+  /* contact form (Formspree) */
+  'contact.form.loading', 'contact.form.error',
   /* legacy projects keys (kept for future reactivation of the section) */
   'projects.details', 'projects.year', 'projects.location',
   'projects.tile.label', 'projects.tile.caption'
@@ -382,6 +384,7 @@ Object.keys(idCounts).forEach(id => ok(idCounts[id] === 1, 'HTML: duplicate id="
  'videoModal', 'videoPlayer', 'videoModalTitle', 'videoMissing',
  'inquiryModal', 'inquiryModalTitle', 'inquiryForm', 'inquiryPhone',
  'inquiryProduct', 'inquirySubmit', 'inquirySuccess', 'inquiryError',
+ 'contactSubmit', 'contactSubmitLabel', 'contactError',
  'imageModal', 'imageViewerImg', 'imagePrev', 'imageNext', 'imageViewerClose',
  'imageModalTitle', 'imageCaption', 'imageCounter'].forEach(id => {
   ok(idCounts[id] === 1, 'HTML: required element id="' + id + '" present exactly once');
@@ -493,6 +496,8 @@ ok(mainSrc.indexOf('FORMSPREE_ENDPOINT') !== -1, 'main.js: Formspree endpoint co
 ok(/https:\/\/formspree\.io\/f\/[A-Za-z0-9]+/.test(mainSrc), 'main.js: Formspree endpoint URL set');
 ok(mainSrc.indexOf('data-product-name') !== -1, 'main.js: inquiry button passes the dynamic product name');
 ok(mainSrc.indexOf('preventDefault') !== -1, 'main.js: inquiry form submits without page reload');
+ok(mainSrc.indexOf('submitContact') !== -1, 'main.js: contact form wired to Formspree (no reload)');
+ok(mainSrc.indexOf("t('contact.form.loading')") !== -1, 'main.js: contact form has a loading state');
 
 /* --------------------------------- report ---------------------------------- */
 console.log('---');

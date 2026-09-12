@@ -583,10 +583,12 @@
             </div>
           </div>
           <div class="alert form-alert d-none mt-3" id="formAlert" role="status" data-i18n="contact.form.success">پیام شما ثبت شد.</div>
-          <p class="form-note" data-i18n="contact.form.notice">این فرم در فاز بعدی به سرویس ارسال پیام متصل می‌شود.</p>
-          <button type="submit" class="btn btn-gold">
+          <div class="alert inquiry-error d-none mt-3" id="contactError" role="alert" data-i18n="contact.form.error">ارسال پیام با خطا مواجه شد.</div>
+          <p class="form-note" data-i18n="contact.form.notice">برای پیگیری سریع‌تر می‌توانید مستقیماً با شماره‌های تماس ما در ارتباط باشید.</p>
+          <button type="submit" class="btn btn-gold" id="contactSubmit">
+            <span class="contact-spinner spinner-border spinner-border-sm d-none" aria-hidden="true"></span>
             <i class="bi bi-send" aria-hidden="true"></i>
-            <span data-i18n="contact.form.send">ارسال پیام</span>
+            <span id="contactSubmitLabel" data-i18n="contact.form.send">ارسال پیام</span>
           </button>
         </form>
       </div>
