@@ -262,6 +262,17 @@ a { color: var(--tab-navy-700); }
   height: 22px;
   pointer-events: none;
 }
+/* Real hero photo: fills the panel on any aspect ratio without distortion.
+   object-fit: contain keeps the full picture visible; contain (not cover) is
+   used because the photo sits inside the framed blueprint panel. */
+.hero-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: inherit;
+}
 .hero-panel::before {
   top: 10px;
   inset-inline-start: 10px;
@@ -514,6 +525,18 @@ a { color: var(--tab-navy-700); }
   animation: spin 26s linear infinite;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
+/* Real About photo: keeps the same frame (border, corner accent, radius)
+   and fills it with a stable aspect ratio — cover crops fluidly and never
+   stretches, so any image dimension keeps the layout intact. */
+.about-photo-frame { min-height: 0; aspect-ratio: 4 / 3; margin: 0; }
+.about-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
 
 /* About: areas of expertise list */
 .about-points-title {
@@ -631,6 +654,53 @@ a { color: var(--tab-navy-700); }
   transition: transform .35s ease;
 }
 .product-card:hover .product-media img { transform: scale(1.035); }
+
+/* Clickable product photo + gallery thumbnails. The photo button wraps the
+   img so the whole media area opens the lightbox; thumbnails keep a stable
+   4:3 frame with object-fit: cover so mixed aspect ratios never shift the
+   layout. Lightbox itself shows images fully via object-fit: contain. */
+.product-photo {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: zoom-in;
+}
+.product-photo img { pointer-events: none; }
+.product-thumbs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  padding: .65rem 1.4rem .9rem;
+  border-bottom: 1px solid var(--tab-steel-200);
+  background: #f6f9fc;
+}
+.product-thumb {
+  width: 76px;
+  aspect-ratio: 4 / 3;
+  padding: 0;
+  border: 1px solid var(--tab-steel-200);
+  border-radius: var(--tab-radius-sm);
+  overflow: hidden;
+  cursor: zoom-in;
+  background: var(--tab-white);
+  transition: border-color .2s, box-shadow .2s;
+}
+.product-thumb:hover,
+.product-thumb:focus-visible {
+  border-color: rgba(242, 183, 5, .8);
+  box-shadow: 0 0 0 2px rgba(242, 183, 5, .25);
+}
+.product-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* stable frame; full picture is shown in the lightbox */
+  display: block;
+}
+@media (max-width: 575.98px) {
+  .product-thumb { width: 64px; }
+}
 /* catalog index chip: P-01, P-02, … */
 .product-media::after {
   content: 'P-' counter(prod, decimal-leading-zero);
@@ -1520,6 +1590,38 @@ html.js .process-flow > li:nth-child(12) { transition-delay: .49s; }
   transition: transform .45s ease;
 }
 .gallery-item:hover img { transform: scale(1.04); }
+
+/* Gallery video card: only the PNG thumbnail renders; the MP4 is attached
+   exclusively inside the shared video modal on click (zero pre-click load).
+   Badge matches the gallery's gold-on-navy design language. */
+.video-play-badge {
+  position: absolute;
+  top: 50%;
+  left: 50%; /* physical: stays centered in RTL and LTR */
+  transform: translate(-50%, -50%);
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(7, 20, 38, .65);
+  border: 2px solid var(--tab-gold-500);
+  color: var(--tab-gold-400);
+  font-size: 2rem;
+  line-height: 1;
+  pointer-events: none; /* clicks pass through to the card button */
+  z-index: 2;
+  transition: background-color .2s, color .2s;
+}
+.gallery-video:hover .video-play-badge,
+.gallery-video:focus-visible .video-play-badge {
+  background: var(--tab-gold-500);
+  color: var(--tab-navy-950);
+}
+@media (max-width: 575.98px) {
+  .video-play-badge { width: 46px; height: 46px; font-size: 1.6rem; }
+}
 .gallery-cap {
   position: absolute;
   inset-inline: 0;
@@ -1536,46 +1638,114 @@ html.js .process-flow > li:nth-child(12) { transition-delay: .49s; }
 
 /* ------------------------- Image viewer modal ------------------------- */
 .image-viewer-content {
+  position: relative; /* anchor for the fixed corner close button */
   background: linear-gradient(180deg, var(--tab-navy-900), var(--tab-navy-950));
   color: var(--tab-white);
   border: 1px solid rgba(255, 255, 255, .15);
   border-top: 3px solid var(--tab-gold-500);
   border-radius: var(--tab-radius);
+  overflow: hidden;
 }
-.image-viewer-content .modal-header { border-bottom: 1px solid rgba(255, 255, 255, .12); }
+.image-viewer-content .modal-header { border-bottom: 1px solid rgba(255, 255, 255, .12); padding-inline-end: 3.6rem; }
 .image-viewer-content .modal-title { font-size: 1rem; font-weight: 700; }
-.image-viewer-actions { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; }
-.img-nav {
+/* zoom control group (+ / level / reset / −) in the header */
+.image-viewer-actions { display: flex; align-items: center; gap: .4rem; }
+.img-zoom {
   appearance: none;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   border-radius: var(--tab-radius-sm);
-  background: transparent;
-  border: 1.5px solid rgba(255, 255, 255, .45);
+  background: rgba(255, 255, 255, .08);
+  border: 1.5px solid rgba(255, 255, 255, .35);
+  color: var(--tab-white);
+  font-size: 1.05rem;
+  line-height: 1;
+  transition: background-color .2s, border-color .2s, color .2s;
+}
+.img-zoom:hover, .img-zoom:focus { background: rgba(242, 183, 5, .2); border-color: var(--tab-gold-500); color: var(--tab-gold-400); }
+.img-zoom-level {
+  min-width: 3.6em;
+  text-align: center;
+  font-family: var(--tab-font-tech);
+  font-size: .78rem;
+  color: #b9c7da;
+  font-variant-numeric: tabular-nums;
+}
+/* Close button: fixed top corner of the lightbox, clearly visible on the
+   dark background, minimal modern look, ≥44px touch target in all sizes. */
+.viewer-close {
+  position: absolute;
+  top: 8px;
+  inset-inline-end: 8px;
+  z-index: 5; /* stays above the image and nav overlays */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(7, 20, 38, .65);
   color: var(--tab-white);
   font-size: 1.15rem;
   line-height: 1;
-  transition: background-color .2s, border-color .2s, color .2s, transform .2s;
+  cursor: pointer;
+  transition: background-color .2s, color .2s, transform .2s;
+}
+.viewer-close:hover, .viewer-close:focus {
+  background: var(--tab-gold-500);
+  color: var(--tab-navy-950);
+  transform: rotate(90deg);
+}
+/* image stage: the image + overlay navigation buttons + touch gestures */
+.image-stage {
+  position: relative;
+  touch-action: none; /* all gestures (swipe / pinch / pan) handled in JS */
+  user-select: none;
+  -webkit-user-select: none;
+}
+/* Prev/Next: semi-transparent, overlaying the two sides of the image
+   (physically left = previous, right = next — identical in RTL and LTR). */
+.img-nav {
+  appearance: none;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(7, 20, 38, .45);
+  border: 1.5px solid rgba(255, 255, 255, .4);
+  color: var(--tab-white);
+  font-size: 1.25rem;
+  line-height: 1;
+  z-index: 4;
+  backdrop-filter: blur(2px);
+  transition: background-color .2s, border-color .2s, color .2s;
 }
 .img-nav:hover, .img-nav:focus {
-  background: rgba(242, 183, 5, .18);
+  background: rgba(242, 183, 5, .85);
   border-color: var(--tab-gold-500);
-  color: var(--tab-gold-400);
-  transform: translateY(-2px);
+  color: var(--tab-navy-950);
 }
-/* chevron glyphs flip with direction so prev/next stay intuitive in RTL */
-[dir="rtl"] #imagePrev i, [dir="rtl"] #imageNext i { transform: scaleX(-1); }
+.img-nav-prev { left: 10px; }
+.img-nav-next { right: 10px; }
 .image-frame {
   display: flex;
   align-items: center;
   justify-content: center;
   background: rgba(7, 20, 38, .55);
   min-height: 320px;
+  overflow: hidden; /* zoomed image is clipped to the stage, never overflows */
 }
-/* the viewer never stretches an image (object-fit: contain) */
+/* the viewer never stretches an image (object-fit: contain); the transform
+   (translate + scale) is driven from main.js for zoom / pan */
 .image-frame img {
   max-width: 100%;
   max-height: 62vh;
@@ -1583,7 +1753,14 @@ html.js .process-flow > li:nth-child(12) { transition-delay: .49s; }
   height: auto;
   object-fit: contain;
   border-radius: var(--tab-radius-sm);
+  transform-origin: center center;
+  will-change: transform;
+  cursor: default; /* no zoom-in magnifier on hover — zoom stays via
+                      buttons / double-click / touch gestures */
+  -webkit-user-drag: none;
 }
+.image-frame img.zoomed { cursor: default; }
+.image-frame img.panning { cursor: default; }
 .image-viewer-caption {
   display: flex;
   flex-wrap: wrap;
@@ -1686,6 +1863,9 @@ a.info-value:hover { color: var(--tab-gold-700); }
   .image-frame { min-height: 240px; }
   .image-frame img { max-height: 50vh; }
   .img-nav { width: 44px; height: 44px; }
+  /* keep the zoom group compact on small screens */
+  .img-zoom { width: 40px; height: 40px; font-size: .95rem; }
+  .img-zoom-level { display: none; }
 }
 
 /* ==========================================================================

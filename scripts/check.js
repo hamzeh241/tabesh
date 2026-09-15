@@ -434,7 +434,10 @@ ok(productMediaBlock.indexOf('object-fit: contain') !== -1, 'CSS: product images
 ok(/\.proj-media img\s*{[^}]*object-fit: cover[^}]*}/s.test(css), 'CSS: project frames use cover');
 ok(/\.ws-media img\s*{[^}]*object-fit: cover[^}]*}/s.test(css), 'CSS: workshop frames use cover');
 ok(/\.gallery-item img\s*{[^}]*object-fit: cover[^}]*}/s.test(css), 'CSS: gallery frames use cover');
-ok(/\[dir="rtl"\] #imagePrev i/.test(css) && /\[dir="rtl"\] #imageNext i/.test(css), 'CSS: viewer chevrons flip for RTL');
+/* Lightbox redesign: prev/next overlay the image sides and stay physically
+   left/right in BOTH directions; semantics are index-based (prev = previous
+   image) so no RTL glyph flip is needed anymore. */
+ok(/\.img-nav-prev { left/.test(css) && /\.img-nav-next { right/.test(css), 'CSS: viewer prev/next overlay image sides (physical left/right)');
 ok(css.indexOf('.spec-scroll') !== -1, 'CSS: spec-table horizontal-scroll guard (.spec-scroll)');
 ok(css.indexOf('.spec-note') !== -1, 'CSS: datasheet note styled (.spec-note)');
 ok(/#videoModal \.btn-close/.test(css) && /#imageModal \.btn-close/.test(css), 'CSS: modal close buttons enlarged for touch');

@@ -101,16 +101,13 @@
         <p class="hero-keywords" data-i18n="hero.keywords">طراحی مهندسی • ساخت صنعتی • انرژی خورشیدی • ماشین‌کاری CNC • ساخت سفارشی</p>
       </div>
       <div class="col-lg-5" data-reveal>
-        <div class="hero-panel" aria-hidden="true">
-          <div class="hero-sun"><i class="bi bi-sun-fill"></i></div>
-          <div class="hero-rig">
-            <span class="rig-panel"></span>
-            <span class="rig-pole"></span>
-            <span class="rig-base"></span>
-          </div>
-          <div class="hero-chip hero-chip-1"><i class="bi bi-arrow-repeat"></i></div>
-          <div class="hero-chip hero-chip-2"><i class="bi bi-gear-wide-connected"></i></div>
-          <div class="hero-chip hero-chip-3"><i class="bi bi-tree"></i></div>
+        <!-- Real workshop photo (assets/images/hero/01.png). Rendered inside
+             the existing blueprint panel: object-fit: contain, never
+             stretched, eager-loaded (no lazy loading above the fold). -->
+        <div class="hero-panel">
+          <img class="hero-photo" src="assets/images/hero/01.png" fetchpriority="high"
+               alt="کارگاه ساخت تابش انرژی بام شهر" decoding="async"
+               onerror="this.onerror=null;this.style.display='none';">
         </div>
       </div>
     </div>
@@ -144,10 +141,14 @@
         </div>
       </div>
       <div class="col-lg-5" data-reveal>
-        <div class="about-visual" aria-hidden="true">
-          <i class="bi bi-buildings"></i>
-          <i class="bi bi-gear-fill about-gear"></i>
-        </div>
+        <!-- Real company photo (assets/images/about/01.jpg). Fluid container
+             with a stable ratio; object-fit: cover crops fluidly, never
+             stretches; lazy-loaded (below the fold). -->
+        <figure class="about-visual about-photo-frame">
+          <img class="about-photo" src="assets/images/about/01.jpg" alt="مجموعه تابش انرژی بام شهر"
+               loading="lazy" decoding="async"
+               onerror="this.onerror=null;this.parentNode.classList.remove('about-photo-frame');this.remove();">
+        </figure>
       </div>
     </div>
     <!-- مأموریت و چشم‌انداز — تمام‌عرض -->
@@ -718,29 +719,50 @@
 </div>
 
 <!-- ========================== IMAGE VIEWER ========================== -->
-<!-- Bootstrap modal image viewer for the Gallery (no extra library).
-     prev/next navigation, Escape, background scroll lock and focus
-     handling are provided by the Bootstrap modal; focus returns to the
-     opened thumbnail when the modal closes. -->
+<!-- Bootstrap modal image viewer (no extra library).
+     prev/next overlay the image sides, close sits in the top corner,
+     zoom controls (+/−/reset), wheel & double-click zoom on desktop,
+     pinch-to-zoom, double-tap, pan-while-zoomed and swipe navigation on
+     touch devices are handled in main.js. Escape, background scroll lock
+     and focus handling are provided by the Bootstrap modal; focus returns
+     to the opened thumbnail when the modal closes. -->
 <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="imageModalTitle" aria-hidden="true">
-  <div class="modal-dialog modal-xl modal-dialog-centered">
+  <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
     <div class="modal-content image-viewer-content">
       <div class="modal-header">
         <h5 class="modal-title" id="imageModalTitle"></h5>
         <div class="image-viewer-actions">
-          <button type="button" class="img-nav" id="imagePrev" data-i18n-aria="gallery.prev" aria-label="تصویر قبلی">
-            <i class="bi bi-chevron-left" aria-hidden="true"></i>
+          <button type="button" class="img-zoom" id="imageZoomOut" aria-label="کوچک‌نمایی">
+            <i class="bi bi-dash-lg" aria-hidden="true"></i>
           </button>
-          <button type="button" class="img-nav" id="imageNext" data-i18n-aria="gallery.next" aria-label="تصویر بعدی">
-            <i class="bi bi-chevron-right" aria-hidden="true"></i>
+          <span class="img-zoom-level" id="imageZoomLevel" aria-hidden="true">۱۰۰٪</span>
+          <button type="button" class="img-zoom" id="imageZoomReset" aria-label="بازنشانی بزرگ‌نمایی">
+            <i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i>
           </button>
-          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" id="imageViewerClose"
-                  data-i18n-aria="misc.video.close" aria-label="بستن"></button>
+          <button type="button" class="img-zoom" id="imageZoomIn" aria-label="بزرگ‌نمایی">
+            <i class="bi bi-plus-lg" aria-hidden="true"></i>
+          </button>
         </div>
       </div>
+      <!-- Close button: fixed top corner of the lightbox, above the image
+           (z-index), high contrast on the dark background, ≥44px target. -->
+      <button type="button" class="viewer-close" data-bs-dismiss="modal" id="imageViewerClose"
+              data-i18n-aria="misc.video.close" aria-label="بستن">
+        <i class="bi bi-x-lg" aria-hidden="true"></i>
+      </button>
       <div class="modal-body">
-        <div class="image-frame">
-          <img id="imageViewerImg" alt="" decoding="async">
+        <div class="image-stage" id="imageStage">
+          <div class="image-frame" id="imageFrame">
+            <img id="imageViewerImg" alt="" decoding="async" draggable="false">
+          </div>
+          <!-- Prev is physically LEFT of the image, Next is RIGHT — the same
+               in RTL and LTR; navigation semantics stay index-based. -->
+          <button type="button" class="img-nav img-nav-prev" id="imagePrev" data-i18n-aria="gallery.prev" aria-label="تصویر قبلی">
+            <i class="bi bi-chevron-left" aria-hidden="true"></i>
+          </button>
+          <button type="button" class="img-nav img-nav-next" id="imageNext" data-i18n-aria="gallery.next" aria-label="تصویر بعدی">
+            <i class="bi bi-chevron-right" aria-hidden="true"></i>
+          </button>
         </div>
         <div class="image-viewer-caption">
           <span id="imageCaption"></span>

@@ -15,6 +15,7 @@
   var WORKSHOP = DATA.WORKSHOP || [];
   var WORKSHOP_CATEGORIES = DATA.WORKSHOP_CATEGORIES || {};
   var GALLERY = DATA.GALLERY || [];
+  var VIDEOS = DATA.VIDEOS || [];
 
   var STORAGE_KEY = 'tabesh.lang';
   var PLACEHOLDER_IMG = 'assets/images/placeholder.svg';
@@ -131,15 +132,47 @@
     return p.category; /* backward compat: inline localized object */
   }
 
+  /* Per-product lightbox items, filled during rendering: id → [{image,title,alt}] */
+  var productViewerItems = {};
+
   function productCard(p) {
     var img = p.image || PLACEHOLDER_IMG;
     var cat = categoryOf(p);
+    /* Real photos for the lightbox: main image first, then any extra gallery
+       shots (skipping duplicates of the main image). Items match the shared
+       image-viewer item shape: { image, title, alt }. */
+    var viewerItems = [{ image: p.image, title: p.name, alt: loc(p.name) }];
+    if (p.gallery && p.gallery.length) {
+      for (var gi = 0; gi < p.gallery.length; gi++) {
+        var gitem = p.gallery[gi];
+        if (!gitem || !gitem.image || gitem.image === p.image) continue;
+        viewerItems.push({ image: gitem.image, title: p.name, alt: gitem.alt ? loc(gitem.alt) : loc(p.name) });
+      }
+    }
+    productViewerItems[p.id] = viewerItems;
     var h = '';
     h += '<div class="col-12 col-lg-4" data-reveal>';
-    h += '<article class="product-card">';
-    h += '<div class="product-media"><img src="' + esc(img) + '" alt="' + esc(loc(p.name)) +
+    h += '<article class="product-card" data-card-product="' + esc(p.id) + '">';
+    h += '<div class="product-media">';
+    h += '<button type="button" class="product-photo" data-product-viewer="1"' +
+         ' aria-haspopup="dialog" aria-label="' + esc(t('gallery.open') + ' — ' + loc(p.name)) + '">' +
+         '<img src="' + esc(img) + '" alt="' + esc(loc(p.name)) +
          '" loading="lazy" decoding="async"' +
-         ' onerror="this.onerror=null;this.src=\'' + PLACEHOLDER_IMG + '\';"></div>';
+         ' onerror="this.onerror=null;this.src=\'' + PLACEHOLDER_IMG + '\';"></button>';
+    h += '</div>';
+    /* Lazy gallery thumbnails under the main photo — each opens the shared
+       image viewer at the matching index (0 = main photo). */
+    if (viewerItems.length > 1) {
+      h += '<div class="product-thumbs" role="group" aria-label="' + esc(t('gallery.open')) + '">';
+      for (var ti = 0; ti < viewerItems.length; ti++) {
+        h += '<button type="button" class="product-thumb" data-product-viewer="1" data-viewer-index="' + ti + '"' +
+             ' aria-haspopup="dialog" aria-label="' + esc(viewerItems[ti].alt) + '">' +
+             '<img src="' + esc(viewerItems[ti].image) + '" alt="' + esc(viewerItems[ti].alt) + '"' +
+             ' loading="lazy" decoding="async"' +
+             ' onerror="this.onerror=null;this.src=\'' + PLACEHOLDER_IMG + '\';"></button>';
+      }
+      h += '</div>';
+    }
     h += '<div class="product-body">';
     if (cat) {
       h += '<span class="product-cat">' + esc(loc(cat.label || cat)) + '</span>';
@@ -365,6 +398,11 @@
     } else {
       for (var j = 0; j < GALLERY.length; j++) h += galleryItem(GALLERY[j], j);
     }
+    /* real videos after the photos — each renders thumbnail-only (no MP4
+       request until clicked); append entries in TABESH.VIDEOS to add more */
+    if (VIDEOS && VIDEOS.length) {
+      for (var vi = 0; vi < VIDEOS.length; vi++) h += galleryVideoCard(VIDEOS[vi], vi);
+    }
     grid.innerHTML = h;
     revealInit();
   }
@@ -398,12 +436,196 @@
     var next = document.getElementById('imageNext');
     if (prev) prev.classList.toggle('d-none', !multiple);
     if (next) next.classList.toggle('d-none', !multiple);
+    viewerResetZoom(); /* every new image starts un-zoomed and un-panned */
   }
+
+  /* ------------------- zoom / pan / swipe / pinch ------------------- */
+  /* Zoom state lives on viewerState and is reset by showViewerImage().
+     Pan is clamped so a zoomed image never leaves a sensible area.
+     Swipe navigation is ONLY active at zoom = 1; while zoomed, a one-finger
+     drag pans the image instead (no navigation). Pointer Events are used
+     (mouse + touch + pen), so no extra library is required. */
+  var ZOOM_MIN = 1, ZOOM_MAX = 5, ZOOM_STEP = 1.25;
+  viewerState.zoom = 1;
+  viewerState.tx = 0;
+  viewerState.ty = 0;
+
+  /** Persian digits for the zoom level indicator. */
+  function faNum(n) {
+    var d = '۰۱۲۳۴۵۶۷۸۹', s = String(n), out = '', i;
+    for (i = 0; i < s.length; i++) out += /[0-9]/.test(s[i]) ? d[+s[i]] : s[i];
+    return out;
+  }
+
+  /** Clamp pan so the (scaled) image stays inside the frame. */
+  function clampPan() {
+    var img = document.getElementById('imageViewerImg');
+    if (!img || viewerState.zoom === 1) { viewerState.tx = 0; viewerState.ty = 0; return; }
+    var maxX = Math.max(0, (img.clientWidth * (viewerState.zoom - 1)) / 2);
+    var maxY = Math.max(0, (img.clientHeight * (viewerState.zoom - 1)) / 2);
+    viewerState.tx = Math.max(-maxX, Math.min(maxX, viewerState.tx));
+    viewerState.ty = Math.max(-maxY, Math.min(maxY, viewerState.ty));
+  }
+
+  function applyZoom() {
+    clampPan();
+    var img = document.getElementById('imageViewerImg');
+    if (!img) return;
+    img.style.transform = 'translate(' + viewerState.tx + 'px, ' + viewerState.ty + 'px) scale(' + viewerState.zoom + ')';
+    img.classList.toggle('zoomed', viewerState.zoom > 1);
+    var lvl = document.getElementById('imageZoomLevel');
+    if (lvl) lvl.textContent = faNum(Math.round(viewerState.zoom * 100)) + '٪';
+  }
+
+  function viewerZoomTo(z, cx, cy) {
+    var img = document.getElementById('imageViewerImg');
+    if (!img) return;
+    var old = viewerState.zoom;
+    var next = Math.max(ZOOM_MIN, Math.min(ZOOM_MAX, z));
+    if (cx !== undefined && cy !== undefined && next !== old) {
+      /* keep the point under the cursor / finger midpoint stationary */
+      var rect = img.getBoundingClientRect();
+      var px = cx - rect.left - rect.width / 2;
+      var py = cy - rect.top - rect.height / 2;
+      var k = next / old;
+      viewerState.tx = px - k * (px - viewerState.tx);
+      viewerState.ty = py - k * (py - viewerState.ty);
+    }
+    viewerState.zoom = next;
+    applyZoom();
+  }
+
+  function viewerResetZoom() {
+    viewerState.zoom = 1;
+    viewerState.tx = 0;
+    viewerState.ty = 0;
+    applyZoom();
+  }
+
+  /** Zoom buttons, wheel zoom, double-click / double-tap, pinch-zoom,
+      pan-while-zoomed and swipe navigation — one Pointer-Events handler. */
+  function bindViewerGestures() {
+    var stage = document.getElementById('imageStage');
+    var img = document.getElementById('imageViewerImg');
+    if (!stage || !img || stage.dataset.gesturesBound) return;
+    stage.dataset.gesturesBound = '1';
+
+    /* desktop zoom buttons */
+    var zin = document.getElementById('imageZoomIn');
+    var zout = document.getElementById('imageZoomOut');
+    var zreset = document.getElementById('imageZoomReset');
+    if (zin) zin.addEventListener('click', function () { viewerZoomTo(viewerState.zoom * ZOOM_STEP); });
+    if (zout) zout.addEventListener('click', function () { viewerZoomTo(viewerState.zoom / ZOOM_STEP); });
+    if (zreset) zreset.addEventListener('click', viewerResetZoom);
+
+    /* wheel zoom over the stage */
+    stage.addEventListener('wheel', function (e) {
+      e.preventDefault();
+      viewerZoomTo(viewerState.zoom * (e.deltaY < 0 ? ZOOM_STEP : 1 / ZOOM_STEP), e.clientX, e.clientY);
+    }, { passive: false });
+
+    /* double-click / double-tap toggles zoom */
+    var lastTap = 0, lastX = -999, lastY = -999;
+    stage.addEventListener('pointerup', function (e) {
+      if (gestureState.gesture) return; /* a drag/pinch is not a tap */
+      var now = Date.now();
+      if (now - lastTap < 320 && Math.abs(e.clientX - lastX) < 40 && Math.abs(e.clientY - lastY) < 40) {
+        lastTap = 0;
+        if (viewerState.zoom > 1) viewerResetZoom();
+        else viewerZoomTo(2.5, e.clientX, e.clientY);
+      } else {
+        lastTap = now; lastX = e.clientX; lastY = e.clientY;
+      }
+    });
+
+    /* gesture state machine: pinch (2 pointers) > pan (zoomed, 1 pointer)
+       > swipe (zoom = 1, 1 pointer) */
+    var gestureState = { pointers: {}, gesture: null, start: null, pinch: null };
+
+    stage.addEventListener('pointerdown', function (e) {
+      /* Buttons (prev / next / zoom) live inside the stage: let their clicks
+         through untouched. preventDefault() on pointerdown would swallow the
+         subsequent click event and setPointerCapture would retarget it. */
+      if (e.target.closest && e.target.closest('button')) return;
+      gestureState.pointers[e.pointerId] = { x: e.clientX, y: e.clientY };
+      if (stage.setPointerCapture) { try { stage.setPointerCapture(e.pointerId); } catch (err) { /* noop */ } }
+      var ids = Object.keys(gestureState.pointers);
+      if (ids.length === 2) {
+        gestureState.gesture = 'pinch';
+        var a = gestureState.pointers[ids[0]], b = gestureState.pointers[ids[1]];
+        gestureState.pinch = { dist: Math.hypot(a.x - b.x, a.y - b.y), zoom: viewerState.zoom };
+        gestureState.start = null;
+      } else if (ids.length === 1) {
+        gestureState.gesture = viewerState.zoom > 1 ? 'pan' : 'swipe';
+        gestureState.start = { x: e.clientX, y: e.clientY, tx: viewerState.tx, ty: viewerState.ty, moved: false };
+        if (gestureState.gesture === 'pan' && img.classList) img.classList.add('panning');
+      }
+      e.preventDefault();
+    });
+
+    stage.addEventListener('pointermove', function (e) {
+      var st = gestureState.pointers[e.pointerId];
+      if (!st) return;
+      st.x = e.clientX; st.y = e.clientY;
+      var s = gestureState;
+      if (s.gesture === 'pinch' && s.pinch) {
+        var ids = Object.keys(s.pointers);
+        if (ids.length >= 2) {
+          var a = s.pointers[ids[0]], b = s.pointers[ids[1]];
+          var dist = Math.hypot(a.x - b.x, a.y - b.y);
+          if (dist > 0) {
+            viewerZoomTo(s.pinch.zoom * (dist / s.pinch.dist), (a.x + b.x) / 2, (a.y + b.y) / 2);
+          }
+        }
+      } else if (s.gesture === 'pan' && s.start) {
+        viewerState.tx = s.start.tx + (e.clientX - s.start.x);
+        viewerState.ty = s.start.ty + (e.clientY - s.start.y);
+        applyZoom();
+      } else if (s.gesture === 'swipe' && s.start) {
+        var dx = e.clientX - s.start.x, dy = e.clientY - s.start.y;
+        /* subtle drag feedback while a horizontal navigation is in progress */
+        if (Math.abs(dx) > 12 && Math.abs(dx) > Math.abs(dy)) {
+          s.start.moved = true;
+          viewerState.tx = dx * 0.25;
+          applyZoom();
+        }
+      }
+    });
+
+    function endPointer(e) {
+      var s = gestureState;
+      if (s.gesture === 'swipe' && s.start) {
+        var dx = e.clientX - s.start.x, dy = e.clientY - s.start.y;
+        /* swipe navigation ONLY at zoom = 1 and only for a clear horizontal
+           gesture: swipe left → next, swipe right → previous (index-based) */
+        if (s.start.moved && Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.4 && viewerState.items.length > 1) {
+          if (dx < 0) stepViewer(1); else stepViewer(-1);
+        } else {
+          applyZoom(); /* snap back */
+        }
+      }
+      delete s.pointers[e.pointerId];
+      if (img.classList) img.classList.remove('panning');
+      if (Object.keys(s.pointers).length === 0) {
+        s.gesture = null; s.start = null; s.pinch = null;
+      } else if (s.gesture === 'pinch' && Object.keys(s.pointers).length === 1) {
+        /* one finger lifted from a pinch: the remaining one pans if zoomed */
+        var rest = s.pointers[Object.keys(s.pointers)[0]];
+        s.gesture = viewerState.zoom > 1 ? 'pan' : 'swipe';
+        s.start = { x: rest.x, y: rest.y, tx: viewerState.tx, ty: viewerState.ty, moved: false };
+        s.pinch = null;
+      }
+    }
+    stage.addEventListener('pointerup', endPointer);
+    stage.addEventListener('pointercancel', endPointer);
+  }
+
 
   function openImageViewer(items, index, triggerEl) {
     if (!items || !items.length) return;
     var modalEl = document.getElementById('imageModal');
     if (!modalEl || !window.bootstrap) return;
+    bindViewerGestures();
     viewerState.items = items;
     viewerState.index = Math.max(0, Math.min(index, items.length - 1));
     viewerState.trigger = triggerEl || null;
@@ -416,10 +638,27 @@
     modalEl.addEventListener('hidden.bs.modal', function () {
       viewerState.items = [];
       viewerState.index = 0;
+      viewerResetZoom();
       var trig = viewerState.trigger;
       viewerState.trigger = null;
       if (trig) trig.focus();
     }, { once: true });
+  }
+
+  /* keyboard support inside the lightbox: ←/→ navigate (index-based — the
+     same mapping in RTL and LTR), +/−/0 zoom, Escape closes (Bootstrap). */
+  function bindViewerKeyboard() {
+    var modalEl = document.getElementById('imageModal');
+    if (!modalEl || !modalEl.dataset || modalEl.dataset.keyboardBound) return;
+    modalEl.dataset.keyboardBound = '1';
+    modalEl.addEventListener('keydown', function (e) {
+      if (!viewerState.items.length) return;
+      if (e.key === 'ArrowLeft') { e.preventDefault(); stepViewer(-1); }
+      else if (e.key === 'ArrowRight') { e.preventDefault(); stepViewer(1); }
+      else if (e.key === '+' || e.key === '=') { e.preventDefault(); viewerZoomTo(viewerState.zoom * ZOOM_STEP); }
+      else if (e.key === '-') { e.preventDefault(); viewerZoomTo(viewerState.zoom / ZOOM_STEP); }
+      else if (e.key === '0') { e.preventDefault(); viewerResetZoom(); }
+    });
   }
 
   function stepViewer(delta) {
@@ -428,20 +667,18 @@
     showViewerImage();
   }
 
-  function openVideoFor(productId, triggerEl) {
-    var p = null;
-    for (var i = 0; i < PRODUCTS.length; i++) {
-      if (PRODUCTS[i].id === productId) { p = PRODUCTS[i]; break; }
-    }
-    if (!p || !p.video) return;
-
+  /** Shared video-modal opener. The MP4 is attached ONLY here (on click);
+      preload="none" keeps it off the network until this point, and the
+      hidden.bs.modal cleanup clears src so resources are freed and the next
+      click re-loads the file. */
+  function openVideo(opts, triggerEl) {
     var player  = document.getElementById('videoPlayer');
     var missing = document.getElementById('videoMissing');
     var titleEl = document.getElementById('videoModalTitle');
     var modalEl = document.getElementById('videoModal');
-    if (!player || !modalEl || !window.bootstrap) return;
+    if (!player || !modalEl || !window.bootstrap || !opts || !opts.video) return;
 
-    if (titleEl) titleEl.textContent = loc(p.name);
+    if (titleEl) titleEl.textContent = opts.title || '';
     if (missing) missing.classList.add('d-none');
 
     player.onerror = function () {
@@ -449,11 +686,17 @@
       if (missing) missing.classList.remove('d-none');
     };
     player.classList.remove('d-none');
-    if (p.poster) { player.setAttribute('poster', p.poster); } else { player.removeAttribute('poster'); }
-    player.setAttribute('src', p.video);
+    if (opts.poster) { player.setAttribute('poster', opts.poster); } else { player.removeAttribute('poster'); }
+    player.setAttribute('src', opts.video);
     player.load();
 
     bootstrap.Modal.getOrCreateInstance(modalEl).show();
+    if (opts.autoplay) {
+      modalEl.addEventListener('shown.bs.modal', function () {
+        var p = player.play();
+        if (p && p.catch) p.catch(function () { /* user gesture policies */ });
+      }, { once: true });
+    }
     modalEl.addEventListener('hidden.bs.modal', function () {
       player.onerror = null;
       player.pause();
@@ -464,6 +707,29 @@
       if (missing) missing.classList.add('d-none');
       if (triggerEl && triggerEl.focus) triggerEl.focus();
     }, { once: true });
+  }
+
+  function openVideoFor(productId, triggerEl) {
+    var p = null;
+    for (var i = 0; i < PRODUCTS.length; i++) {
+      if (PRODUCTS[i].id === productId) { p = PRODUCTS[i]; break; }
+    }
+    if (!p || !p.video) return;
+    openVideo({ video: p.video, poster: p.poster, title: loc(p.name) }, triggerEl);
+  }
+
+  /** Gallery video card (data-driven from TABESH.VIDEOS). Renders ONLY the
+      PNG thumbnail + title + play badge — no <video> element, so the MP4
+      never hits the network before the user clicks. */
+  function galleryVideoCard(v, index) {
+    var title = loc(v.title);
+    var h = '<button type="button" class="gallery-item gallery-video" data-reveal data-video-id="' + esc(v.id) + '"' +
+            ' aria-label="' + esc(t('products.video.btn') + ' — ' + title) + '">';
+    h += renderImg(v.thumbnail, title);
+    h += '<span class="video-play-badge" aria-hidden="true"><i class="bi bi-play-fill"></i></span>';
+    h += '<span class="gallery-cap">' + esc(title) + '</span>';
+    h += '</button>';
+    return h;
   }
 
   /* -------------------- product inquiry (Formspree) -------------------- */
@@ -680,9 +946,22 @@
 
     /* product "Watch Video" buttons (delegated) — the button keeps focus and
        receives it back when the video modal closes */
+    /* product photo / gallery thumbnails → shared image viewer (lightbox);
+       "Watch Video" and inquiry buttons keep their own delegated handlers */
     var grid = document.getElementById('productsGrid');
     if (grid) {
       grid.addEventListener('click', function (e) {
+        var photoBtn = e.target.closest('.product-photo, .product-thumb');
+        if (photoBtn && photoBtn.getAttribute('data-product-viewer')) {
+          var card = photoBtn.closest('.product-card');
+          var pid = card ? card.getAttribute('data-card-product') : null;
+          var items = pid ? productViewerItems[pid] : null;
+          if (items && items.length) {
+            var idx = Number(photoBtn.getAttribute('data-viewer-index')) || 0;
+            openImageViewer(items, idx, photoBtn);
+          }
+          return;
+        }
         var btn = e.target.closest('.watch-video');
         if (btn) { openVideoFor(btn.getAttribute('data-product-id'), btn); return; }
         var inqBtn = e.target.closest('.inquiry-open');
@@ -710,6 +989,18 @@
     var gal = document.getElementById('galleryGrid');
     if (gal) {
       gal.addEventListener('click', function (e) {
+        var vid = e.target.closest('.gallery-video');
+        if (vid) {
+          var vidId = vid.getAttribute('data-video-id');
+          for (var v = 0; v < VIDEOS.length; v++) {
+            if (VIDEOS[v].id === vidId) {
+              openVideo({ video: VIDEOS[v].video, poster: VIDEOS[v].thumbnail,
+                          title: loc(VIDEOS[v].title), autoplay: true }, vid);
+              break;
+            }
+          }
+          return;
+        }
         var btn = e.target.closest('.gallery-item');
         if (!btn) return;
         var idx = Number(btn.getAttribute('data-gallery-index'));
@@ -722,6 +1013,8 @@
     if (prevBtn) prevBtn.addEventListener('click', function () { stepViewer(-1); });
     var nextBtn = document.getElementById('imageNext');
     if (nextBtn) nextBtn.addEventListener('click', function () { stepViewer(1); });
+    /* viewer keyboard shortcuts (←/→, +/−/0) — Escape is Bootstrap's */
+    bindViewerKeyboard();
 
     /* contact form → Formspree via fetch (no page reload) */
     var form = document.getElementById('contactForm');

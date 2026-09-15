@@ -1050,7 +1050,27 @@ TABESH.PRODUCTS = [
       tr: 'Farsça yazılımı ve hassas, titreşimsiz hareketiyle ahşap parçaların tek tip üretimi için tam otomatik bir ahşap torna makinesi.'
     },
     description: null,
-    image: 'assets/images/products/wood-turning.jpg',
+    image: 'assets/images/products/wood-turning/01.jpg',
+    /* Real product photos (wood-turning). The first entry mirrors the main
+       card image; the rest are rendered as lazy gallery thumbnails that open
+       the shared image viewer (lightbox). Keep `image` in sync with item #0. */
+    gallery: [
+      { image: 'assets/images/products/wood-turning/01.jpg',
+        alt: { fa: 'دستگاه خراطی اتوماتیک تابش — نمای کلی دستگاه',
+               en: 'TABESH automatic wood turning machine — general view',
+               ar: 'ماكينة الخراطة الأوتوماتيكية تابش — منظر عام',
+               tr: 'TABESH otomatik ahşap torna makinesi — genel görünüm' } },
+      { image: 'assets/images/products/wood-turning/02.jpg',
+        alt: { fa: 'دستگاه خراطی اتوماتیک تابش — نمای جزئیات',
+               en: 'TABESH automatic wood turning machine — detail view',
+               ar: 'ماكينة الخراطة الأوتوماتيكية تابش — منظر التفاصيل',
+               tr: 'TABESH otomatik ahşap torna makinesi — detay görünüm' } },
+      { image: 'assets/images/products/wood-turning/03.jpg',
+        alt: { fa: 'دستگاه خراطی اتوماتیک تابش — نمونه تولید',
+               en: 'TABESH automatic wood turning machine — production sample',
+               ar: 'ماكينة الخراطة الأوتوماتيكية تابش — عينة الإنتاج',
+               tr: 'TABESH otomatik ahşap torna makinesi — üretim örneği' } }
+    ],
     poster: 'assets/images/products/posters/wood-turning.jpg',
     video: null,
     inquiry: { type: 'info' },
@@ -1108,7 +1128,31 @@ TABESH.PRODUCTS = [
       tr: 'Fotovoltaik paneller için çift eksenli güneş takip sistemi; mekanik yapı, hareket sistemi ve kontrol sisteminden oluşur.'
     },
     description: null,
-    image: 'assets/images/products/solar-tracker.jpg',
+    image: 'assets/images/products/solar-tracker/01.png',
+    /* Real product photos (solar-tracker): 01.png main card image, 02–04 in
+       the product gallery (lazy thumbnails → shared lightbox). */
+    gallery: [
+      { image: 'assets/images/products/solar-tracker/01.png',
+        alt: { fa: 'ردیاب خورشیدی دو محوره تابش — نمای کلی دستگاه',
+               en: 'TABESH dual-axis solar tracker — general view',
+               ar: 'متتبع الشمس ثنائي المحور تابش — منظر عام',
+               tr: 'TABESH çift eksenli güneş takipçisi — genel görünüm' } },
+      { image: 'assets/images/products/solar-tracker/02.jpg',
+        alt: { fa: 'ردیاب خورشیدی دو محوره تابش — پنل خورشیدی',
+               en: 'TABESH dual-axis solar tracker — solar panel',
+               ar: 'متتبع الشمس ثنائي المحور تابش — اللوحة الشمسية',
+               tr: 'TABESH çift eksenli güneş takipçisi — güneş paneli' } },
+      { image: 'assets/images/products/solar-tracker/03.jpg',
+        alt: { fa: 'ردیاب خورشیدی دو محوره تابش — سازه و پایه',
+               en: 'TABESH dual-axis solar tracker — structure and base',
+               ar: 'متتبع الشمس ثنائي المحور تابش — الهيكل والقاعدة',
+               tr: 'TABESH çift eksenli güneş takipçisi — yapı ve taban' } },
+      { image: 'assets/images/products/solar-tracker/04.jpg',
+        alt: { fa: 'ردیاب خورشیدی دو محوره تابش — نمای جزئیات',
+               en: 'TABESH dual-axis solar tracker — detail view',
+               ar: 'متتبع الشمس ثنائي المحور تابش — منظر التفاصيل',
+               tr: 'TABESH çift eksenli güneş takipçisi — detay görünüm' } }
+    ],
     poster: 'assets/images/products/posters/solar-tracker.jpg',
     video: null,
     inquiry: { type: 'info' },
@@ -1155,7 +1199,26 @@ TABESH.PRODUCTS = [
       tr: 'CNC tezgahlarının tasarımı ve imalatı ile her projenin ihtiyacına uygun parça işleme.'
     },
     description: null,
-    image: 'assets/images/products/cnc-machine.jpg',
+    image: 'assets/images/products/cnc/01.jpg',
+    /* Real product photos (cnc): 01.jpg main card image, 02–03 in the
+       product gallery (lazy thumbnails → shared lightbox). */
+    gallery: [
+      { image: 'assets/images/products/cnc/01.jpg',
+        alt: { fa: 'ماشین CNC تابش — نمای کلی دستگاه',
+               en: 'TABESH CNC machine — general view',
+               ar: 'ماكينة CNC تابش — منظر عام',
+               tr: 'TABESH CNC makinesi — genel görünüm' } },
+      { image: 'assets/images/products/cnc/02.jpg',
+        alt: { fa: 'ماشین CNC تابش — نمای جزئیات',
+               en: 'TABESH CNC machine — detail view',
+               ar: 'ماكينة CNC تابش — منظر التفاصيل',
+               tr: 'TABESH CNC makinesi — detay görünüm' } },
+      { image: 'assets/images/products/cnc/03.jpg',
+        alt: { fa: 'ماشین CNC تابش — نمونه ماشین‌کاری',
+               en: 'TABESH CNC machine — machined sample',
+               ar: 'ماكينة CNC تابش — عينة التشغيل',
+               tr: 'TABESH CNC makinesi — işlenmiş örnek' } }
+    ],
     poster: 'assets/images/products/posters/cnc-machine.jpg',
     video: null,
     inquiry: { type: 'info' },
@@ -1213,7 +1276,26 @@ TABESH.PRODUCTS = [
  * ------------------------------------------------------------------------ */
 TABESH.PROJECTS = [];
 
-TABESH.WORKSHOP = [];
+/* Real workshop photos (assets/images/workshop/01–04.jpg). Rendered by
+   renderWorkshop() with lazy loading and placeholder fallback. */
+TABESH.WORKSHOP = [
+  { id: 'ws-1',
+    image: 'assets/images/workshop/01.jpg',
+    category: 'workshop',
+    alt: 'کارگاه تابش انرژی بام شهر — فضای کارگاه' },
+  { id: 'ws-2',
+    image: 'assets/images/workshop/02.jpg',
+    category: 'cnc',
+    alt: 'کارگاه تابش انرژی بام شهر — ماشین‌کاری CNC' },
+  { id: 'ws-3',
+    image: 'assets/images/workshop/03.jpg',
+    category: 'welding',
+    alt: 'کارگاه تابش انرژی بام شهر — جوشکاری' },
+  { id: 'ws-4',
+    image: 'assets/images/workshop/04.jpg',
+    category: 'assembly',
+    alt: 'کارگاه تابش انرژی بام شهر — مونتاژ و ساخت' }
+];
 
 TABESH.WORKSHOP_CATEGORIES = {
   workshop: {
@@ -1288,4 +1370,46 @@ TABESH.WORKSHOP_CATEGORIES = {
   }
 };
 
-TABESH.GALLERY = [];
+/* Real gallery photos (assets/images/gallery/01–05.jpg). Rendered by
+   renderGallery(); clicking an item opens the shared image viewer. */
+TABESH.GALLERY = [
+  { id: 'gal-1',
+    image: 'assets/images/gallery/01.jpg',
+    alt: 'گالری تابش انرژی بام شهر — تصویر ۱' },
+  { id: 'gal-2',
+    image: 'assets/images/gallery/02.jpg',
+    alt: 'گالری تابش انرژی بام شهر — تصویر ۲' },
+  { id: 'gal-3',
+    image: 'assets/images/gallery/03.jpg',
+    alt: 'گالری تابش انرژی بام شهر — تصویر ۳' },
+  { id: 'gal-4',
+    image: 'assets/images/gallery/04.jpg',
+    alt: 'گالری تابش انرژی بام شهر — تصویر ۴' },
+  { id: 'gal-5',
+    image: 'assets/images/gallery/05.jpg',
+    alt: 'گالری تابش انرژی بام شهر — تصویر ۵' }
+];
+
+/* ------------------------------------------------------------------------ *
+ * GALLERY VIDEOS — real videos shown in the Gallery section.
+ * Convention: assets/videos/<NN>.mp4 + assets/videos/<NN>.png (thumbnail).
+ * The MP4 is NOT loaded anywhere until the user clicks the card — the card
+ * renders only the PNG thumbnail; the video player lives in the shared
+ * #videoModal and its src is set (and cleared) per click.
+ * To add another video, just append one entry here:
+ *   { id, video: 'assets/videos/02.mp4', thumbnail: 'assets/videos/02.png',
+ *     title: { fa, en, ar, tr } }
+ * ------------------------------------------------------------------------ */
+TABESH.VIDEOS = [
+  {
+    id: 'vid-1',
+    video: 'assets/videos/01.mp4',
+    thumbnail: 'assets/videos/01.png',
+    title: {
+      fa: 'نمایش عملکرد دستگاه',
+      en: 'Machine in action',
+      ar: 'عرض أداء الجهاز',
+      tr: 'Makine performansı'
+    }
+  }
+];
