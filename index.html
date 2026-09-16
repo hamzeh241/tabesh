@@ -222,7 +222,7 @@
       <h2 class="section-title" data-i18n="activities.title">در چه حوزه‌هایی فعال هستیم؟</h2>
       <span class="head-bar" aria-hidden="true"></span>
     </div>
-    <div class="activities-grid">
+    <div class="activities-grid collapsed" id="activitiesGrid">
       <article class="act-card" data-reveal>
         <span class="act-icon"><i class="bi bi-sun" aria-hidden="true"></i></span>
         <h3 class="act-title" data-i18n="act.solar.title">تجهیزات انرژی خورشیدی</h3>
@@ -243,61 +243,68 @@
         <h3 class="act-title" data-i18n="act.wood.title">ماشین‌های تراش چوب</h3>
         <p class="act-desc" data-i18n="act.wood.desc">ساخت ماشین‌آلات تراش چوب برای خراطی و تولید قطعات چوبی.</p>
       </article>
-      <article class="act-card" data-reveal>
+      <article class="act-card act-extra" data-reveal>
         <span class="act-icon"><i class="bi bi-rulers" aria-hidden="true"></i></span>
         <h3 class="act-title" data-i18n="act.custom.title">طراحی و ساخت سفارشی</h3>
         <p class="act-desc" data-i18n="act.custom.desc">اجرای سفارش‌های مهندسی و ساخت مطابق نیاز شما، از ایده تا محصول.</p>
       </article>
-      <article class="act-card" data-reveal>
+      <article class="act-card act-extra" data-reveal>
         <span class="act-icon"><i class="bi bi-pencil-square" aria-hidden="true"></i></span>
         <h3 class="act-title" data-i18n="act.design.title">طراحی دستگاه از صفر</h3>
         <p class="act-desc" data-i18n="act.design.desc">طراحی کامل یک دستگاه جدید بر اساس نیاز شما؛ از ایده و مشخصات فنی تا نقشه‌های ساخت.</p>
       </article>
-      <article class="act-card" data-reveal>
+      <article class="act-card act-extra" data-reveal>
         <span class="act-icon"><i class="bi bi-file-earmark-ruled" aria-hidden="true"></i></span>
         <h3 class="act-title" data-i18n="act.build.drawing.title">ساخت دستگاه بر اساس نقشه مشتری</h3>
         <p class="act-desc" data-i18n="act.build.drawing.desc">ساخت و مونتاژ دستگاه دقیقاً مطابق نقشه و مشخصات ارائه‌شده توسط مشتری.</p>
       </article>
-      <article class="act-card" data-reveal>
+      <article class="act-card act-extra" data-reveal>
         <span class="act-icon"><i class="bi bi-diagram-3" aria-hidden="true"></i></span>
         <h3 class="act-title" data-i18n="act.structure.title">طراحی سازه</h3>
         <p class="act-desc" data-i18n="act.structure.desc">طراحی سازه‌های مکانیکی و فلزی برای ماشین‌آلات و تجهیزات صنعتی.</p>
       </article>
-      <article class="act-card" data-reveal>
+      <article class="act-card act-extra" data-reveal>
         <span class="act-icon"><i class="bi bi-gear" aria-hidden="true"></i></span>
         <h3 class="act-title" data-i18n="act.parts.title">ساخت قطعه</h3>
         <p class="act-desc" data-i18n="act.parts.desc">ساخت قطعات مکانیکی و فلزی، به‌صورت تکی یا سری، مطابق نقشه.</p>
       </article>
-      <article class="act-card" data-reveal>
+      <article class="act-card act-extra" data-reveal>
         <span class="act-icon"><i class="bi bi-lightning-charge" aria-hidden="true"></i></span>
         <h3 class="act-title" data-i18n="act.welding.title">جوشکاری</h3>
         <p class="act-desc" data-i18n="act.welding.desc">جوشکاری و ساخت فلزی برای سازه‌ها، شاسی‌ها و تجهیزات صنعتی.</p>
       </article>
-      <article class="act-card" data-reveal>
+      <article class="act-card act-extra" data-reveal>
         <span class="act-icon"><i class="bi bi-cpu" aria-hidden="true"></i></span>
         <h3 class="act-title" data-i18n="act.pcb.title">طراحی برد الکترونیکی</h3>
         <p class="act-desc" data-i18n="act.pcb.desc">طراحی و ساخت بردها و سیستم‌های الکترونیکی متناسب با هر دستگاه.</p>
       </article>
-      <article class="act-card" data-reveal>
+      <article class="act-card act-extra" data-reveal>
         <span class="act-icon"><i class="bi bi-robot" aria-hidden="true"></i></span>
         <h3 class="act-title" data-i18n="act.automation.title">اتوماسیون</h3>
         <p class="act-desc" data-i18n="act.automation.desc">اتوماسیون فرآیندها و ماشین‌آلات صنعتی.</p>
       </article>
-      <article class="act-card" data-reveal>
+      <article class="act-card act-extra" data-reveal>
         <span class="act-icon"><i class="bi bi-sliders" aria-hidden="true"></i></span>
         <h3 class="act-title" data-i18n="act.control.title">سیستم‌های کنترل</h3>
         <p class="act-desc" data-i18n="act.control.desc">طراحی و پیاده‌سازی سیستم‌های کنترل برای ماشین‌آلات و تجهیزات.</p>
       </article>
-      <article class="act-card" data-reveal>
+      <article class="act-card act-extra" data-reveal>
         <span class="act-icon"><i class="bi bi-box-seam" aria-hidden="true"></i></span>
         <h3 class="act-title" data-i18n="act.prototyping.title">نمونه‌سازی</h3>
         <p class="act-desc" data-i18n="act.prototyping.desc">ساخت نمونه اولیه برای ارزیابی و بهینه‌سازی طراحی پیش از تولید.</p>
       </article>
-      <article class="act-card" data-reveal>
+      <article class="act-card act-extra" data-reveal>
         <span class="act-icon"><i class="bi bi-arrow-up-circle" aria-hidden="true"></i></span>
         <h3 class="act-title" data-i18n="act.upgrade.title">اصلاح و ارتقای دستگاه موجود</h3>
         <p class="act-desc" data-i18n="act.upgrade.desc">بازسازی، اصلاح و ارتقای دستگاه‌ها و تجهیزات موجود برای بهبود عملکرد.</p>
       </article>
+    </div>
+    <!-- Show more/less: cards 5..15 (.act-extra) are hidden until expanded. -->
+    <div class="activities-more-wrap" data-reveal>
+      <button type="button" id="activitiesToggle" class="activities-toggle" aria-expanded="false" aria-controls="activitiesGrid">
+        <span class="activities-toggle-label">نمایش بیشتر</span>
+        <i class="bi bi-chevron-down activities-toggle-chevron" aria-hidden="true"></i>
+      </button>
     </div>
   </div>
 </section>
@@ -312,22 +319,8 @@
       <p class="section-note" data-i18n="mfg.subtitle">فرآیند ساخت سفارشی ما در شش گام پیش می‌رود:</p>
     </div>
     <p class="mfg-motto text-center" data-reveal><span data-i18n="mfg.motto">ایده شما، طراحی و ساخت ما</span></p>
-    <div class="caps-strip text-center" data-reveal>
-      <h3 class="caps-title" data-i18n="mfg.caps.title">توانمندی‌های ساخت سفارشی</h3>
-      <div class="d-flex flex-wrap justify-content-center gap-2">
-        <span class="chip"><i class="bi bi-check2" aria-hidden="true"></i><span data-i18n="act.design.title">طراحی دستگاه از صفر</span></span>
-        <span class="chip"><i class="bi bi-check2" aria-hidden="true"></i><span data-i18n="act.build.drawing.title">ساخت دستگاه بر اساس نقشه مشتری</span></span>
-        <span class="chip"><i class="bi bi-check2" aria-hidden="true"></i><span data-i18n="act.structure.title">طراحی سازه</span></span>
-        <span class="chip"><i class="bi bi-check2" aria-hidden="true"></i><span data-i18n="act.parts.title">ساخت قطعه</span></span>
-        <span class="chip"><i class="bi bi-check2" aria-hidden="true"></i><span data-i18n="act.cnc.title">CNC</span></span>
-        <span class="chip"><i class="bi bi-check2" aria-hidden="true"></i><span data-i18n="act.welding.title">جوشکاری</span></span>
-        <span class="chip"><i class="bi bi-check2" aria-hidden="true"></i><span data-i18n="act.pcb.title">طراحی برد الکترونیکی</span></span>
-        <span class="chip"><i class="bi bi-check2" aria-hidden="true"></i><span data-i18n="act.automation.title">اتوماسیون</span></span>
-        <span class="chip"><i class="bi bi-check2" aria-hidden="true"></i><span data-i18n="act.control.title">سیستم‌های کنترل</span></span>
-        <span class="chip"><i class="bi bi-check2" aria-hidden="true"></i><span data-i18n="act.prototyping.title">نمونه‌سازی</span></span>
-        <span class="chip"><i class="bi bi-check2" aria-hidden="true"></i><span data-i18n="act.upgrade.title">اصلاح و ارتقای دستگاه موجود</span></span>
-      </div>
-    </div>
+    <!-- Custom-manufacturing capability chip strip removed on purpose:
+         it repeated the activity cards; the six-step process follows the motto directly. -->
     <ol class="process-flow" data-reveal>
       <li class="process-step">
         <span class="step-num" aria-hidden="true">1</span>
@@ -392,18 +385,9 @@
       <p class="section-note" data-i18n="workshop.subtitle">نگاهی به توانمندی‌های عملی و تجهیزات کارگاه تابش. تصاویر واقعی به‌زودی جایگزین می‌شوند.</p>
       <p class="workshop-lead" data-i18n="workshop.lead">کارگاه، جایی است که طراحی به محصول تبدیل می‌شود.</p>
     </div>
-    <div class="caps-strip text-center" data-reveal>
-      <div class="d-flex flex-wrap justify-content-center gap-2">
-        <span class="chip"><i class="bi bi-gear-wide-connected" aria-hidden="true"></i><span data-i18n="workshop.cap.cnc">ماشین CNC</span></span>
-        <span class="chip"><i class="bi bi-lightning-charge" aria-hidden="true"></i><span data-i18n="workshop.cap.welding">تجهیزات جوشکاری</span></span>
-        <span class="chip"><i class="bi bi-arrow-repeat" aria-hidden="true"></i><span data-i18n="workshop.cap.lathe">ماشین تراش</span></span>
-        <span class="chip"><i class="bi bi-nut-fill" aria-hidden="true"></i><span data-i18n="workshop.cap.milling">ماشین فرز</span></span>
-        <span class="chip"><i class="bi bi-rulers" aria-hidden="true"></i><span data-i18n="workshop.cap.measurement">ابزار اندازه‌گیری</span></span>
-        <span class="chip"><i class="bi bi-cpu" aria-hidden="true"></i><span data-i18n="workshop.cap.electronics">تجهیزات الکترونیک</span></span>
-        <span class="chip"><i class="bi bi-wrench-adjustable" aria-hidden="true"></i><span data-i18n="workshop.cap.assembly">تجهیزات مونتاژ</span></span>
-        <span class="chip"><i class="bi bi-clipboard-check" aria-hidden="true"></i><span data-i18n="workshop.cap.testing">تجهیزات تست و آزمون</span></span>
-      </div>
-    </div>
+    <!-- Workshop capability chip strip removed on purpose: the equipment list
+         repeated what the real workshop photos below already show. Only the
+         workshop intro above and the photo tiles below are kept. -->
     <!-- Workshop tiles are rendered by main.js from TABESH.WORKSHOP (assets/js/data.js).
          Supported image categories: workshop | cnc | welding | assembly | electronics
          | testing | manufacturing. While the array is empty the preserved placeholder

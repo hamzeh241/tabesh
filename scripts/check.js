@@ -71,10 +71,7 @@ const requiredKeys = [
   'act.control.title', 'act.control.desc',
   'act.prototyping.title', 'act.prototyping.desc',
   'act.upgrade.title', 'act.upgrade.desc',
-  'workshop.cap.cnc', 'workshop.cap.welding', 'workshop.cap.lathe',
-  'workshop.cap.milling', 'workshop.cap.measurement', 'workshop.cap.electronics',
-  'workshop.cap.assembly', 'workshop.cap.testing',
-  'why.5.title', 'why.5.desc', 'mfg.caps.title',
+  'why.5.title', 'why.5.desc',
   /* product inquiry modal (Formspree) */
   'inquiry.modal.title', 'inquiry.modal.text', 'inquiry.modal.phone.label',
   'inquiry.modal.placeholder', 'inquiry.modal.error.invalid', 'inquiry.modal.legal',

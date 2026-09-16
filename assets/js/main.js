@@ -85,6 +85,13 @@
     if (ogl) ogl.setAttribute('content', OG_LOCALES[state.lang] || 'fa_IR');
     var yr = document.getElementById('footerYear');
     if (yr) yr.textContent = String(new Date().getFullYear());
+    /* activities show-more toggle keeps its expanded state across language
+       switches — re-sync its label from the current state */
+    var actToggle = document.getElementById('activitiesToggle');
+    if (actToggle) {
+      var lbl = actToggle.querySelector ? actToggle.querySelector('.activities-toggle-label') : null;
+      if (lbl) lbl.textContent = t(actToggle.classList.contains('expanded') ? 'activities.less' : 'activities.more');
+    }
   }
 
   /** Direction-dependent bits: process arrows + RTL/LTR Bootstrap stylesheet. */
@@ -185,6 +192,26 @@
     if (short) {
       h += '<p class="product-short">' + esc(loc(short)) + '</p>';
     }
+    /* ---- collapsed card summary: the key features stay visible ---- */
+    if (p.features && p.features.length) {
+      h += '<h4 class="product-subhead">' + esc(t('products.features.title')) + '</h4><div class="app-chips">';
+      for (var fi = 0; fi < p.features.length; fi++) {
+        h += '<span class="app-chip"><i class="bi bi-check2" aria-hidden="true"></i>' + esc(loc(p.features[fi])) + '</span>';
+      }
+      h += '</div>';
+    }
+
+    /* ---- per-product "show more specifications" toggle ---- */
+    var extraId = 'productExtra-' + p.id;
+    h += '<div class="product-extra-wrap">';
+    h += '<button type="button" class="product-specs-toggle" aria-expanded="false" aria-controls="' + esc(extraId) + '">';
+    h += '<span class="product-specs-toggle-label">' + esc(t('products.specs.more')) + '</span>';
+    h += '<i class="bi bi-chevron-down product-specs-toggle-chevron" aria-hidden="true"></i>';
+    h += '</button></div>';
+
+    /* ---- everything below stays hidden until that toggle is clicked ---- */
+    h += '<div class="product-extra" id="' + esc(extraId) + '">';
+
     if (p.description) {
       h += '<details class="product-more"><summary>' + esc(t('products.more')) + '</summary>' +
            '<p>' + esc(loc(p.description)) + '</p></details>';
@@ -212,14 +239,6 @@
       h += '<p class="spec-note">' + esc(loc(p.note)) + '</p>';
     }
 
-    if (p.features && p.features.length) {
-      h += '<h4 class="product-subhead">' + esc(t('products.features.title')) + '</h4><div class="app-chips">';
-      for (var fi = 0; fi < p.features.length; fi++) {
-        h += '<span class="app-chip"><i class="bi bi-check2" aria-hidden="true"></i>' + esc(loc(p.features[fi])) + '</span>';
-      }
-      h += '</div>';
-    }
-
     if (p.services && p.services.length) {
       h += '<h4 class="product-subhead">' + esc(t('products.services.title')) + '</h4><div class="app-chips">';
       for (var si = 0; si < p.services.length; si++) {
@@ -235,6 +254,8 @@
       }
       h += '</div>';
     }
+
+    h += '</div>'; /* /product-extra */
 
     /* Action row: video button rendered ONLY when a video is set; the
        inquiry button opens the shared Formspree-powered modal and carries
@@ -264,6 +285,25 @@
     for (var i = 0; i < PRODUCTS.length; i++) h += productCard(PRODUCTS[i]);
     grid.innerHTML = h;
     revealInit();
+  }
+
+  /* Per-product "show more specifications". Each card owns its own toggle
+     button plus its own .product-extra block, so every product keeps an
+     independent state: opening one card can never open or close another.
+     The panel is a normal block inside the card, so the card just grows in
+     height and the grid reflows on its own. */
+  function toggleProductSpecs(btn) {
+    var card = btn.closest('.product-card');
+    if (!card) return;
+    var panelId = btn.getAttribute('aria-controls');
+    var panel = panelId ? document.getElementById(panelId) : null;
+    if (!panel) panel = card.querySelector('.product-extra');
+    if (!panel) return;
+    var open = panel.classList.toggle('is-open');
+    btn.classList.toggle('is-open', open);
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    var lbl = btn.querySelector('.product-specs-toggle-label');
+    if (lbl) lbl.textContent = t(open ? 'products.specs.less' : 'products.specs.more');
   }
 
   /* -------------------- projects / workshop / gallery -------------------- */
@@ -951,6 +991,8 @@
     var grid = document.getElementById('productsGrid');
     if (grid) {
       grid.addEventListener('click', function (e) {
+        var specBtn = e.target.closest('.product-specs-toggle');
+        if (specBtn) { toggleProductSpecs(specBtn); return; }
         var photoBtn = e.target.closest('.product-photo, .product-thumb');
         if (photoBtn && photoBtn.getAttribute('data-product-viewer')) {
           var card = photoBtn.closest('.product-card');
@@ -1015,6 +1057,35 @@
     if (nextBtn) nextBtn.addEventListener('click', function () { stepViewer(1); });
     /* viewer keyboard shortcuts (←/→, +/−/0) — Escape is Bootstrap's */
     bindViewerKeyboard();
+
+    /* activities "show more / less": 4 cards visible by default, the rest
+       (.act-extra) hidden while the grid has .collapsed; toggling removes
+       that class (NOT a separate "expanded" class — CSS keys off .collapsed).
+       Chevron/aria state live on the button itself. */
+    var actToggle = document.getElementById('activitiesToggle');
+    if (actToggle) {
+      actToggle.addEventListener('click', function () {
+        var grid = document.getElementById('activitiesGrid');
+        if (!grid) return;
+        var expanded = !grid.classList.toggle('collapsed');
+        /* The extra cards were display:none when revealInit() registered them
+           with the scroll observer, so the observer never reports them as
+           intersecting and they would stay at opacity:0 (i.e. the grid grows
+           but nothing appears). They are shown by an explicit user action, so
+           reveal them deterministically; removing the class on collapse lets
+           the next open replay the fade-in. */
+        var extras = grid.querySelectorAll('.act-extra');
+        for (var i = 0; i < extras.length; i++) {
+          if (expanded) extras[i].classList.add('revealed');
+          else extras[i].classList.remove('revealed');
+        }
+        actToggle.classList.toggle('expanded', expanded);
+        actToggle.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+        var lbl = actToggle.querySelector ? actToggle.querySelector('.activities-toggle-label') : null;
+        if (lbl) lbl.textContent = t(expanded ? 'activities.less' : 'activities.more');
+        if (expanded) revealInit(); /* keep the shared reveal pipeline in sync */
+      });
+    }
 
     /* contact form → Formspree via fetch (no page reload) */
     var form = document.getElementById('contactForm');

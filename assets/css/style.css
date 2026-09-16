@@ -580,6 +580,48 @@ a { color: var(--tab-navy-700); }
   box-shadow: var(--tab-shadow-2);
   border-top-color: var(--tab-gold-500);
 }
+/* Activities show more/less: cards 5..15 carry .act-extra and are hidden
+   while the grid is collapsed. Hiding is JS-gated (html.js) so without JS
+   every card stays visible, and the toggle itself is hidden without JS.
+   Revealing is driven by the shared [data-reveal] .revealed state (added by
+   the toggle handler), never by a keyframe: an animation/transition that
+   starts at opacity:0 could leave the cards invisible, whereas .revealed is
+   a deterministic opacity:1 that always applies. */
+html.js .activities-grid.collapsed .act-extra { display: none; }
+html:not(.js) .activities-more-wrap { display: none; }
+
+.activities-more-wrap { text-align: center; margin-top: 1.5rem; }
+.activities-toggle {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  padding: .6rem 1.3rem;
+  font-family: inherit;
+  font-size: .95rem;
+  font-weight: 700;
+  color: var(--tab-navy-800);
+  background: var(--tab-white);
+  border: 1.5px solid var(--tab-steel-300);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: border-color .2s, color .2s, box-shadow .2s;
+}
+.activities-toggle:hover,
+.activities-toggle:focus-visible {
+  border-color: var(--tab-gold-500);
+  color: var(--tab-navy-950);
+  box-shadow: 0 0 0 3px rgba(242, 183, 5, .18);
+}
+.activities-toggle-chevron {
+  font-size: .95rem;
+  color: var(--tab-gold-600);
+  transition: transform .25s ease; /* soft flip for the arrow */
+}
+.activities-toggle.expanded .activities-toggle-chevron { transform: rotate(180deg); }
+@media (max-width: 575.98px) {
+  .activities-toggle { width: auto; padding: .55rem 1.1rem; font-size: .9rem; }
+}
 /* technical index watermark 01…05 */
 .act-card::after {
   content: counter(act, decimal-leading-zero);
@@ -765,6 +807,52 @@ a { color: var(--tab-navy-700); }
 .product-more summary::before { content: '+  '; color: var(--tab-gold-600); }
 .product-more[open] summary::before { content: '\2212  '; }
 .product-more p { color: var(--tab-muted); font-size: .94rem; margin: .5rem 0 0; }
+
+/* Per-product "show more specifications" (Phase 11).
+   The collapsed card keeps only the photo, name, short description and the
+   key features; the datasheet block (.product-extra) is revealed by the
+   toggle that sits directly under those features, inside the same card.
+   The extra block is a plain block inside the card body, so the card simply
+   grows in height and the surrounding products follow the existing grid —
+   nothing about the grid itself changes, and one product's state never
+   touches another (each card owns its own button + block). */
+.product-extra-wrap { margin-top: .9rem; }
+.product-specs-toggle {
+  appearance: none;
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .45rem;
+  padding: .5rem .8rem;
+  font-size: .86rem;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--tab-navy-700);
+  background: var(--tab-white);
+  border: 1px solid var(--tab-steel-200);
+  border-radius: var(--tab-radius-sm);
+  cursor: pointer;
+  transition: border-color .2s, color .2s;
+}
+.product-specs-toggle:hover { border-color: var(--tab-gold-500); color: var(--tab-gold-700); }
+.product-specs-toggle:focus-visible { outline: 2px solid var(--tab-gold-500); outline-offset: 2px; }
+.product-specs-toggle-chevron { transition: transform .22s ease; }
+.product-specs-toggle.is-open .product-specs-toggle-chevron { transform: rotate(180deg); }
+
+.product-extra { display: none; }
+.product-extra.is-open {
+  display: block;
+  margin-top: 1rem;
+  animation: productExtraIn .22s ease;
+}
+/* No fill-mode on purpose: if the animation is skipped (prefers-reduced-motion)
+   the block falls back to its fully visible base state instead of sticking at
+   the animation's first frame. */
+@keyframes productExtraIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: none; }
+}
 .products-empty {
   text-align: center;
   color: var(--tab-muted);
@@ -1817,15 +1905,8 @@ html.js .process-flow > li:nth-child(12) { transition-delay: .49s; }
   line-height: 1.8;
 }
 
-/* Capability chip strips (activities / manufacturing / workshop) */
-.caps-strip { margin: .4rem 0 1.6rem; }
-.caps-title {
-  font-size: 1.02rem;
-  font-weight: 800;
-  color: var(--tab-navy-800);
-  margin-bottom: .8rem;
-}
-.section-navy .caps-title { color: var(--tab-white); }
+/* Chips on dark sections (hero / about) — the legacy .caps-strip capability
+   strips were removed on purpose, but .chip itself is still used site-wide. */
 .section-navy .chip {
   background: rgba(255, 255, 255, .08);
   border-color: rgba(255, 255, 255, .22);
