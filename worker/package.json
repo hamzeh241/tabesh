@@ -1,0 +1,34 @@
+{
+  "name": "tabesh-requests-handler",
+  "version": "1.0.0",
+  "private": true,
+  "description": "TABESH Request Management System - Cloudflare Worker Backend",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "tail": "wrangler tail",
+    "test": "node test/api.test.js",
+    "db:create": "wrangler d1 create tabesh_requests_db",
+    "db:migrate": "wrangler d1 execute tabesh_requests_db --file=migrations/0001_initial_schema.sql --remote",
+    "db:migrate:local": "wrangler d1 execute tabesh_requests_db --file=migrations/0001_initial_schema.sql --local",
+    "db:reset": "wrangler d1 execute tabesh_requests_db --command='DROP TABLE IF EXISTS request_history; DROP TABLE IF EXISTS request_notes; DROP TABLE IF EXISTS requests;' --remote"
+  },
+  "devDependencies": {
+    "wrangler": "^3.0.0",
+    "miniflare": "^3.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "cloudflare",
+    "worker",
+    "d1",
+    "kv",
+    "request-management"
+  ],
+  "author": "",
+  "license": "MIT"
+}
